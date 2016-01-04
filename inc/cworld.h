@@ -1,0 +1,27 @@
+#pragma once
+
+#include "cobject.h"
+#include "ctile.h"
+
+class World : public Object
+{
+ public:
+  World();
+  virtual ~World();
+
+  void generate(int size);
+
+  int getHeightAt(int x, int y);
+
+  virtual void draw(Renderer* r) override;
+
+ private:
+  void generateHeights(int size, float roughness, float height);
+  float averageSquare(int x, int y, int stride, int size, int* array);
+  float averageDiamond(int x, int y, int stride, int size, int* array);
+
+  int m_width;
+  int m_height;
+  const Tile** m_tiles;
+  int* m_heights;
+};
