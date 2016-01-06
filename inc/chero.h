@@ -8,5 +8,5 @@ class Hero : public Character
   Hero();
   
   virtual void tick(float dt) override;
-  
+
 };

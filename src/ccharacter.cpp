@@ -5,7 +5,7 @@ Character::Character()
   : m_tile(ColorStyle::BRIGHT, Color::MAGENTA, Color::INVALID, '0')
 {
   setFriction(1);
-}
+} 
 
 void Character::draw(Renderer* r)
 {

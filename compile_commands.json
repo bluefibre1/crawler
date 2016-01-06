@@ -1,0 +1,62 @@
+[
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/cmain.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/cmain.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/cmain.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/cworld.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/cworld.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/cworld.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/ctimer.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/ctimer.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/ctimer.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/ctiles.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/ctiles.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/ctiles.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/ctile.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/ctile.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/ctile.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/csimulator.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/csimulator.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/csimulator.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/crenderer.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/crenderer.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/crenderer.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/cobject.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/cobject.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/cobject.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/cmath.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/cmath.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/cmath.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/cinput.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/cinput.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/cinput.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/chero.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/chero.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/chero.cpp"
+},
+{
+  "directory": "/Users/famille/Documents/Marc/dev/crawler",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/famille/Documents/Marc/dev/crawler/inc  -std=c++11 -stdlib=libc++ -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk   -o CMakeFiles/crawler.dir/src/ccharacter.cpp.o -c /Users/famille/Documents/Marc/dev/crawler/src/ccharacter.cpp",
+  "file": "/Users/famille/Documents/Marc/dev/crawler/src/ccharacter.cpp"
+}
+]

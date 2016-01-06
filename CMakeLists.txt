@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.4)
 project (crawler)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
 
 include_directories(inc)

@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
       hero.tick(dt);
       simulator->tick(dt);
 
-      
       // control camera around hero
       int centerX = hero.getX() - r.getWidth() / 2;
       int centerY = hero.getY() - r.getHeight() / 2;

@@ -201,6 +201,7 @@ void Renderer::setBg(Color color)
 
 bool Renderer::raycast(int x, int y, int z)
 {
+  /*
   int ox = m_width / 2;
   int oy = m_height / 2;
   
@@ -275,6 +276,6 @@ bool Renderer::raycast(int x, int y, int z)
 	    }	  
 	}
     }
-  
+  */
   return false; 
 }
