@@ -13,6 +13,10 @@ class World : public Object
 
   int getHeightAt(int x, int y);
 
+  int getWidth() const { return m_width; }
+
+  int getHeight() const { return m_height; }
+
   virtual void draw(Renderer* r) override;
 
  private:
