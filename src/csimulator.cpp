@@ -1,4 +1,5 @@
 #include "csimulator.h"
+#include "cmath.h"
 
 #include "stdio.h"
 
@@ -40,25 +41,8 @@ void Simulator::tick(float dt)
     float newY = collidee->getY() + collidee->getVelocityY() * dt;
     float newZ = collidee->getZ() + collidee->getVelocityZ() * dt;
 
-    if (newX < 0)
-    {
-      newX = 0;
-    }
-
-    if (newX >= m_world->getWidth())
-    {
-      newX = m_world->getWidth()-1;
-    }
-
-    if (newY < 0)
-    {
-      newY = 0;
-    }
-
-    if (newY >= m_world->getHeight())
-    {
-      newY = m_world->getHeight()-1;
-    }
+    Math::clamp(newX, 0, m_world->getWidth()-1);
+    Math::clamp(newY, 0, m_world->getHeight()-1);
 
     bool colliding = false;
     float worldZ = m_world->getHeightAt(newX, newY);
