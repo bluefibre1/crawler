@@ -6,24 +6,25 @@
 
 class Simulator
 {
- public:
+public:
 
   static Simulator* get();
 
   void setWorld(World* world);
-  
+
   void addCollider(Object* object);
 
   void removeCollider(Object* object);
-  
+
   void activate(Object* object);
 
   void tick(float dt);
-  
- private:
+
+private:
+
   typedef std::vector<Object*> Objects;
   World* m_world;
-  Objects m_objects;  
+  Objects m_objects;
   Objects m_colliders;
   Objects m_collidersToRemove;
 };

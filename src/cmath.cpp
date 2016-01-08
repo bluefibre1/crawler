@@ -24,3 +24,15 @@ float Math::intervalRandom(float high, float low)
   double ratio = ((double)::rand())/((double)(0x7fff));
   return low+(high-low)*((float)ratio);
 }
+
+void Math::clamp(float& value, float min, float max)
+{
+  if (value < min)
+  {
+    value = min;
+  }
+  else if (value >= max)
+  {
+    value = max;
+  }
+}
