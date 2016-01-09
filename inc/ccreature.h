@@ -1,12 +1,11 @@
 #pragma once
-
 #include "ccharacter.h"
 
 class Creature : public Character
 {
 public:
-        Creature();
+    Creature();
 
-        virtual void tick(float dt) override;
+    virtual void tick(float dt) override;
 
 };

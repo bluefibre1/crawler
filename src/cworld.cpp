@@ -41,7 +41,7 @@ void World::generate(int size)
     delete [] m_tiles;
     m_tiles = new const Tile*[n];
 
-    generateHeights(size, 0.7f, 0.001f);
+    generateHeights(size, 0.999f, 2000.0f);
 
     const Tile* templates[] =
         {
@@ -55,6 +55,7 @@ void World::generate(int size)
             &Tiles::ICE_ROCK,
             &Tiles::ICE_MOUNTAIN
         };
+
     int numTemplates = sizeof(templates) / sizeof(Tile*);
 
     int maxHeight = INT_MIN;
@@ -71,13 +72,18 @@ void World::generate(int size)
         {
             minHeight = h;
         }
+        //printf("%d ", h);
     }
 
     int deltaHeight = maxHeight - minHeight;
 
+    //printf("%d\n", deltaHeight);
+    //exit(0);
+
     for (int i = 0; i < n; i++)
     {
-        int templateIndex = (m_heights[i] - minHeight) * (numTemplates) / deltaHeight;
+
+        int templateIndex = deltaHeight != 0 ? (m_heights[i] - minHeight) * (numTemplates) / deltaHeight : 0;
         if (templateIndex >= numTemplates)
         {
             templateIndex = numTemplates-1;

@@ -1,5 +1,6 @@
 #include "cmath.h"
 
+#include <math.h>
 #include <stdlib.h>
 
 bool Math::isPowerOf2(int n)
@@ -9,19 +10,22 @@ bool Math::isPowerOf2(int n)
 
 float Math::unitRandom()
 {
-    double ratio = ((double)::rand())/((double)(0x7fff));
+    int value = ::rand() % 0x7fff;
+    double ratio = ((double)value)/((double)(0x7fff));
     return (float)ratio;
 }
 
 float Math::wrapRandom()
 {
-    double ratio = ((double)::rand())/((double)(0x7fff));
+    int value = ::rand() % 0x7fff;
+    double ratio = ((double)value)/((double)(0x7fff));
     return (float)(2.0*ratio - 1.0);
 }
 
 float Math::intervalRandom(float high, float low)
 {
-    double ratio = ((double)::rand())/((double)(0x7fff));
+    int value = ::rand() % 0x7fff;
+    double ratio = ((double)value)/((double)(0x7fff));
     return low+(high-low)*((float)ratio);
 }
 
@@ -35,4 +39,16 @@ void Math::clamp(float& value, float min, float max)
     {
         value = max;
     }
+}
+
+float Math::distance(float x1, float y1, float x2, float y2)
+{
+    float dx = x1 - x2;
+    float dy = y1 - y2;
+    return Math::sqrt(dx*dx+dy+dy);
+}
+
+float Math::sqrt(float value)
+{
+    return ::sqrt(value);
 }

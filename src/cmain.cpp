@@ -4,6 +4,7 @@
 #include "cinput.h"
 #include "ctimer.h"
 #include "csimulator.h"
+#include "ccreature.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -20,13 +21,19 @@ int main(int argc, char* argv[])
     Renderer r;
     World world;
     Hero hero;
+
     world.generate(1024);
+
+    Creature testMonster;
+    testMonster.setPosition(105, 100, world.getHeightAt(105, 100));
+    testMonster.setBehavior(new BehaviorWander());
 
     hero.setPosition(100, 100, world.getHeightAt(100, 100));
 
     Simulator* simulator = Simulator::get();
     simulator->setWorld(&world);
     simulator->addCollider(&hero);
+    simulator->addCollider(&testMonster);
 
     Timer timer;
     while (!input.quit())
@@ -36,6 +43,7 @@ int main(int argc, char* argv[])
 
         world.tick(dt);
         hero.tick(dt);
+        testMonster.tick(dt);
         simulator->tick(dt);
 
         // control camera around hero
@@ -63,6 +71,7 @@ int main(int argc, char* argv[])
         r.clear();
         world.draw(&r);
         hero.draw(&r);
+        testMonster.draw(&r);
         r.flip();
 
         int sleepTime = (int)(33333.3f - timer.elapsed() * 1000000.0f);

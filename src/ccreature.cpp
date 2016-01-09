@@ -1,6 +1,11 @@
 #include "ccreature.h"
 
-void Creature::tick(float dt)
+Creature::Creature()
 {
 
+}
+
+void Creature::tick(float dt)
+{
+    Character::tick(dt);
 }
