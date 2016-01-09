@@ -167,20 +167,14 @@ void Renderer::size(int& w, int& h)
 
   if (tgetent(TERMINAL_CAP_BUFFER, termtype) >= 0)
   {
-    h = tgetnum("li");
-    w = tgetnum("co");
+    h = tgetnum((char*)"li");
+    w = tgetnum((char*)"co");
   }
   else
   {
     w = 30;
     h = 20;
   }
-
-/*  struct ttysize ts;
-  ioctl(0, TIOCGSIZE, &ts);
-  h = ts.ts_lines;
-  w = ts.ts_cols;
-*/
 }
 
 void Renderer::setFg(ColorStyle style, Color color)
