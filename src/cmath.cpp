@@ -29,6 +29,11 @@ float Math::intervalRandom(float high, float low)
     return low+(high-low)*((float)ratio);
 }
 
+int Math::ceilRandom(int ceil)
+{
+    return ::rand() % ceil;
+}
+
 void Math::clamp(float& value, float min, float max)
 {
     if (value < min)

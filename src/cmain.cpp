@@ -4,7 +4,10 @@
 #include "cinput.h"
 #include "ctimer.h"
 #include "csimulator.h"
+#include "ccreaturefactory.h"
+#include "ccreaturetemplates.h"
 #include "ccreature.h"
+#include "cmath.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -19,36 +22,39 @@ int main(int argc, char* argv[])
     int x, y;
     Input input;
     Renderer r;
-    World world;
-    Hero hero;
-
-    world.generate(1024);
-
-    Creature testMonster;
-    testMonster.setPosition(105, 100, world.getHeightAt(105, 100));
-    testMonster.setBehavior(new BehaviorWander());
-
-    hero.setPosition(100, 100, world.getHeightAt(100, 100));
 
     Simulator* simulator = Simulator::get();
+
+    World world;
+    world.generate(1024);
     simulator->setWorld(&world);
-    simulator->addCollider(&hero);
-    simulator->addCollider(&testMonster);
+
+    Hero* hero = new Hero();
+    hero->setPosition(100, 100, world.getHeightAt(100, 100));
+    simulator->spawn(hero);
+
+    const CreatureTemplate* creatureTemplates[] = {
+        &CreatureTemplates::DRAGON
+    };
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
+        int idx = Math::ceilRandom(numTemplates);
+        Creature* creature = CreatureFactory::create(creatureTemplates[idx]);
+        simulator->spawn(creature);
+    }
 
     Timer timer;
     while (!input.quit())
     {
         float dt = timer.elapsed();
         timer.reset();
-
-        world.tick(dt);
-        hero.tick(dt);
-        testMonster.tick(dt);
         simulator->tick(dt);
 
         // control camera around hero
-        int centerX = hero.getX() - r.getWidth() / 2;
-        int centerY = hero.getY() - r.getHeight() / 2;
+        int centerX = hero->getX() - r.getWidth() / 2;
+        int centerY = hero->getY() - r.getHeight() / 2;
         /*
           int ox = r.getOriginX();
           int oy = r.getOriginY();
@@ -66,12 +72,10 @@ int main(int argc, char* argv[])
 
           r.setOrigin(ox, oy);
         */
-        r.setOrigin(centerX, centerY, hero.getZ());
+        r.setOrigin(centerX, centerY, hero->getZ());
 
         r.clear();
-        world.draw(&r);
-        hero.draw(&r);
-        testMonster.draw(&r);
+        simulator->draw(&r);
         r.flip();
 
         int sleepTime = (int)(33333.3f - timer.elapsed() * 1000000.0f);

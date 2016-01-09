@@ -8,11 +8,19 @@ public:
     Tile();
     Tile(ColorStyle style, Color fg, Color bg, char value);
 
+    void setStyle(ColorStyle style);
+
     const ColorStyle& getStyle() const;
+
+    void setForeground(Color color);
 
     const Color& getForeground() const;
 
+    void setBackground(Color color);
+
     const Color& getBackground() const;
+
+    void setValue(char ch);
 
     char getValue() const;
 
