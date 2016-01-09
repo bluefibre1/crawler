@@ -3,6 +3,7 @@
 
 Character::Character()
     : m_tile(ColorStyle::BRIGHT, Color::MAGENTA, Color::INVALID, '0')
+    , m_hp(10)
     , m_behavior(nullptr)
 {
     setFriction(1);

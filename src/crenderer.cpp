@@ -159,6 +159,38 @@ void Renderer::draw(int x, int y, int z, const Tile* tile)
     }
 }
 
+void Renderer::drawText(int x, int y, Color fg, Color bg, ColorStyle style, const std::string& text)
+{
+    int n = text.size();
+    if (x + n > m_width)
+    {
+        n = x > m_width ? 0 : m_width - x;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        int idx = (x + i) + y * m_width;
+        Cell& c = m_front[idx];
+
+        c.m_ch = text[i];
+
+        if (fg != Color::INVALID)
+        {
+            c.m_fg = fg;
+        }
+
+        if (style != ColorStyle::INVALID)
+        {
+            c.m_style = style;
+        }
+
+        if (bg != Color::INVALID)
+        {
+            c.m_bg = bg;
+        }
+    }
+}
+
 bool Renderer::isVisible(Object* object) const
 {
     int x = object->getX() - m_oX;

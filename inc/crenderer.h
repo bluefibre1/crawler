@@ -3,6 +3,8 @@
 #include "ctile.h"
 #include "cobject.h"
 
+#include <string>
+
 class Renderer
 {
 public:
@@ -12,6 +14,7 @@ public:
     void clear();
     void flip();
     void draw(int x, int y, int z, const Tile* tile);
+    void drawText(int x, int y, Color fg, Color bg, ColorStyle style, const std::string& text);
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
     int getOriginX() const { return m_oX; }

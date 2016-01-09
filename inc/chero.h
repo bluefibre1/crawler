@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ccharacter.h"
+#include "cwindow.h"
 
 class Hero : public Character
 {
@@ -9,4 +10,8 @@ public:
 
     virtual void tick(float dt) override;
 
+    virtual void draw(Renderer* r) override;
+
+private:
+    Window m_statisticWindow;
 };

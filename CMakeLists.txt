@@ -23,6 +23,7 @@ set(SOURCES
 	src/ccharacter.cpp
     src/ccreature.cpp
     src/cbehavior.cpp
+    src/cwindow.cpp
 )	
 
 add_executable(crawler ${SOURCES})
