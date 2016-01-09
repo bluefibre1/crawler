@@ -16,9 +16,19 @@ Tile::Tile(ColorStyle style, Color fg, Color bg, char value)
 {
 }
 
+void Tile::setStyle(ColorStyle style)
+{
+    m_style = style;
+}
+
 const ColorStyle& Tile::getStyle() const
 {
     return m_style;
+}
+
+void Tile::setForeground(Color color)
+{
+    m_fg = color;
 }
 
 const Color& Tile::getForeground() const
@@ -26,9 +36,19 @@ const Color& Tile::getForeground() const
     return m_fg;
 }
 
+void Tile::setBackground(Color color)
+{
+    m_bg = color;
+}
+
 const Color& Tile::getBackground() const
 {
     return m_bg;
+}
+
+void Tile::setValue(char ch)
+{
+    m_value = ch;
 }
 
 char Tile::getValue() const

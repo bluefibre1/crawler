@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ccharacter.h"
 
 class Creature : public Character
@@ -8,4 +9,8 @@ public:
 
     virtual void tick(float dt) override;
 
+    void setMaxVelocity(float maxVel);
+
+private:
+    float m_maxVelocity;
 };

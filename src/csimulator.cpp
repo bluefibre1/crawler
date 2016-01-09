@@ -1,7 +1,9 @@
 #include "csimulator.h"
 #include "cmath.h"
+#include "crenderer.h"
 
-#include "stdio.h"
+#include <stdio.h>
+#include <float.h>
 
 static const int MAX_STEP = 10000;
 
@@ -16,24 +18,47 @@ void Simulator::setWorld(World* world)
     m_world = world;
 }
 
-void Simulator::addCollider(Object* object)
+void Simulator::add(Object* object)
 {
-    m_colliders.push_back(object);
+    m_objects.push_back(object);
 }
 
-void Simulator::removeCollider(Object* object)
+void Simulator::spawn(Object* object)
 {
-    m_collidersToRemove.push_back(object);
+    while (true)
+    {
+        int x = Math::ceilRandom(m_world->getWidth());
+        int y = Math::ceilRandom(m_world->getHeight());
+        float z = FLT_MAX;
+        if (!isColliding(object, x, y, z, z))
+        {
+            object->setPosition(x,y,z);
+            break;
+        }
+    }
+
+    add(object);
+}
+
+void Simulator::remove(Object* object)
+{
+    m_objectsToRemove.push_back(object);
 }
 
 void Simulator::activate(Object* object)
 {
-    m_objects.push_back(object);
+    m_activated.push_back(object);
 }
 
 void Simulator::tick(float dt)
 {
     for (auto i = m_objects.begin(); i != m_objects.end(); ++i)
+    {
+        Object* obj = *i;
+        obj->tick(dt);
+    }
+
+    for (auto i = m_activated.begin(); i != m_activated.end(); ++i)
     {
         Object* collidee = *i;
 
@@ -44,37 +69,7 @@ void Simulator::tick(float dt)
         Math::clamp(newX, 0, m_world->getWidth()-1);
         Math::clamp(newY, 0, m_world->getHeight()-1);
 
-        bool colliding = false;
-        float worldZ = m_world->getHeightAt(newX, newY);
-        if (worldZ - newZ > MAX_STEP)
-        {
-            colliding = true;
-        }
-        else
-        {
-            // snap to ground
-            newZ = worldZ;
-        }
-
-        for (auto j = m_colliders.begin(); !colliding && j != m_colliders.end(); ++j)
-        {
-            Object* collider = *j;
-
-            if (collidee == collider)
-            {
-                continue;
-            }
-
-            if (collider->getX() == newX &&
-                collider->getY() == newY &&
-                collider->getZ() == newZ)
-            {
-                colliding = true;
-                break;
-            }
-        }
-
-        if (colliding)
+        if (isColliding(collidee, newX, newY, newZ, newZ))
         {
             collidee->setVelocity(0, 0, 0);
         }
@@ -88,15 +83,57 @@ void Simulator::tick(float dt)
         }
     }
 
-    m_objects.clear();
+    m_activated.clear();
 
-    for (auto i = m_collidersToRemove.begin(); i != m_collidersToRemove.end(); ++i)
+    for (auto i = m_objectsToRemove.begin(); i != m_objectsToRemove.end(); ++i)
     {
         Object* collider = *i;
-        auto it = std::find(m_colliders.begin(), m_colliders.end(), collider);
-        if (it != m_colliders.end())
+        auto it = std::find(m_objects.begin(), m_objects.end(), collider);
+        if (it != m_objects.end())
         {
-            m_colliders.erase(it);
+            m_objects.erase(it);
         }
     }
+}
+
+void Simulator::draw(Renderer* r)
+{
+    m_world->draw(r);
+    for (auto i = m_objects.begin(); i != m_objects.end(); ++i)
+    {
+        (*i)->draw(r);
+    }
+}
+
+bool Simulator::isColliding(Object* collidee, float x, float y, float z, float& ground)
+{
+    bool colliding(false);
+
+    float worldZ = m_world->getHeightAt(x, y);
+    if (worldZ - z > MAX_STEP)
+    {
+        colliding = true;
+    }
+
+    ground = worldZ;
+
+    for (auto j = m_objects.begin(); !colliding && j != m_objects.end(); ++j)
+    {
+        Object* collider = *j;
+
+        if (collidee == collider)
+        {
+            continue;
+        }
+
+        if (collider->getX() == x &&
+            collider->getY() == y &&
+            collider->getZ() == z)
+        {
+            colliding = true;
+            break;
+        }
+    }
+
+    return colliding;
 }
