@@ -2,7 +2,7 @@
 #include "crenderer.h"
 
 Character::Character()
-    : m_tile(ColorStyle::BRIGHT, Color::MAGENTA, Color::INVALID, '0')
+    : m_tile(ColorStyle::DIM, Color::MAGENTA, Color::INVALID, '@')
     , m_hp(10)
     , m_behavior(nullptr)
 {

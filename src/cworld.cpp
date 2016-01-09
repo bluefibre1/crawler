@@ -41,18 +41,19 @@ void World::generate(int size)
     delete [] m_tiles;
     m_tiles = new const Tile*[n];
 
-    generateHeights(size, 0.999f, 2000.0f);
+    generateHeights(size, 0.7f, 2000.0f);
 
     const Tile* templates[] =
         {
             &Tiles::WATER,
             &Tiles::WATER,
             &Tiles::WATER,
+            &Tiles::SAND,
             &Tiles::GRASS,
-            &Tiles::EARTH,
-            &Tiles::ROCK,
+            &Tiles::GRASS,
+            &Tiles::GRASS,
             &Tiles::MOUNTAIN,
-            &Tiles::ICE_ROCK,
+            &Tiles::MOUNTAIN,
             &Tiles::ICE_MOUNTAIN
         };
 

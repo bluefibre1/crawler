@@ -7,7 +7,7 @@ const float HERO_VELOCITY = 1;
 
 Hero::Hero()
 {
-    m_tile = Tile(ColorStyle::BRIGHT, Color::MAGENTA, Color::INVALID, '0');
+    m_tile = Tile(ColorStyle::NORMAL, Color::MAGENTA, Color::INVALID, '0');
 
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);
@@ -17,8 +17,14 @@ Hero::Hero()
 
 void Hero::tick(float dt)
 {
+    bool pressed(false);
     int key;
-    if (Input::getKey(key))
+    while (Input::getKey(key))
+    {
+        pressed = true;
+    }
+
+    if (pressed)
     {
         switch (key)
         {
