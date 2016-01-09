@@ -4,13 +4,13 @@
 
 class Timer
 {
- public:
-  Timer();
-  
-  float elapsed();
+public:
+    Timer();
 
-  void reset();
+    float elapsed();
 
- private:
-  timeval m_startTime;
+    void reset();
+
+private:
+    timeval m_startTime;
 };

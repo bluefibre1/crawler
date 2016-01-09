@@ -6,13 +6,13 @@
 class Character : public Object
 {
 public:
-        Character();
+    Character();
 
-        virtual void draw(Renderer* r) override;
+    virtual void draw(Renderer* r) override;
 
-        virtual void tick(float dt) override;
+    virtual void tick(float dt) override;
 
 protected:
-        Tile m_tile;
-        int m_hp;
+    Tile m_tile;
+    int m_hp;
 };

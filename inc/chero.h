@@ -4,9 +4,9 @@
 
 class Hero : public Character
 {
- public:
-  Hero();
-  
-  virtual void tick(float dt) override;
+public:
+    Hero();
+
+    virtual void tick(float dt) override;
 
 };
