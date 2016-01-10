@@ -6,11 +6,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(ColorStyle style, Color fg, Color bg, char value);
-
-    void setStyle(ColorStyle style);
-
-    const ColorStyle& getStyle() const;
+    Tile(const Color& fg, const Color& bg, char value);
 
     void setForeground(Color color);
 
@@ -25,7 +21,6 @@ public:
     char getValue() const;
 
 private:
-    ColorStyle m_style;
     Color m_fg;
     Color m_bg;
     char m_value;

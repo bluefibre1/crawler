@@ -8,6 +8,8 @@
 #include "ccreaturetemplates.h"
 #include "ccreature.h"
 #include "cmath.h"
+#include "ctiles.h"
+#include "ccolors.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -26,18 +28,19 @@ int main(int argc, char* argv[])
     Simulator* simulator = Simulator::get();
 
     World world;
-    world.generate(1024);
+    world.generate(128);
     simulator->setWorld(&world);
 
     Hero* hero = new Hero();
-    hero->setPosition(100, 100, world.getHeightAt(100, 100));
     simulator->spawn(hero);
 
     const CreatureTemplate* creatureTemplates[] = {
-        &CreatureTemplates::DRAGON
+        &CreatureTemplates::DRAGON(),
+        &CreatureTemplates::VILLAGER(),
+        &CreatureTemplates::KID()
     };
 
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 100; i++)
     {
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);

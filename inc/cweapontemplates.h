@@ -6,6 +6,6 @@ class WeaponTemplates
 {
 public:
 
-    static const WeaponTemplate SWORD;
+    static const WeaponTemplate& SWORD();
 
 };

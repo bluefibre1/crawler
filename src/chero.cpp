@@ -1,5 +1,6 @@
 #include "chero.h"
 #include "cinput.h"
+#include "ccolors.h"
 
 #include <stdlib.h>
 
@@ -7,18 +8,24 @@ const float HERO_VELOCITY = 1;
 
 Hero::Hero()
 {
-    m_tile = Tile(ColorStyle::BRIGHT, Color::MAGENTA, Color::INVALID, '0');
+    m_tile = Tile(Colors::MAGENTA(), Colors::INVALID(), '0');
 
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);
-    m_statisticWindow.print(Color::WHITE, ColorStyle::BRIGHT, "HP:");
-    m_statisticWindow.print(Color::WHITE, ColorStyle::NORMAL, std::to_string(m_hp));
+    m_statisticWindow.print(Colors::WHITE(), "HP:");
+    m_statisticWindow.print(Colors::WHITE(), std::to_string(m_hp));
 }
 
 void Hero::tick(float dt)
 {
+    bool pressed(false);
     int key;
-    if (Input::getKey(key))
+    while (Input::getKey(key))
+    {
+        pressed = true;
+    }
+
+    if (pressed)
     {
         switch (key)
         {

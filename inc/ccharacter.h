@@ -27,8 +27,6 @@ public:
 
     void setColor(Color color);
 
-    void setStyle(ColorStyle style);
-
     void setChar(char ch);
 
 protected:

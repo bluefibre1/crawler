@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <float.h>
 
-static const int MAX_STEP = 10;
+static const int MAX_STEP = 10000;
 
 Simulator* Simulator::get()
 {

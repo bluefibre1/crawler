@@ -1,23 +1,17 @@
 #pragma once
 
 
-enum class Color
+class Color
 {
-    BLACK = 0,
-        RED,
-        GREEN,
-        YELLOW,
-        BLUE,
-        MAGENTA,
-        CYAN,
-        WHITE,
-        INVALID
-        };
+public:
+    Color();
+    Color(int c);
 
-enum class ColorStyle
-{
-    NORMAL=0,
-        BRIGHT,
-        DIM,
-        INVALID
-        };
+    bool operator==(const Color& c) const;
+    bool operator!=(const Color& c) const;
+
+    int getValue() const { return m_color; }
+
+private:
+    int m_color;
+};
