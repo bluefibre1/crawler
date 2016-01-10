@@ -33,7 +33,7 @@ public:
     void setBorderWidth(int h, int v);
 
     void clear();
-    void print(Color color, ColorStyle style, const std::string& text);
+    void print(Color color, const std::string& text);
 
     virtual void draw(Renderer* r) override;
 
@@ -53,7 +53,6 @@ private:
     {
         std::string m_text;
         Color m_color;
-        ColorStyle m_style;
     };
     std::vector<Print> m_prints;
 };

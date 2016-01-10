@@ -1,10 +1,10 @@
 #include "ctiles.h"
 #include "ccolors.h"
 
-const Tile Tiles::EMPTY(ColorStyle::DIM, Colors::BLACK(), Colors::BLACK(), ' ');
-const Tile Tiles::WATER(ColorStyle::BRIGHT, Colors::BLUE(), Colors::BLUE(), '~');
-const Tile Tiles::SAND(ColorStyle::DIM, Colors::YELLOW(), Colors::YELLOW(), '.');
-const Tile Tiles::GRASS(ColorStyle::DIM, Colors::DARK_GREEN(), Colors::GREEN(), ',');
-const Tile Tiles::MOUNTAIN(ColorStyle::DIM, Colors::WHITE(), Colors::WHITE(), 'X');
-const Tile Tiles::CLOUDS(ColorStyle::BRIGHT, Colors::WHITE(), Colors::WHITE(), 'o');
-const Tile Tiles::ICE_MOUNTAIN(ColorStyle::DIM, Colors::WHITE(), Colors::WHITE(), 'A');
+const Tile Tiles::EMPTY(Colors::BLACK(), Colors::BLACK(), ' ');
+const Tile Tiles::WATER(Colors::BLUE(), Colors::BLUE(), '~');
+const Tile Tiles::SAND(Colors::YELLOW(), Colors::YELLOW(), '.');
+const Tile Tiles::GRASS(Colors::DARK_GREEN(), Colors::GREEN(), ',');
+const Tile Tiles::MOUNTAIN(Colors::WHITE(), Colors::WHITE(), 'X');
+const Tile Tiles::CLOUDS(Colors::WHITE(), Colors::WHITE(), 'o');
+const Tile Tiles::ICE_MOUNTAIN(Colors::WHITE(), Colors::WHITE(), 'A');

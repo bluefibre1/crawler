@@ -15,11 +15,3 @@ public:
 private:
     int m_color;
 };
-
-enum class ColorStyle
-{
-    NORMAL=0,
-        BRIGHT,
-        DIM,
-        INVALID
-        };

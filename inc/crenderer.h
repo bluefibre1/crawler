@@ -14,7 +14,7 @@ public:
     void clear();
     void flip();
     void draw(int x, int y, int z, const Tile* tile);
-    void drawText(int x, int y, Color fg, Color bg, ColorStyle style, const std::string& text);
+    void drawText(int x, int y, Color fg, Color bg, const std::string& text);
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
     int getOriginX() const { return m_oX; }
@@ -35,7 +35,6 @@ private:
         char m_ch;
         Color m_fg;
         Color m_bg;
-        ColorStyle m_style;
         int m_z;
     };
     Cell* m_front;
@@ -43,7 +42,7 @@ private:
     Cell m_empty;
 
     void size(int& w, int& h);
-    void setFg(ColorStyle style, Color color);
+    void setFg(Color color);
     void setBg(Color color);
     bool raycast(int x, int y, int z);
 };

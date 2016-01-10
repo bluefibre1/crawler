@@ -13,7 +13,6 @@ public:
                      int maxHp,
                      float maxVelocity,
                      Color color,
-                     ColorStyle style,
                      char ch);
 
     const std::string& getName() const { return m_name; }
@@ -26,8 +25,6 @@ public:
 
     Color getColor() const { return m_color; }
 
-    ColorStyle getStyle() const { return m_style; }
-
     char getChar() const { return m_ch; }
 
 private:
@@ -36,6 +33,5 @@ private:
     int m_maxHp;
     float m_maxVelocity;
     Color m_color;
-    ColorStyle m_style;
     char m_ch;
 };

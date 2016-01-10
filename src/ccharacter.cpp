@@ -3,7 +3,7 @@
 #include "ccolors.h"
 
 Character::Character()
-    : m_tile(ColorStyle::DIM, Colors::MAGENTA(), Colors::INVALID(), '@')
+   : m_tile( Colors::MAGENTA(), Colors::INVALID(), '@')
     , m_hp(10)
     , m_behavior(nullptr)
     , m_name()
@@ -58,11 +58,6 @@ void Character::setHp(int hp)
 void Character::setColor(Color color)
 {
     m_tile.setForeground(color);
-}
-
-void Character::setStyle(ColorStyle style)
-{
-    m_tile.setStyle(style);
 }
 
 void Character::setChar(char ch)

@@ -40,12 +40,11 @@ void Window::clear()
     m_prints.clear();
 }
 
-void Window::print(Color color, ColorStyle style, const std::string& text)
+void Window::print(Color color, const std::string& text)
 {
     Print p;
     p.m_color = color;
     p.m_text = text;
-    p.m_style = style;
     m_prints.push_back(p);
 }
 
@@ -83,19 +82,19 @@ void Window::draw(Renderer* r)
                 if (lineLength < m_width)
                 {
                     string padding(m_width - lineLength, ' ');
-                    r->drawText(x, y, p.m_color, m_background, p.m_style, padding);
+                    r->drawText(x, y, p.m_color, m_background, padding);
                 }
                 y++;
                 x = getX();
             }
-            r->drawText(x + lineLength, y, p.m_color, m_background, p.m_style, word);
+            r->drawText(x + lineLength, y, p.m_color, m_background, word);
             lineLength += word.size();
         }
 
         if (lineLength < m_width)
         {
             string padding(m_width - lineLength, ' ');
-            r->drawText(x + lineLength, y, p.m_color, m_background, p.m_style, padding);
+            r->drawText(x + lineLength, y, p.m_color, m_background, padding);
         }
 
     }
