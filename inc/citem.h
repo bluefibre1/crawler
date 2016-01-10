@@ -11,6 +11,8 @@ public:
 
     void setName(const std::string& name);
 
+    const std::string& getName() const;
+
 private:
     std::string m_name;
 };

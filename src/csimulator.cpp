@@ -66,8 +66,8 @@ void Simulator::tick(float dt)
         float newY = collidee->getY() + collidee->getVelocityY() * dt;
         float newZ = collidee->getZ() + collidee->getVelocityZ() * dt;
 
-        Math::clamp(newX, 0, m_world->getWidth()-1);
-        Math::clamp(newY, 0, m_world->getHeight()-1);
+        Math::clamp(newX, 0, m_world->getWidth() - 1);
+        Math::clamp(newY, 0, m_world->getHeight() - 1);
 
         if (isColliding(collidee, newX, newY, newZ, newZ))
         {

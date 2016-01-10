@@ -1,13 +1,15 @@
 #include "ccreaturetemplate.h"
 
-CreatureTemplate::CreatureTemplate(const std::string& name,
+CreatureTemplate::CreatureTemplate(int probabilityWeight,
+                                   const std::string& name,
                                    int minHp,
                                    int maxHp,
                                    float maxVelocity,
                                    Color color,
                                    ColorStyle style,
                                    char ch)
-    : m_name(name)
+    : m_probabilityWeight(probabilityWeight)
+    , m_name(name)
     , m_minHp(minHp)
     , m_maxHp(maxHp)
     , m_maxVelocity(maxVelocity)
