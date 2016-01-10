@@ -35,9 +35,9 @@ int main(int argc, char* argv[])
     simulator->spawn(hero);
 
     const CreatureTemplate* creatureTemplates[] = {
-        &CreatureTemplates::DRAGON,
-        &CreatureTemplates::VILLAGER,
-        &CreatureTemplates::KID
+        &CreatureTemplates::DRAGON(),
+        &CreatureTemplates::VILLAGER(),
+        &CreatureTemplates::KID()
     };
 
     for (int i = 0; i < 100; i++)

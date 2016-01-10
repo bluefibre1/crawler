@@ -4,16 +4,22 @@
 
 #include <string>
 
+class WeaponTemplate;
+
 class CreatureTemplate
 {
 public:
 
-    CreatureTemplate(const std::string& name,
+    CreatureTemplate(int probabylityWeight,
+                     const std::string& name,
                      int minHp,
                      int maxHp,
                      float maxVelocity,
                      Color color,
-                     char ch);
+                     char ch,
+                     const WeaponTemplate** weaponTemplates);
+
+    int getProbabilityWeight() const { return m_probabilityWeight; }
 
     const std::string& getName() const { return m_name; }
 
@@ -27,11 +33,15 @@ public:
 
     char getChar() const { return m_ch; }
 
+    const WeaponTemplate** getWeaponTemplates() const { return m_weaponTemplates; }
+
 private:
+    int m_probabilityWeight;
     std::string m_name;
     int m_minHp;
     int m_maxHp;
     float m_maxVelocity;
     Color m_color;
     char m_ch;
+    const WeaponTemplate** m_weaponTemplates;
 };

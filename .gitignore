@@ -1,5 +1,6 @@
 Makefile
 cmake_install.cmake
+compile_commands.json
 crawler
 CMakeFiles/
 CMakeCache.txt
