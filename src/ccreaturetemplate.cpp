@@ -6,7 +6,8 @@ CreatureTemplate::CreatureTemplate(int probabilityWeight,
                                    int maxHp,
                                    float maxVelocity,
                                    Color color,
-                                   char ch)
+                                   char ch,
+                                   const WeaponTemplate** weaponTemplates)
     : m_probabilityWeight(probabilityWeight)
     , m_name(name)
     , m_minHp(minHp)
@@ -14,6 +15,7 @@ CreatureTemplate::CreatureTemplate(int probabilityWeight,
     , m_maxVelocity(maxVelocity)
     , m_color(color)
     , m_ch(ch)
+    , m_weaponTemplates(weaponTemplates)
 {
 
 }

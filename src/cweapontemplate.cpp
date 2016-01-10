@@ -4,9 +4,7 @@ WeaponTemplate::WeaponTemplate(int probabilityWeight,
                                const std::string& name,
                                int minDamage,
                                int maxDamage,
-                               float maxVelocity,
-                               Color color,
-                               ColorStyle style,
+                               const Color& color,
                                char vch,
                                char hch)
     : m_probabilityWeight(probabilityWeight)
@@ -14,7 +12,6 @@ WeaponTemplate::WeaponTemplate(int probabilityWeight,
     , m_minDamage(minDamage)
     , m_maxDamage(maxDamage)
     , m_color(color)
-    , m_style(style)
     , m_vch(vch)
     , m_hch(hch)
 {

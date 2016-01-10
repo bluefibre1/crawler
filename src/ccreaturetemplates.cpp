@@ -1,6 +1,24 @@
 #include "ccreaturetemplates.h"
+#include "cweapontemplates.h"
 #include "ccolors.h"
 
-const CreatureTemplate& CreatureTemplates::DRAGON() { static CreatureTemplate c(10, "Dragon", 100, 200, 1, Colors::GREEN(), 'D'); return c; }
-const CreatureTemplate& CreatureTemplates::VILLAGER() { static CreatureTemplate c(100, "Villager", 100, 200, 1, Colors::BLUE(), 'V'); return c; }
-const CreatureTemplate& CreatureTemplates::KID() { static CreatureTemplate c(100, "Kid", 100, 200, 1, Colors::BLUE(), 'v'); return c; }
+const CreatureTemplate& CreatureTemplates::DRAGON()
+{
+    static const WeaponTemplate* weapons[] = { &WeaponTemplates::SWORD() };
+    static CreatureTemplate c(10, "Dragon", 100, 200, 1, Colors::GREEN(), 'D', weapons);
+    return c;
+}
+
+const CreatureTemplate& CreatureTemplates::VILLAGER()
+{
+    static const WeaponTemplate* weapons[] = { &WeaponTemplates::SWORD() };
+    static CreatureTemplate c(100, "Villager", 100, 200, 1, Colors::BLUE(), 'V', weapons);
+    return c;
+}
+
+const CreatureTemplate& CreatureTemplates::KID()
+{
+    static const WeaponTemplate* weapons[] = { &WeaponTemplates::SWORD() };
+    static CreatureTemplate c(100, "Kid", 100, 200, 1, Colors::BLUE(), 'v', weapons);
+    return c;
+}

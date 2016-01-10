@@ -12,8 +12,7 @@ public:
                    const std::string& name,
                    int minDamage,
                    int maxDamage,
-                   Color color,
-                   ColorStyle style,
+                   const Color& color,
                    char vch,
                    char hch);
 
@@ -25,9 +24,7 @@ public:
 
     int getMaxDamage() const { return m_maxDamage; }
 
-    Color getColor() const { return m_color; }
-
-    ColorStyle getStyle() const { return m_style; }
+    const Color& getColor() const { return m_color; }
 
     char getVerticalChar() const { return m_vch; }
 
@@ -40,7 +37,6 @@ private:
     int m_maxDamage;
     float m_maxVelocity;
     Color m_color;
-    ColorStyle m_style;
     char m_vch;
     char m_hch;
 };

@@ -4,6 +4,8 @@
 
 #include <string>
 
+class WeaponTemplate;
+
 class CreatureTemplate
 {
 public:
@@ -14,8 +16,8 @@ public:
                      int maxHp,
                      float maxVelocity,
                      Color color,
-                     char ch/*,
-                     const WeaponTemplate*[] weaponTemplates*/);
+                     char ch,
+                     const WeaponTemplate** weaponTemplates);
 
     int getProbabilityWeight() const { return m_probabilityWeight; }
 
@@ -31,6 +33,8 @@ public:
 
     char getChar() const { return m_ch; }
 
+    const WeaponTemplate** getWeaponTemplates() const { return m_weaponTemplates; }
+
 private:
     int m_probabilityWeight;
     std::string m_name;
@@ -39,4 +43,5 @@ private:
     float m_maxVelocity;
     Color m_color;
     char m_ch;
+    const WeaponTemplate** m_weaponTemplates;
 };
