@@ -1,14 +1,15 @@
 #include "ctile.h"
+#include "ccolors.h"
 
 Tile::Tile()
     : m_style(ColorStyle::NORMAL)
-    , m_fg(Color::INVALID)
-    , m_bg(Color::INVALID)
+    , m_fg(Colors::INVALID())
+    , m_bg(Colors::INVALID())
     , m_value('x')
 {
 }
 
-Tile::Tile(ColorStyle style, Color fg, Color bg, char value)
+Tile::Tile(ColorStyle style, const Color& fg, const Color& bg, char value)
     : m_style(style)
     , m_fg(fg)
     , m_bg(bg)

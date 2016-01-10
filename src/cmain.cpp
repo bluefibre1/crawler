@@ -8,6 +8,8 @@
 #include "ccreaturetemplates.h"
 #include "ccreature.h"
 #include "cmath.h"
+#include "ctiles.h"
+#include "ccolors.h"
 
 #include <unistd.h>
 #include <stdio.h>

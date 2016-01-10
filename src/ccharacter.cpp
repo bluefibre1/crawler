@@ -1,8 +1,9 @@
 #include "ccharacter.h"
 #include "crenderer.h"
+#include "ccolors.h"
 
 Character::Character()
-    : m_tile(ColorStyle::DIM, Color::MAGENTA, Color::INVALID, '@')
+    : m_tile(ColorStyle::DIM, Colors::MAGENTA(), Colors::INVALID(), '@')
     , m_hp(10)
     , m_behavior(nullptr)
     , m_name()

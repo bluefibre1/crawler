@@ -1,5 +1,6 @@
 #include "cwindow.h"
 #include "crenderer.h"
+#include "ccolors.h"
 
 #include <iostream>
 #include <string>
@@ -13,7 +14,7 @@ Window::Window()
     , m_maxWidth(20)
     , m_valign(VerticalAlign::TOP)
     , m_halign(HorizontalAlign::LEFT)
-    , m_background(Color::BLACK)
+    , m_background(Colors::BLACK())
     , m_prints()
 {
 

@@ -6,7 +6,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(ColorStyle style, Color fg, Color bg, char value);
+    Tile(ColorStyle style, const Color& fg, const Color& bg, char value);
 
     void setStyle(ColorStyle style);
 
