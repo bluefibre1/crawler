@@ -7,5 +7,8 @@ class CreatureTemplates
 public:
 
     static const CreatureTemplate DRAGON;
+    static const CreatureTemplate VILLAGER;
+    static const CreatureTemplate KID;
+
 
 };
