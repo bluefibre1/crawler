@@ -12,9 +12,14 @@ public:
     static const Color& GREEN();
     static const Color& DARK_GREEN();
     static const Color& YELLOW();
+    static const Color& SANDYELLOW();
+    static const Color& LIGHT_BLUE();
     static const Color& BLUE();
+    static const Color& DARK_BLUE();
+    static const Color& ICY_BLUE();
     static const Color& WHITE();
     static const Color& GREY();
+    static const Color& LIGHT_GREY();
     static const Color& BROWN();
     static const Color& MAGENTA();
     static const Color& ORANGE();
