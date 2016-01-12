@@ -1,4 +1,5 @@
 #include "ccreature.h"
+#include "cbehavior.h"
 
 Creature::Creature()
     : m_maxVelocity(1)

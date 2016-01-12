@@ -1,12 +1,13 @@
 #pragma once
 
-class Weapon;
+#include "cweapon.h"
+
 class WeaponTemplate;
 
 class WeaponFactory
 {
 public:
 
-    static Weapon* create(const WeaponTemplate* t);
+    static WeaponPtr create(const WeaponTemplate* t);
 
 };

@@ -1,10 +1,14 @@
 #pragma once
 
 #include "cobject.h"
-#include "ctile.h"
-#include "cbehavior.h"
+#include "ccolor.h"
+#include "citem.h"
 
 #include <string>
+#include <vector>
+
+class Item;
+class Behavior;
 
 class Character : public Object
 {
@@ -25,13 +29,29 @@ public:
 
     void setHp(int hp);
 
-    void setColor(Color color);
+    void setColor(const Color& color);
 
     void setChar(char ch);
 
+    void addItem(const ItemPtr& item);
+
+    void removeItem(const ItemPtr& item);
+
+    void equip(const ItemPtr& item);
+
+    void unequip(const ItemPtr& item);
+
 protected:
-    Tile m_tile;
+    char m_ch;
+    Color m_color;
     int m_hp;
     Behavior* m_behavior;
     std::string m_name;
+
+    typedef std::vector<ItemPtr> Items;
+    Items m_items;
+    Items m_equipped;
+
 };
+
+typedef std::shared_ptr<Character> CharacterPtr;

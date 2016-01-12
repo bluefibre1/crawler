@@ -1,12 +1,13 @@
 #pragma once
 
-class Creature;
+#include "ccreature.h"
+
 class CreatureTemplate;
 
 class CreatureFactory
 {
 public:
 
-    static Creature* create(const CreatureTemplate* t);
+    static CreaturePtr create(const CreatureTemplate* t);
 
 };

@@ -6,6 +6,8 @@
 #include "csimulator.h"
 #include "ccreaturefactory.h"
 #include "ccreaturetemplates.h"
+#include "cweaponfactory.h"
+#include "cweapon.h"
 #include "ccreature.h"
 #include "cmath.h"
 #include "ctiles.h"
@@ -27,11 +29,12 @@ int main(int argc, char* argv[])
 
     Simulator* simulator = Simulator::get();
 
-    World world;
-    world.generate(128);
-    simulator->setWorld(&world);
+    WorldPtr world(new World());
+    world->generate(128);
+    simulator->setWorld(world);
 
-    Hero* hero = new Hero();
+    HeroPtr hero(new Hero());
+    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
     simulator->spawn(hero);
 
     const CreatureTemplate* creatureTemplates[] = {
@@ -44,7 +47,8 @@ int main(int argc, char* argv[])
     {
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);
-        Creature* creature = CreatureFactory::create(creatureTemplates[idx]);
+
+        ObjectPtr creature(CreatureFactory::create(creatureTemplates[idx]));
         simulator->spawn(creature);
     }
 

@@ -3,6 +3,8 @@
 #include "cobject.h"
 #include "ctile.h"
 
+#include <vector>
+
 class World : public Object
 {
 public:
@@ -29,3 +31,5 @@ private:
     const Tile** m_tiles;
     int* m_heights;
 };
+
+typedef std::shared_ptr<World> WorldPtr;

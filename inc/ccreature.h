@@ -14,3 +14,5 @@ public:
 private:
     float m_maxVelocity;
 };
+
+typedef std::shared_ptr<Creature> CreaturePtr;

@@ -1,12 +1,14 @@
 #pragma once
 
+#include <memory>
+
 class Renderer;
 
 class Object
 {
 public:
     Object();
-    virtual ~Object() {}
+    virtual ~Object();
 
     virtual void draw(Renderer* r) {};
 
@@ -45,3 +47,5 @@ private:
 
     float m_friction;
 };
+
+typedef std::shared_ptr<Object> ObjectPtr;

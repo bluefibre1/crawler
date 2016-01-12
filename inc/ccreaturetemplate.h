@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ccolor.h"
+#include "cweapontemplates.h"
 
 #include <string>
-
-class WeaponTemplate;
+#include <vector>
 
 class CreatureTemplate
 {
@@ -17,7 +17,7 @@ public:
                      float maxVelocity,
                      Color color,
                      char ch,
-                     const WeaponTemplate** weaponTemplates);
+                     const std::vector<const WeaponTemplate*>& weaponTemplates);
 
     int getProbabilityWeight() const { return m_probabilityWeight; }
 
@@ -33,7 +33,7 @@ public:
 
     char getChar() const { return m_ch; }
 
-    const WeaponTemplate** getWeaponTemplates() const { return m_weaponTemplates; }
+    const std::vector<const WeaponTemplate*>& getWeaponTemplates() const { return m_weaponTemplates; }
 
 private:
     int m_probabilityWeight;
@@ -43,5 +43,5 @@ private:
     float m_maxVelocity;
     Color m_color;
     char m_ch;
-    const WeaponTemplate** m_weaponTemplates;
+    std::vector<const WeaponTemplate*> m_weaponTemplates;
 };

@@ -13,6 +13,10 @@ Object::Object()
 
 }
 
+Object::~Object()
+{
+}
+
 void Object::tick(float dt)
 {
     if (m_velX != 0 || m_velY != 0 || m_velZ != 0)

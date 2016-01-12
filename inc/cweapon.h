@@ -14,3 +14,5 @@ public:
 private:
     int m_damage;
 };
+
+typedef std::shared_ptr<Weapon> WeaponPtr;

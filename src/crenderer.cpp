@@ -153,6 +153,33 @@ void Renderer::draw(int x, int y, int z, const Tile* tile)
     }
 }
 
+void Renderer::drawChar(int x, int y, int z, Color fg, Color bg, char ch)
+{
+    int ox = x - m_oX;
+    int oy = y - m_oY;
+
+    if (ox >= 0 && oy >= 0 && ox < m_width && oy < m_height)
+    {
+        int i = ox + oy * m_width;
+        Cell& c = m_front[i];
+        if (z >= c.m_z)
+        {
+            c.m_ch = ch;
+            if (fg != Colors::INVALID())
+            {
+                c.m_fg = fg;
+            }
+
+            if (bg != Colors::INVALID())
+            {
+                c.m_bg = bg;
+            }
+
+            c.m_z = z;
+        }
+    }
+}
+
 void Renderer::drawText(int x, int y, Color fg, Color bg, const std::string& text)
 {
     int n = text.size();

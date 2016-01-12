@@ -3,7 +3,8 @@
 Weapon::Weapon()
     : m_damage(0)
 {
-
+    m_isWeapon = true;
+    m_isEquipable = true;
 }
 
 void Weapon::setDamage(int value)

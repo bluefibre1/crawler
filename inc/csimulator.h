@@ -12,13 +12,13 @@ public:
 
     static Simulator* get();
 
-    void setWorld(World* world);
+    void setWorld(const WorldPtr& world);
 
-    void add(Object* object);
+    void add(const ObjectPtr& object);
 
-    void spawn(Object* object);
+    void spawn(const ObjectPtr& object);
 
-    void remove(Object* object);
+    void remove(const ObjectPtr& object);
 
     void activate(Object* object);
 
@@ -30,9 +30,9 @@ public:
 
 private:
 
-    typedef std::vector<Object*> Objects;
-    World* m_world;
+    typedef std::vector<ObjectPtr> Objects;
+    WorldPtr m_world;
     Objects m_objects;
     Objects m_objectsToRemove;
-    Objects m_activated;
+    std::vector<Object*> m_activated;
 };

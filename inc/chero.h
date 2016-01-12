@@ -15,3 +15,5 @@ public:
 private:
     Window m_statisticWindow;
 };
+
+typedef std::shared_ptr<Hero> HeroPtr;

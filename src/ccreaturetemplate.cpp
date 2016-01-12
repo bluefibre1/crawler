@@ -7,7 +7,7 @@ CreatureTemplate::CreatureTemplate(int probabilityWeight,
                                    float maxVelocity,
                                    Color color,
                                    char ch,
-                                   const WeaponTemplate** weaponTemplates)
+                                   const std::vector<const WeaponTemplate*>& weaponTemplates)
     : m_probabilityWeight(probabilityWeight)
     , m_name(name)
     , m_minHp(minHp)

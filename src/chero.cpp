@@ -8,7 +8,8 @@ const float HERO_VELOCITY = 1;
 
 Hero::Hero()
 {
-    m_tile = Tile(Colors::MAGENTA(), Colors::INVALID(), '0');
+    m_color = Colors::MAGENTA();
+    m_ch = '0';
 
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);

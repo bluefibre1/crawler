@@ -13,24 +13,24 @@ Simulator* Simulator::get()
     return &instance;
 }
 
-void Simulator::setWorld(World* world)
+void Simulator::setWorld(const WorldPtr& world)
 {
     m_world = world;
 }
 
-void Simulator::add(Object* object)
+void Simulator::add(const ObjectPtr& object)
 {
     m_objects.push_back(object);
 }
 
-void Simulator::spawn(Object* object)
+void Simulator::spawn(const ObjectPtr& object)
 {
     while (true)
     {
         int x = Math::ceilRandom(m_world->getWidth());
         int y = Math::ceilRandom(m_world->getHeight());
         float z = FLT_MAX;
-        if (!isColliding(object, x, y, z, z))
+        if (!isColliding(object.get(), x, y, z, z))
         {
             object->setPosition(x,y,z);
             break;
@@ -40,7 +40,7 @@ void Simulator::spawn(Object* object)
     add(object);
 }
 
-void Simulator::remove(Object* object)
+void Simulator::remove(const ObjectPtr& object)
 {
     m_objectsToRemove.push_back(object);
 }
@@ -54,7 +54,7 @@ void Simulator::tick(float dt)
 {
     for (auto i = m_objects.begin(); i != m_objects.end(); ++i)
     {
-        Object* obj = *i;
+        const ObjectPtr& obj = *i;
         obj->tick(dt);
     }
 
@@ -87,7 +87,7 @@ void Simulator::tick(float dt)
 
     for (auto i = m_objectsToRemove.begin(); i != m_objectsToRemove.end(); ++i)
     {
-        Object* collider = *i;
+        const ObjectPtr& collider = *i;
         auto it = std::find(m_objects.begin(), m_objects.end(), collider);
         if (it != m_objects.end())
         {
@@ -119,7 +119,7 @@ bool Simulator::isColliding(Object* collidee, float x, float y, float z, float& 
 
     for (auto j = m_objects.begin(); !colliding && j != m_objects.end(); ++j)
     {
-        Object* collider = *j;
+        Object* collider = (*j).get();
 
         if (collidee == collider)
         {
