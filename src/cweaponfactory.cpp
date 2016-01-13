@@ -28,5 +28,9 @@ WeaponPtr WeaponFactory::create(const WeaponTemplate* t)
     fullName += t->getName();
     w->setName(fullName);
 
+    w->setColor(t->getColor());
+    w->setVerticalChar(t->getVerticalChar());
+    w->setHorizontalChar(t->getHorizontalChar());
+
     return w;
 }

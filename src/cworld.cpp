@@ -120,7 +120,7 @@ void World::draw(Renderer* r)
                 continue;
             }
             int idx = x + y * m_width;
-            r->draw(x, y, m_heights[idx], m_tiles[idx]);
+            r->draw(x, y, 0, m_tiles[idx]);
         }
     }
 }

@@ -26,6 +26,11 @@ void Character::draw(Renderer* r)
     if (r->isVisible(this))
     {
         r->drawChar(getX(), getY(), getZ(), m_color, Colors::INVALID(), m_ch);
+        for (auto i = m_items.begin(); i != m_items.end(); i++)
+        {
+            const ItemPtr& item = *i;
+            item->draw(r);
+        }
     }
 }
 
@@ -107,10 +112,12 @@ void Character::addItem(const ItemPtr& item)
     {
         m_items.push_back(item);
     }
+    item->setOwner(this);
 }
 
 void Character::removeItem(const ItemPtr& item)
 {
+    item->setOwner(nullptr);
     unequip(item);
     auto i = std::find(m_items.begin(), m_items.end(), item);
     if (i != m_items.end())
@@ -154,7 +161,7 @@ void Character::hit(Direction dir)
 
     if (weapon)
     {
-        weapon->use(this, dir);
+        weapon->use(dir);
     }
 }
 
