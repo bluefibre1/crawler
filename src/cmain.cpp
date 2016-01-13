@@ -30,20 +30,21 @@ int main(int argc, char* argv[])
     Simulator* simulator = Simulator::get();
 
     WorldPtr world(new World());
-    world->generate(128);
+    world->generate(1024);
     simulator->setWorld(world);
 
     HeroPtr hero(new Hero());
-    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
+    hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
     simulator->spawn(hero);
 
     const CreatureTemplate* creatureTemplates[] = {
         &CreatureTemplates::DRAGON(),
         &CreatureTemplates::VILLAGER(),
-        &CreatureTemplates::KID()
+        &CreatureTemplates::KID(),
+        &CreatureTemplates::BAT(),
     };
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 50; i++)
     {
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);

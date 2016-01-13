@@ -13,8 +13,12 @@ Hero::Hero()
 
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);
-    m_statisticWindow.print(Colors::WHITE(), "HP:");
+    m_statisticWindow.print(Colors::ORANGE(), "HP:");
     m_statisticWindow.print(Colors::WHITE(), std::to_string(m_hp));
+
+    //m_statisticWindow.print(Colors::ORANGE(), "LEVEL:");
+    //m_statisticWindow.print(Colors::WHITE(), std::to_string(m_level));
+
 }
 
 void Hero::tick(float dt)

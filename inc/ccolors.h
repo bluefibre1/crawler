@@ -9,6 +9,7 @@ public:
     static const Color& BLACK();
     static const Color& RED();
     static const Color& LIGHT_GREEN();
+    static const Color& COOL_BLUE();
     static const Color& GREEN();
     static const Color& DARK_GREEN();
     static const Color& YELLOW();

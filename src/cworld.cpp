@@ -49,16 +49,20 @@ void World::generate(int size)
             &Tiles::WATER,
             &Tiles::WATER,
             &Tiles::WATER,
+            &Tiles::WATER,
             &Tiles::SAND,
             &Tiles::SAND,
             &Tiles::GRASS,
             &Tiles::GRASS,
             &Tiles::GRASS,
             &Tiles::GRASS,
+            &Tiles::GRASS,
+            &Tiles::MOUNTAIN,
             &Tiles::MOUNTAIN,
             &Tiles::MOUNTAIN,
             &Tiles::MOUNTAIN,
             &Tiles::CLOUDS,
+            &Tiles::ICE_MOUNTAIN,
             &Tiles::ICE_MOUNTAIN
         };
 
