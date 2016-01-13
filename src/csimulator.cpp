@@ -40,7 +40,7 @@ void Simulator::spawn(const ObjectPtr& object)
     add(object);
 }
 
-void Simulator::remove(const ObjectPtr& object)
+void Simulator::remove(Object* object)
 {
     m_objectsToRemove.push_back(object);
 }
@@ -87,8 +87,14 @@ void Simulator::tick(float dt)
 
     for (auto i = m_objectsToRemove.begin(); i != m_objectsToRemove.end(); ++i)
     {
-        const ObjectPtr& collider = *i;
-        auto it = std::find(m_objects.begin(), m_objects.end(), collider);
+        Object* obj = *i;
+        auto it = std::find_if(
+            m_objects.begin(), m_objects.end(),
+            [obj](const ObjectPtr& other)
+            {
+                return other.get() == obj;
+            });
+
         if (it != m_objects.end())
         {
             m_objects.erase(it);
@@ -126,9 +132,9 @@ bool Simulator::isColliding(Object* collidee, float x, float y, float z, float& 
             continue;
         }
 
-        if (collider->getX() == x &&
-            collider->getY() == y &&
-            collider->getZ() == z)
+        if (Math::isEqual(collider->getX(), x, 0.5f) &&
+            Math::isEqual(collider->getY(), y, 0.5f) &&
+            Math::isEqual(collider->getZ(), z, 0.5f))
         {
             colliding = true;
             break;
@@ -136,4 +142,23 @@ bool Simulator::isColliding(Object* collidee, float x, float y, float z, float& 
     }
 
     return colliding;
+}
+
+bool Simulator::findTarget(float x, float y, float z, Object** target)
+{
+    for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
+    {
+        Object* collider = (*j).get();
+
+        if (collider->getX() == x &&
+            collider->getY() == y)
+        {
+            if (target)
+            {
+                *target = collider;
+            }
+            return true;
+        }
+    }
+    return false;
 }

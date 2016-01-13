@@ -16,4 +16,8 @@ public:
 
     static float sqrt(float value);
 
+    static float exp(float value, float exponent);
+
+    static bool isEqual(float v1, float v2, float epsilon);
+
 };

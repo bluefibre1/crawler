@@ -57,3 +57,13 @@ float Math::sqrt(float value)
 {
     return ::sqrt(value);
 }
+
+float Math::exp(float value, float exponent)
+{
+    return (float)::pow(value, exponent);
+}
+
+bool Math::isEqual(float v1, float v2, float epsilon)
+{
+    return ::fabs(v1 - v2) < epsilon;
+}

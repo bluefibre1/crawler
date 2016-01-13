@@ -11,6 +11,8 @@ public:
 
     int getDamage() const;
 
+    virtual void use(Object* source, Direction dir) override;
+
 private:
     int m_damage;
 };

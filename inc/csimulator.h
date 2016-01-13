@@ -5,6 +5,7 @@
 #include <vector>
 
 class Renderer;
+class Character;
 
 class Simulator
 {
@@ -18,7 +19,7 @@ public:
 
     void spawn(const ObjectPtr& object);
 
-    void remove(const ObjectPtr& object);
+    void remove(Object* object);
 
     void activate(Object* object);
 
@@ -28,11 +29,14 @@ public:
 
     bool isColliding(Object* collidee, float x, float y, float z, float& ground);
 
+    bool findTarget(float x, float y, float z, Object** target);
+
 private:
 
-    typedef std::vector<ObjectPtr> Objects;
+    typedef std::vector<ObjectPtr> ObjectPtrs;
+    typedef std::vector<Object*> Objects;
     WorldPtr m_world;
-    Objects m_objects;
+    ObjectPtrs m_objects;
     Objects m_objectsToRemove;
-    std::vector<Object*> m_activated;
+    Objects m_activated;
 };

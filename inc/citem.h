@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cobject.h"
+#include "cdirection.h"
 
 #include <string>
 #include <memory>
@@ -21,6 +22,8 @@ public:
     bool isWeapon() const { return m_isWeapon; }
 
     bool isArmor() const { return m_isArmor; }
+
+    virtual void use(Object* source, Direction dir) {}
 
 protected:
     bool m_isEquipable;

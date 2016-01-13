@@ -36,6 +36,8 @@ public:
 
     float getFriction() const { return m_friction; }
 
+    virtual bool isCharacter() const { return false; }
+
 private:
     float m_x;
     float m_y;

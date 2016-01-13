@@ -14,7 +14,7 @@ Hero::Hero()
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);
     m_statisticWindow.print(Colors::WHITE(), "HP:");
-    m_statisticWindow.print(Colors::WHITE(), std::to_string(m_hp));
+    m_statisticWindow.print(Colors::WHITE(), std::to_string(getHp()));
 }
 
 void Hero::tick(float dt)
@@ -44,6 +44,26 @@ void Hero::tick(float dt)
 
         case (int)Key::RIGHT:
             setVelocity(HERO_VELOCITY/dt, 0, 0);
+            break;
+
+        case 'a':
+        case 'A':
+            hit(Direction::LEFT);
+            break;
+
+        case 'd':
+        case 'D':
+            hit(Direction::RIGHT);
+            break;
+
+        case 's':
+        case 'S':
+            hit(Direction::DOWN);
+            break;
+
+        case 'w':
+        case 'W':
+            hit(Direction::UP);
             break;
 
         case 'q':
