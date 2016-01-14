@@ -34,7 +34,7 @@ int Math::ceilRandom(int ceil)
     return ::rand() % ceil;
 }
 
-void Math::clamp(float& value, float min, float max)
+void Math::clamp(int& value, int min, int max)
 {
     if (value < min)
     {
@@ -46,14 +46,29 @@ void Math::clamp(float& value, float min, float max)
     }
 }
 
-float Math::distance(float x1, float y1, float x2, float y2)
+float Math::distance(int x1, int y1, int x2, int y2)
 {
-    float dx = x1 - x2;
-    float dy = y1 - y2;
+    int dx = x1 - x2;
+    int dy = y1 - y2;
     return Math::sqrt(dx*dx+dy+dy);
 }
 
 float Math::sqrt(float value)
 {
     return ::sqrt(value);
+}
+
+float Math::exp(float value, float exponent)
+{
+    return (float)::pow(value, exponent);
+}
+
+int Math::abs(int value)
+{
+    return value >= 0 ? value : -value;
+}
+
+bool Math::isEqual(float v1, float v2, float epsilon)
+{
+    return ::fabs(v1 - v2) < epsilon;
 }

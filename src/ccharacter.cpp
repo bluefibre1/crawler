@@ -3,16 +3,21 @@
 #include "cbehavior.h"
 #include "citem.h"
 #include "ccolors.h"
+#include "csimulator.h"
+#include "cmath.h"
 
 Character::Character()
     : m_ch('@')
     , m_color(Colors::MAGENTA())
     , m_hp(10)
+    , m_xp(0)
+    , m_nextLevelXp(0)
+    , m_level(1)
     , m_behavior(nullptr)
     , m_name()
     , m_items()
 {
-    setFriction(1);
+    setNextLevelXp();
 }
 
 void Character::draw(Renderer* r)
@@ -20,6 +25,11 @@ void Character::draw(Renderer* r)
     if (r->isVisible(this))
     {
         r->drawChar(getX(), getY(), getZ(), m_color, Colors::INVALID(), m_ch);
+        for (auto i = m_items.begin(); i != m_items.end(); i++)
+        {
+            const ItemPtr& item = *i;
+            item->draw(r);
+        }
     }
 }
 
@@ -59,6 +69,31 @@ void Character::setHp(int hp)
     m_hp = hp;
 }
 
+void Character::addXp(int xp)
+{
+    m_xp += xp;
+    if (xp > m_nextLevelXp)
+    {
+        m_level++;
+        setNextLevelXp();
+    }
+}
+
+void Character::setNextLevelXp()
+{
+    m_nextLevelXp = m_level * m_level * 20;
+}
+
+int Character::getXp() const
+{
+    return m_xp;
+}
+
+int Character::getLevel() const
+{
+    return m_level;
+}
+
 void Character::setColor(const Color& color)
 {
     m_color = color;
@@ -76,10 +111,12 @@ void Character::addItem(const ItemPtr& item)
     {
         m_items.push_back(item);
     }
+    item->setOwner(this);
 }
 
 void Character::removeItem(const ItemPtr& item)
 {
+    item->setOwner(nullptr);
     unequip(item);
     auto i = std::find(m_items.begin(), m_items.end(), item);
     if (i != m_items.end())
@@ -107,5 +144,50 @@ void Character::unequip(const ItemPtr& item)
     if (i == m_equipped.end())
     {
         m_equipped.push_back(item);
+    }
+}
+
+void Character::hit(Direction dir)
+{
+    Item* weapon = nullptr;
+    for (auto i = m_items.begin(); i != m_items.end(); ++i)
+    {
+        if ((*i)->isWeapon())
+        {
+            weapon = (*i).get();
+        }
+    }
+
+    if (weapon)
+    {
+        weapon->use(dir);
+    }
+}
+
+void Character::onReceiveHit(Object* from, int damage)
+{
+    int actualDmg = damage > m_hp ? m_hp : damage;
+    m_hp -= actualDmg;
+    if (m_hp <= 0)
+    {
+        Simulator::get()->remove(this);
+    }
+}
+
+void Character::onGiveHit(Object* to, int damage)
+{
+    if (to->isCharacter())
+    {
+        Character* target = (Character*)to;
+
+        int levelDiff = getLevel() - target->getLevel();
+        int dxp = Math::exp(damage, levelDiff);
+
+        addXp(dxp);
+
+        if (target->getHp() <= 0)
+        {
+            addXp(10); // TODO: should be relative to the difficulty and current level xp range
+        }
     }
 }

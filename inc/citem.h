@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cobject.h"
+#include "cdirection.h"
 
 #include <string>
 #include <memory>
@@ -22,7 +23,14 @@ public:
 
     bool isArmor() const { return m_isArmor; }
 
+    virtual void use(Direction dir) {}
+
+    Object* getOwner() const;
+
+    void setOwner(Object* owner);
+
 protected:
+    Object* m_owner;
     bool m_isEquipable;
     bool m_isUsable;
     bool m_isWeapon;

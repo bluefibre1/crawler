@@ -4,8 +4,6 @@
 
 #include <stdlib.h>
 
-const float HERO_VELOCITY = 1;
-
 Hero::Hero()
 {
     m_color = Colors::MAGENTA();
@@ -13,11 +11,9 @@ Hero::Hero()
 
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);
-    m_statisticWindow.print(Colors::ORANGE(), "HP:");
-    m_statisticWindow.print(Colors::WHITE(), std::to_string(m_hp));
 
-    //m_statisticWindow.print(Colors::ORANGE(), "LEVEL:");
-    //m_statisticWindow.print(Colors::WHITE(), std::to_string(m_level));
+    m_statisticWindow.print(Colors::WHITE(), "HP:");
+    m_statisticWindow.print(Colors::WHITE(), std::to_string(getHp()));
 
 }
 
@@ -35,19 +31,39 @@ void Hero::tick(float dt)
         switch (key)
         {
         case (int)Key::UP:
-            setVelocity(0, -HERO_VELOCITY/dt, 0);
+            setDisplacement(0, -1);
             break;
 
         case (int)Key::DOWN:
-            setVelocity(0, HERO_VELOCITY/dt, 0);
+            setDisplacement(0, 1);
             break;
 
         case (int)Key::LEFT:
-            setVelocity(-HERO_VELOCITY/dt, 0, 0);
+            setDisplacement(-1, 0);
             break;
 
         case (int)Key::RIGHT:
-            setVelocity(HERO_VELOCITY/dt, 0, 0);
+            setDisplacement(1, 0);
+            break;
+
+        case 'a':
+        case 'A':
+            hit(Direction::LEFT);
+            break;
+
+        case 'd':
+        case 'D':
+            hit(Direction::RIGHT);
+            break;
+
+        case 's':
+        case 'S':
+            hit(Direction::DOWN);
+            break;
+
+        case 'w':
+        case 'W':
+            hit(Direction::UP);
             break;
 
         case 'q':

@@ -28,7 +28,6 @@ private:
     float m_anchorY;
     float m_ropeLength;
     float m_moveTime;
-    float m_velocity;
 };
 
 

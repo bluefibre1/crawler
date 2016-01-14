@@ -16,36 +16,29 @@ public:
 
     void setPosition(float x, float y, float z) { m_x = x; m_y = y; m_z = z; }
 
-    float getX() const { return m_x; }
+    int getX() const { return m_x; }
 
-    float getY() const { return m_y; }
+    int getY() const { return m_y; }
 
-    float getZ() const { return m_z; }
+    int getZ() const { return m_z; }
 
-    void setVelocity(float x, float y, float z) { m_velX = x; m_velY = y; m_velZ = z; }
+    void setDisplacement(int x, int y) { m_dispX = x; m_dispY = y; }
 
-    void stop() { setVelocity(0,0,0); }
+    void stop() { setDisplacement(0,0); }
 
-    float getVelocityX() const { return m_velX; }
+    float getDisplacementX() const { return m_dispX; }
 
-    float getVelocityY() const { return m_velY; }
+    float getDisplacementY() const { return m_dispY; }
 
-    float getVelocityZ() const { return m_velZ; }
-
-    void setFriction(float f) { m_friction = f; }
-
-    float getFriction() const { return m_friction; }
+    virtual bool isCharacter() const { return false; }
 
 private:
-    float m_x;
-    float m_y;
-    float m_z;
+    int m_x;
+    int m_y;
+    int m_z;
 
-    float m_velX;
-    float m_velY;
-    float m_velZ;
-
-    float m_friction;
+    int m_dispX;
+    int m_dispY;
 };
 
 typedef std::shared_ptr<Object> ObjectPtr;

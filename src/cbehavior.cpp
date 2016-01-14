@@ -10,7 +10,6 @@ BehaviorWander::BehaviorWander()
     , m_anchorY(0)
     , m_ropeLength(10)
     , m_moveTime(0)
-    , m_velocity(1)
 {
 
 }
@@ -43,20 +42,17 @@ void BehaviorWander::tick(float dt, Character* object)
         return;
     }
 
-
-//        printf("allo");
-
     // which direction?
     if (Math::wrapRandom() > 0)
     {
         // left - right
         if (Math::wrapRandom() > 0)
         {
-            object->setVelocity(m_velocity/dt, 0, 0);
+            object->setDisplacement(1, 0);
         }
         else
         {
-            object->setVelocity(-m_velocity/dt, 0, 0);
+            object->setDisplacement(-1, 0);
         }
     }
     else
@@ -64,20 +60,20 @@ void BehaviorWander::tick(float dt, Character* object)
         // up - down
         if (Math::wrapRandom() > 0)
         {
-            object->setVelocity(0, m_velocity/dt, 0);
+            object->setDisplacement(0, 1);
         }
         else
         {
-            object->setVelocity(0, -m_velocity/dt, 0);
+            object->setDisplacement(0, -1);
         }
     }
 
-    float newX = object->getVelocityX() * dt + object->getX();
-    float newY = object->getVelocityY() * dt + object->getY();
+    int newX = object->getDisplacementX() + object->getX();
+    int newY = object->getDisplacementY() + object->getY();
 
     if (Math::distance(newX, newY, m_anchorX, m_anchorY) > m_ropeLength)
     {
-        object->setVelocity(0, 0, 0);
+        object->stop();
     }
 }
 
