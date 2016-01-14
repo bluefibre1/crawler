@@ -12,8 +12,23 @@ Hero::Hero()
     m_statisticWindow.setPosition(2, 2, 0);
     m_statisticWindow.setBorderWidth(1, 1);
 
-    m_statisticWindow.print(Colors::WHITE(), "HP:");
+    m_statisticWindow.print(Colors::ORANGE(), "HP:");
     m_statisticWindow.print(Colors::WHITE(), std::to_string(getHp()));
+
+    m_statisticWindow.print(Colors::ORANGE(), "\n");
+
+    m_statisticWindow.print(Colors::ORANGE(), "LEVEL:");
+    m_statisticWindow.print(Colors::WHITE(), std::to_string(getLevel()));
+
+    m_statisticWindow.print(Colors::ORANGE(), "\n");
+
+    m_statisticWindow.print(Colors::ORANGE(), "GOLDEN_PENIS:");
+    m_statisticWindow.print(Colors::WHITE(), std::to_string(getGold()));
+
+    m_statisticWindow.print(Colors::ORANGE(), "\n");
+
+    m_statisticWindow.print(Colors::ORANGE(), "PENIS:");
+    m_statisticWindow.print(Colors::WHITE(), std::to_string(getXp()));
 
 }
 

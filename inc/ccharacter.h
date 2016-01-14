@@ -34,6 +34,8 @@ public:
 
     int getXp() const;
 
+    int getGold() const;
+
     int getLevel() const;
 
     void setColor(const Color& color);
@@ -66,6 +68,7 @@ private:
 
     int m_hp;
     int m_xp;
+    int m_gold;
     int m_nextLevelXp;
     int m_level;
     Behavior* m_behavior;

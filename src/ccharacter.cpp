@@ -11,6 +11,7 @@ Character::Character()
     , m_color(Colors::MAGENTA())
     , m_hp(10)
     , m_xp(0)
+    , m_gold(0)
     , m_nextLevelXp(0)
     , m_level(1)
     , m_behavior(nullptr)
@@ -87,6 +88,11 @@ void Character::setNextLevelXp()
 int Character::getXp() const
 {
     return m_xp;
+}
+
+int Character::getGold() const
+{
+    return m_gold;
 }
 
 int Character::getLevel() const

@@ -55,4 +55,6 @@ private:
         Color m_color;
     };
     std::vector<Print> m_prints;
+
+    void internalDraw(Renderer* r);
 };

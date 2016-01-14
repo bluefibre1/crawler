@@ -61,6 +61,17 @@ void Window::setBorderWidth(int h, int v)
 
 void Window::draw(Renderer* r)
 {
+    internalDraw(nullptr);
+    internalDraw(r);
+}
+
+void Window::tick(float dt)
+{
+
+}
+
+void Window::internalDraw(Renderer* r)
+{
     using namespace std;
 
     float x = getX();
@@ -70,37 +81,58 @@ void Window::draw(Renderer* r)
     {
         const Print& p = *i;
 
-        istringstream iss(p.m_text);
-        vector<string> words{istream_iterator<string>{iss},
-                istream_iterator<string>{}};
-
-        for (auto j = words.begin(); j != words.end(); ++j)
+        if (p.m_text != "\n")
         {
-            string& word = *j;
-            if (lineLength + word.size() >= m_maxWidth)
+            istringstream iss(p.m_text);
+            vector<string> words{istream_iterator<string>{iss},
+                    istream_iterator<string>{}};
+
+            for (auto j = words.begin(); j != words.end(); ++j)
             {
-                if (lineLength < m_width)
+                string& word = *j;
+                if (lineLength + word.size() >= m_maxWidth)
+                {
+                    if (lineLength < m_width)
+                    {
+                        string padding(m_width - lineLength, ' ');
+                        if (r)
+                        {
+                            r->drawText(x, y, p.m_color, m_background, padding);
+                        }
+                    }
+                    y++;
+                    lineLength = 0;
+                }
+                if (r)
+                {
+                    r->drawText(x + lineLength, y, p.m_color, m_background, word);
+                }
+                lineLength += word.size();
+            }
+        }
+        else
+        {
+            if (lineLength < m_width)
+            {
+                if (r)
                 {
                     string padding(m_width - lineLength, ' ');
-                    r->drawText(x, y, p.m_color, m_background, padding);
+                    r->drawText(x + lineLength, y, p.m_color, m_background, padding);
+
                 }
-                y++;
-                x = getX();
             }
-            r->drawText(x + lineLength, y, p.m_color, m_background, word);
-            lineLength += word.size();
-        }
+            else
+            {
+                m_width = lineLength;
+            }
 
-        if (lineLength < m_width)
-        {
-            string padding(m_width - lineLength, ' ');
-            r->drawText(x + lineLength, y, p.m_color, m_background, padding);
+            y++;
+            lineLength = 0;
         }
-
     }
-}
 
-void Window::tick(float dt)
-{
-
+    if (lineLength > m_width)
+    {
+        m_width = lineLength;
+    }
 }
