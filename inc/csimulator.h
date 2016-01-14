@@ -27,9 +27,9 @@ public:
 
     void draw(Renderer* r);
 
-    bool isColliding(Object* collidee, float x, float y, float z, float& ground);
+    bool isColliding(Object* collidee, int x, int y, int& z);
 
-    bool findTarget(float x, float y, float z, Object** target);
+    bool findTarget(int x, int y, int z, Object** target);
 
 private:
 

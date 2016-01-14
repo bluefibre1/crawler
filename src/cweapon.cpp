@@ -61,7 +61,7 @@ void Weapon::draw(Renderer* r)
 
     r->drawChar(getOwner()->getX()+dx,
                 getOwner()->getY()+dy,
-                getOwner()->getZ(),
+                getOwner()->getZ()+1,
                 m_color,
                 Colors::INVALID(),
                 ch);
@@ -80,7 +80,11 @@ void Weapon::use(Direction dir)
         getDeltas(dx, dy);
 
         Object* dest = nullptr;
-        if (Simulator::get()->findTarget(user->getX() + dx, user->getY() + dy, user->getZ(), &dest))
+        if (Simulator::get()->findTarget(
+                user->getX() + dx,
+                user->getY() + dy,
+                user->getZ(),
+                &dest))
         {
             if (dest->isCharacter())
             {

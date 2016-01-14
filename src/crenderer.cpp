@@ -204,6 +204,8 @@ void Renderer::drawText(int x, int y, Color fg, Color bg, const std::string& tex
         {
             c.m_bg = bg;
         }
+
+        c.m_z = 0x7FFFFFFF;
     }
 }
 

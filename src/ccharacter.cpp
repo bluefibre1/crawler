@@ -17,7 +17,6 @@ Character::Character()
     , m_name()
     , m_items()
 {
-    setFriction(1);
     setNextLevelXp();
 }
 

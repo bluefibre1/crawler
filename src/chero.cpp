@@ -4,8 +4,6 @@
 
 #include <stdlib.h>
 
-const float HERO_VELOCITY = 1;
-
 Hero::Hero()
 {
     m_color = Colors::MAGENTA();
@@ -31,19 +29,19 @@ void Hero::tick(float dt)
         switch (key)
         {
         case (int)Key::UP:
-            setVelocity(0, -HERO_VELOCITY/dt, 0);
+            setDisplacement(0, -1);
             break;
 
         case (int)Key::DOWN:
-            setVelocity(0, HERO_VELOCITY/dt, 0);
+            setDisplacement(0, 1);
             break;
 
         case (int)Key::LEFT:
-            setVelocity(-HERO_VELOCITY/dt, 0, 0);
+            setDisplacement(-1, 0);
             break;
 
         case (int)Key::RIGHT:
-            setVelocity(HERO_VELOCITY/dt, 0, 0);
+            setDisplacement(1, 0);
             break;
 
         case 'a':
