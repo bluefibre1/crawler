@@ -32,4 +32,4 @@ private:
     int* m_heights;
 };
 
-typedef std::shared_ptr<World> WorldPtr;
+typedef std::shared_ptr<World> WorldSharedPtr;

@@ -13,11 +13,11 @@ public:
 
     static Simulator* get();
 
-    void setWorld(const WorldPtr& world);
+    void setWorld(const WorldSharedPtr& world);
 
-    void add(const ObjectPtr& object);
+    void add(const ObjectSharedPtr& object);
 
-    void spawn(const ObjectPtr& object);
+    void spawn(const ObjectSharedPtr& object);
 
     void remove(Object* object);
 
@@ -29,14 +29,14 @@ public:
 
     bool isColliding(Object* collidee, int x, int y, int& z);
 
-    bool findTarget(int x, int y, int z, Object** target);
+    bool findObjectAt(int x, int y, int z, Object** result);
+
+    void findObjectsAround(int x, int y, int z, float radius, ObjectWeakPtrs* result);
 
 private:
 
-    typedef std::vector<ObjectPtr> ObjectPtrs;
-    typedef std::vector<Object*> Objects;
-    WorldPtr m_world;
-    ObjectPtrs m_objects;
-    Objects m_objectsToRemove;
-    Objects m_activated;
+    WorldSharedPtr m_world;
+    ObjectSharedPtrs m_objects;
+    ObjectPtrs m_removed;
+    ObjectPtrs m_activated;
 };

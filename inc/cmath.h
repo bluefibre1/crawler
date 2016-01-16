@@ -12,7 +12,7 @@ public:
 
     static void clamp(int& value, int min, int max);
 
-    static float distance(int x1, int y1, int x2, int y2);
+    static float sqrDistance(int x1, int y1, int x2, int y2);
 
     static float sqrt(float value);
 

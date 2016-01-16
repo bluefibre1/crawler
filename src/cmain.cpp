@@ -29,11 +29,11 @@ int main(int argc, char* argv[])
 
     Simulator* simulator = Simulator::get();
 
-    WorldPtr world(new World());
+    WorldSharedPtr world(new World());
     world->generate(1024);
     simulator->setWorld(world);
 
-    HeroPtr hero(new Hero());
+    HeroSharedPtr hero(new Hero());
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);
 
-        ObjectPtr creature(CreatureFactory::create(creatureTemplates[idx]));
+        ObjectSharedPtr creature(CreatureFactory::create(creatureTemplates[idx]));
         simulator->spawn(creature);
     }
 

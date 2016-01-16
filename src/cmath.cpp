@@ -46,11 +46,11 @@ void Math::clamp(int& value, int min, int max)
     }
 }
 
-float Math::distance(int x1, int y1, int x2, int y2)
+float Math::sqrDistance(int x1, int y1, int x2, int y2)
 {
     int dx = x1 - x2;
     int dy = y1 - y2;
-    return Math::sqrt(dx*dx+dy+dy);
+    return dx*dx+dy+dy;
 }
 
 float Math::sqrt(float value)

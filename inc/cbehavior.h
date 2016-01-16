@@ -17,7 +17,9 @@ public:
 
     Character* getSelf() const;
 
-    void setReference(const std::string& name, const ObjectWeakPtr& obj) const;
+    void setReference(const std::string& name, const ObjectWeakPtr& obj);
+
+    void clearReference(const std::string& name);
 
     ObjectWeakPtr getReference(const std::string& name) const;
 
@@ -60,14 +62,19 @@ private:
 class BehaviorFindTarget : public BehaviorNode
 {
 public:
+    BehaviorFindTarget();
+
+    const std::string& getReferenceName() const { return m_referenceName; }
 
     void setVisionSqrRadius(float dist, float hysteresis);
 
-    virtual void tick(float dt, Blackboard& bb) = 0;
+    virtual void tick(float dt, Blackboard& bb) override;
 
 private:
     float m_distance;
     float m_hysteresis;
+    float m_elapsed;
+    static std::string m_referenceName;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

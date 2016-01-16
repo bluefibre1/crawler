@@ -13,17 +13,17 @@ Simulator* Simulator::get()
     return &instance;
 }
 
-void Simulator::setWorld(const WorldPtr& world)
+void Simulator::setWorld(const WorldSharedPtr& world)
 {
     m_world = world;
 }
 
-void Simulator::add(const ObjectPtr& object)
+void Simulator::add(const ObjectSharedPtr& object)
 {
     m_objects.push_back(object);
 }
 
-void Simulator::spawn(const ObjectPtr& object)
+void Simulator::spawn(const ObjectSharedPtr& object)
 {
     while (true)
     {
@@ -42,7 +42,7 @@ void Simulator::spawn(const ObjectPtr& object)
 
 void Simulator::remove(Object* object)
 {
-    m_objectsToRemove.push_back(object);
+    m_removed.push_back(object);
 }
 
 void Simulator::activate(Object* object)
@@ -54,7 +54,7 @@ void Simulator::tick(float dt)
 {
     for (auto i = m_objects.begin(); i != m_objects.end(); ++i)
     {
-        const ObjectPtr& obj = *i;
+        const ObjectSharedPtr& obj = *i;
         obj->tick(dt);
     }
 
@@ -79,12 +79,12 @@ void Simulator::tick(float dt)
 
     m_activated.clear();
 
-    for (auto i = m_objectsToRemove.begin(); i != m_objectsToRemove.end(); ++i)
+    for (auto i = m_removed.begin(); i != m_removed.end(); ++i)
     {
         Object* obj = *i;
         auto it = std::find_if(
             m_objects.begin(), m_objects.end(),
-            [obj](const ObjectPtr& other)
+            [obj](const ObjectSharedPtr& other)
             {
                 return other.get() == obj;
             });
@@ -138,21 +138,40 @@ bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
     return colliding;
 }
 
-bool Simulator::findTarget(int x, int y, int z, Object** target)
+bool Simulator::findObjectAt(int x, int y, int z, Object** result)
 {
     for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
     {
-        Object* collider = (*j).get();
+        Object* obj = (*j).get();
 
-        if (collider->getX() == x &&
-            collider->getY() == y)
+        if (obj->getX() == x &&
+            obj->getY() == y)
         {
-            if (target)
+            if (result)
             {
-                *target = collider;
+                *result = obj;
             }
             return true;
         }
     }
     return false;
+}
+
+void Simulator::findObjectsAround(int x, int y, int z, float radius, ObjectWeakPtrs* result)
+{
+    if (!result)
+    {
+        return;
+    }
+
+    float sqrRadius = radius * radius;
+    for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
+    {
+        ObjectSharedPtr& obj = *j;
+
+        if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
+        {
+            result->push_back(obj);
+        }
+    }
 }

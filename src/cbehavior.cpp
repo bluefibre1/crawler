@@ -1,5 +1,6 @@
 #include "cbehavior.h"
 #include "ccharacter.h"
+#include "csimulator.h"
 #include "cmath.h"
 
 #include <stdio.h>
@@ -17,9 +18,14 @@ Character* Blackboard::getSelf() const
     return m_self;
 }
 
-void Blackboard::setReference(const std::string& name, const ObjectWeakPtr& obj) const
+void Blackboard::setReference(const std::string& name, const ObjectWeakPtr& obj)
 {
-    //m_references.insert(std::pair(name, obj));
+    m_references.insert(References::value_type(name, obj));
+}
+
+void Blackboard::clearReference(const std::string& name)
+{
+    m_references.erase(name);
 }
 
 ObjectWeakPtr Blackboard::getReference(const std::string& name) const
@@ -57,6 +63,16 @@ void BehaviorComposite::tick(float dt, Blackboard& bb)
 
 ////////////////////////////////////////////////////////////////////////////////
 
+std::string BehaviorFindTarget::m_referenceName = "target";
+
+BehaviorFindTarget::BehaviorFindTarget()
+    : m_distance(0)
+    , m_hysteresis(0)
+    , m_elapsed(0)
+{
+
+}
+
 void BehaviorFindTarget::setVisionSqrRadius(float dist, float hysteresis)
 {
     m_distance = dist;
@@ -65,7 +81,50 @@ void BehaviorFindTarget::setVisionSqrRadius(float dist, float hysteresis)
 
 void BehaviorFindTarget::tick(float dt, Blackboard& bb)
 {
+    m_elapsed += dt;
+    if (m_elapsed > 0.5f)
+    {
+        m_elapsed = 0;
 
+        int x = bb.getSelf()->getX();
+        int y = bb.getSelf()->getY();
+        int z = bb.getSelf()->getZ();
+
+        ObjectWeakPtr ref = bb.getReference(m_referenceName);
+        if (!ref.expired())
+        {
+            ObjectSharedPtr target = ref.lock();
+            float dist = Math::sqrDistance(
+                target->getX(), target->getY(), x, y);
+
+            if (dist < m_distance + m_hysteresis)
+            {
+                return;
+            }
+            bb.clearReference(m_referenceName);
+        }
+
+        ObjectWeakPtrs objects;
+        Simulator::get()->findObjectsAround(
+            x, y, z, m_distance, &objects);
+
+        for (auto i = objects.begin(); i != objects.end(); ++i)
+        {
+            ObjectSharedPtr obj = (*i).lock();
+            if (!obj || !obj->isCharacter())
+            {
+                continue;
+            }
+
+            Character* c = (Character*)obj.get();
+            if (bb.getSelf()->getFaction()->isEnemy(c->getFaction()))
+            {
+                bb.setReference(m_referenceName, obj);
+                break;
+            }
+        }
+
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

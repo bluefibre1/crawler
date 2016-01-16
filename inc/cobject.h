@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 class Renderer;
 
@@ -41,5 +42,9 @@ private:
     int m_dispY;
 };
 
-typedef std::shared_ptr<Object> ObjectPtr;
+typedef std::shared_ptr<Object> ObjectSharedPtr;
 typedef std::weak_ptr<Object> ObjectWeakPtr;
+
+typedef std::vector<Object*> ObjectPtrs;
+typedef std::vector<ObjectWeakPtr> ObjectWeakPtrs;
+typedef std::vector<ObjectSharedPtr> ObjectSharedPtrs;
