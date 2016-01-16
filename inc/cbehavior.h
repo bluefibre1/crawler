@@ -1,43 +1,104 @@
 #pragma once
 
+#include "cobject.h"
+
+#include <string>
+#include <vector>
+#include <map>
+
+
 class Character;
 
-class Behavior
+class Blackboard
 {
 public:
-    virtual ~Behavior() {}
 
-    virtual const char* getName() const = 0;
+    void setSelf(Character* self);
 
-    virtual void tick(float dt, Character* object) = 0;
+    Character* getSelf() const;
+
+    void setReference(const std::string& name, const ObjectWeakPtr& obj) const;
+
+    ObjectWeakPtr getReference(const std::string& name) const;
+
+private:
+    Character* m_self;
+    typedef std::map<std::string, ObjectWeakPtr> References;
+    References m_references;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorNode
+{
+public:
+    virtual ~BehaviorNode() {}
+
+    virtual void tick(float dt, Blackboard& bb) = 0;
 
 };
 
-class BehaviorWander : public Behavior
+typedef std::vector<BehaviorNode*> BehaviorNodes;
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorComposite : public BehaviorNode
+{
+public:
+    virtual ~BehaviorComposite();
+
+    void add(BehaviorNode* node);
+
+    virtual void tick(float dt, Blackboard& bb) override;
+
+private:
+    BehaviorNodes m_nodes;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorFindTarget : public BehaviorNode
+{
+public:
+
+    void setVisionSqrRadius(float dist, float hysteresis);
+
+    virtual void tick(float dt, Blackboard& bb) = 0;
+
+private:
+    float m_distance;
+    float m_hysteresis;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorWander : public BehaviorNode
 {
 public:
     BehaviorWander();
 
-    virtual const char* getName() const override;
-
-    virtual void tick(float dt, Character* object) override;
+    virtual void tick(float dt, Blackboard& bb) override;
 
 private:
     bool m_initialized;
-    float m_anchorX;
-    float m_anchorY;
-    float m_ropeLength;
+    int m_anchorX;
+    int m_anchorY;
+    int m_ropeLength;
     float m_moveTime;
 };
 
-
-class BehaviorAttack : public Behavior
+class BehaviorChase : public BehaviorNode
 {
 public:
-    BehaviorAttack();
 
-    virtual const char* getName() const override;
+    virtual void tick(float dt, Blackboard& bb) override;
 
-    virtual void tick(float dt, Character* object) override;
+};
+
+class BehaviorAttack : public BehaviorNode
+{
+public:
+
+    virtual void tick(float dt, Blackboard& bb) override;
 
 };

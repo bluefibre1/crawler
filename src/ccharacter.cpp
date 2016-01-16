@@ -4,6 +4,7 @@
 #include "citem.h"
 #include "ccolors.h"
 #include "csimulator.h"
+#include "cbehavior.h"
 #include "cmath.h"
 
 Character::Character()
@@ -19,6 +20,12 @@ Character::Character()
     , m_items()
 {
     setNextLevelXp();
+}
+
+Character::~Character()
+{
+    setBehavior(nullptr);
+    setBlackboard(nullptr);
 }
 
 void Character::draw(Renderer* r)
@@ -38,16 +45,21 @@ void Character::tick(float dt)
 {
     if (m_behavior)
     {
-        m_behavior->tick(dt, this);
+        m_behavior->tick(dt, *m_blackboard);
     }
-
     Object::tick(dt);
 }
 
-void Character::setBehavior(Behavior* behavior)
+void Character::setBehavior(BehaviorNode* behavior)
 {
     delete m_behavior;
     m_behavior = behavior;
+}
+
+void Character::setBlackboard(Blackboard* blackboard)
+{
+    delete m_blackboard;
+    m_blackboard = blackboard;
 }
 
 const std::string& Character::getName() const

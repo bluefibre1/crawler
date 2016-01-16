@@ -4,6 +4,72 @@
 
 #include <stdio.h>
 
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Blackboard::setSelf(Character* self)
+{
+    m_self = self;
+}
+
+Character* Blackboard::getSelf() const
+{
+    return m_self;
+}
+
+void Blackboard::setReference(const std::string& name, const ObjectWeakPtr& obj) const
+{
+    //m_references.insert(std::pair(name, obj));
+}
+
+ObjectWeakPtr Blackboard::getReference(const std::string& name) const
+{
+    auto it = m_references.find(name);
+    if (it != m_references.end())
+    {
+        return (*it).second;
+    }
+    return ObjectWeakPtr();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+BehaviorComposite::~BehaviorComposite()
+{
+    for (auto i = m_nodes.begin(); i != m_nodes.end(); ++i)
+    {
+        delete *i;
+    }
+}
+
+void BehaviorComposite::add(BehaviorNode* node)
+{
+    m_nodes.push_back(node);
+}
+
+void BehaviorComposite::tick(float dt, Blackboard& bb)
+{
+    for (auto i = m_nodes.begin(); i != m_nodes.end(); ++i)
+    {
+        (*i)->tick(dt, bb);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void BehaviorFindTarget::setVisionSqrRadius(float dist, float hysteresis)
+{
+    m_distance = dist;
+    m_hysteresis = dist;
+}
+
+void BehaviorFindTarget::tick(float dt, Blackboard& bb)
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*
 BehaviorWander::BehaviorWander()
     : m_initialized(false)
     , m_anchorX(0)
@@ -77,6 +143,24 @@ void BehaviorWander::tick(float dt, Character* object)
     }
 }
 
+//////////////////////////////////////////////////////////////////////
+
+BehaviorChase::BehaviorChase()
+{
+
+}
+
+const char* BehaviorChase::getName() const
+{
+    return "Attack";
+}
+
+void BehaviorChase::tick(float dt, Character* object)
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////
 
 BehaviorAttack::BehaviorAttack()
 {
@@ -92,3 +176,4 @@ void BehaviorAttack::tick(float dt, Character* object)
 {
 
 }
+*/

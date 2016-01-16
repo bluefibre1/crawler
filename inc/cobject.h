@@ -42,3 +42,4 @@ private:
 };
 
 typedef std::shared_ptr<Object> ObjectPtr;
+typedef std::weak_ptr<Object> ObjectWeakPtr;

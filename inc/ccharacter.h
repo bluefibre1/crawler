@@ -9,18 +9,22 @@
 #include <vector>
 
 class Item;
-class Behavior;
+class BehaviorNode;
+class Blackboard;
 
 class Character : public Object
 {
 public:
     Character();
+    ~Character();
 
     virtual void draw(Renderer* r) override;
 
     virtual void tick(float dt) override;
 
-    virtual void setBehavior(Behavior* behavior);
+    void setBehavior(BehaviorNode* behavior);
+
+    void setBlackboard(Blackboard* blackboard);
 
     const std::string& getName() const;
 
@@ -71,7 +75,8 @@ private:
     int m_gold;
     int m_nextLevelXp;
     int m_level;
-    Behavior* m_behavior;
+    BehaviorNode* m_behavior;
+    Blackboard* m_blackboard;
     std::string m_name;
 
     typedef std::vector<ItemPtr> Items;
