@@ -33,18 +33,25 @@ void Character::draw(Renderer* r)
 {
     if (r->isVisible(this))
     {
-        r->drawChar(getX(), getY(), getZ(), m_color, Colors::INVALID(), m_ch);
-        for (auto i = m_items.begin(); i != m_items.end(); i++)
+        if (m_hp)
         {
-            const ItemPtr& item = *i;
-            item->draw(r);
+            r->draw(getX(), getY(), getZ(), m_color, Colors::INVALID(), m_ch);
+            for (auto i = m_items.begin(); i != m_items.end(); i++)
+            {
+                const ItemPtr& item = *i;
+                item->draw(r);
+            }
+        }
+        else
+        {
+            r->draw(getX(), getY(), getZ(), m_color, Colors::RED(), m_ch);
         }
     }
 }
 
 void Character::tick(float dt)
 {
-    if (m_behavior)
+    if (m_behavior && m_hp)
     {
         m_behavior->tick(dt, *m_blackboard);
     }
@@ -197,10 +204,6 @@ void Character::onReceiveHit(Object* from, int damage)
 {
     int actualDmg = damage > m_hp ? m_hp : damage;
     m_hp -= actualDmg;
-    if (m_hp <= 0)
-    {
-        Simulator::get()->remove(this);
-    }
 }
 
 void Character::onGiveHit(Object* to, int damage)

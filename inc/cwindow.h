@@ -2,8 +2,8 @@
 
 #include "cobject.h"
 #include "ccolor.h"
+#include "cstring.h"
 
-#include <string>
 #include <vector>
 
 class Window : public Object
@@ -28,12 +28,13 @@ public:
     void setVerticalAlign(VerticalAlign al);
     void setHorizontalAlign(HorizontalAlign al);
     void setMaxWidth(int width);
+    void setBorderColor(Color color);
     void setBackground(Color color);
 
     void setBorderWidth(int h, int v);
 
     void clear();
-    void print(Color color, const std::string& text);
+    void print(Color color, const String& text);
 
     virtual void draw(Renderer* r) override;
 
@@ -44,17 +45,27 @@ private:
     int m_height;
     int m_hborder;
     int m_vborder;
+    bool m_showBorder;
     int m_maxWidth;
     VerticalAlign m_valign;
     HorizontalAlign m_halign;
+    Color m_borderColor;
     Color m_background;
 
     struct Print
     {
-        std::string m_text;
+        String m_text;
         Color m_color;
     };
     std::vector<Print> m_prints;
 
     void internalDraw(Renderer* r);
+    void pad(Renderer* r, Color c, int& x, int y);
+    void print(Renderer* r, Color c, int& x, int y, const String& text);
+    void topBorder(Renderer* r, int x, int& y);
+    void bottomBorder(Renderer* r, int x, int& y);
+    void leftBorder(Renderer* r, int& x, int y);
+    void rightBorder(Renderer* r, int& x, int y);
+    int getLineLength(int x);
+    void newLine(int& x, int& y);
 };

@@ -3,12 +3,13 @@
 #include "csimulator.h"
 #include "cmath.h"
 #include "cfaction.h"
+#include "clogger.h"
 
 #include <stdio.h>
 
 
 ////////////////////////////////////////////////////////////////////////////////
-
+// mistke this hello
 void Blackboard::setSelf(Character* self)
 {
     m_self = self;
@@ -110,9 +111,9 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
 
             if (dist < m_distance + m_hysteresis)
             {
-            printf("hey\n");
                 return;
             }
+            CLOG_DEBUG("lost sight of target:" << ((Character*)target.get())->getName());
             bb.clearReference(getReference());
         }
 
@@ -131,6 +132,7 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
             Character* c = (Character*)obj.get();
             if (bb.getSelf()->getFaction()->isEnemy(c->getFaction()))
             {
+                CLOG_DEBUG("found target:" << c->getName());
                 bb.setReference(getReference(), obj);
                 break;
             }
@@ -174,12 +176,12 @@ BehaviorDistancePredicate::BehaviorDistancePredicate()
 
 }
 
-void BehaviorDistancePredicate::setSqrDistance(float sqrDistance)
+void BehaviorDistancePredicate::setSqrDistance(int sqrDistance)
 {
     m_sqrDistance = sqrDistance;
 }
 
-void BehaviorDistancePredicate::setHysteresis(float hysteresis)
+void BehaviorDistancePredicate::setHysteresis(int hysteresis)
 {
     m_hysteresis = hysteresis;
 }
@@ -199,16 +201,27 @@ bool BehaviorDistancePredicate::eval(Blackboard& bb)
     }
 
     ObjectSharedPtr obj = ref.lock();
-    float dist = Math::sqrDistance(obj->getX(), obj->getY(), bb.getSelf()->getX(), bb.getSelf()->getY());
 
+    int dist = Math::sqrDistance(
+        obj->getX(),
+        obj->getY(),
+        bb.getSelf()->getX(),
+        bb.getSelf()->getY());
+
+    bool answer;
     if (m_greaterThan)
     {
-        m_last = m_last ? dist > m_sqrDistance - m_hysteresis : dist > m_sqrDistance;
+        answer = m_last ? dist >= m_sqrDistance - m_hysteresis : dist >= m_sqrDistance;
     }
     else
     {
-        m_last = m_last ? dist < m_sqrDistance + m_hysteresis : dist < m_sqrDistance;
-        printf("%s\n", (m_last ? "true":"false"));
+        answer = m_last ? dist <= m_sqrDistance + m_hysteresis : dist <= m_sqrDistance;
+    }
+
+    if (answer != m_last)
+    {
+        CLOG_DEBUG("distance predicate change to " << (answer ? "true" : "false") << " for target " << ((Character*)obj.get())->getName());
+        m_last = answer;
     }
 
     return m_last;
@@ -217,11 +230,11 @@ bool BehaviorDistancePredicate::eval(Blackboard& bb)
 ////////////////////////////////////////////////////////////////////////////////
 
 BehaviorAlternative::BehaviorAlternative()
-    : m_predicate(nullptr)
-    , m_elapsed(0)
+    : m_elapsed(0)
+    , m_predicate(nullptr)
+    , m_current(nullptr)
     , m_true(nullptr)
     , m_false(nullptr)
-    , m_current(nullptr)
 {
 
 }
@@ -257,13 +270,11 @@ void BehaviorAlternative::tick(float dt, Blackboard& bb)
     if (!m_current || m_elapsed > 0.5f)
     {
         m_elapsed = 0;
-        if (m_predicate->eval(bb))
+        BehaviorNode* node = m_predicate->eval(bb) ? m_true : m_false;
+        if (node != m_current)
         {
-            m_current = m_true;
-        }
-        else
-        {
-            m_current = m_false;
+            CLOG_DEBUG("changing behavior from " << (m_current ? m_current->getName() : "null") << " to " << node->getName());
+            m_current = node;
         }
     }
     m_current->tick(dt, bb);
@@ -379,6 +390,8 @@ void BehaviorChase::tick(float dt, Blackboard& bb)
         return;
     }
 
+    m_elapsed = 0;
+
     ObjectWeakPtr ref = bb.getReference(getReference());
     if (ref.expired())
     {
@@ -424,6 +437,17 @@ void BehaviorAttack::tick(float dt, Blackboard& bb)
     }
 
     ObjectSharedPtr obj = ref.lock();
+    if (!obj->isCharacter())
+    {
+        return;
+    }
+
+    auto c = (Character*)obj.get();
+    if (c->getHp() <= 0)
+    {
+        return;
+    }
+
     int dx = obj->getX() - bb.getSelf()->getX();
     int dy = obj->getY() - bb.getSelf()->getY();
 

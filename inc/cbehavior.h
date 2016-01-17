@@ -42,6 +42,8 @@ class BehaviorNode
 public:
     virtual ~BehaviorNode() {}
 
+    virtual const char* getName() const = 0;
+
     virtual void tick(float dt, Blackboard& bb) = 0;
 
 };
@@ -54,6 +56,8 @@ class BehaviorComposite : public BehaviorNode
 {
 public:
     virtual ~BehaviorComposite();
+
+    virtual const char* getName() const override { return "composite"; }
 
     void add(BehaviorNode* node);
 
@@ -69,6 +73,8 @@ class BehaviorReferenceNode : public BehaviorNode
 {
 public:
 
+    virtual const char* getName() const override { return "reference"; }
+
     void setReference(BlackboardReference ref);
 
     BlackboardReference getReference() const;
@@ -83,6 +89,8 @@ class BehaviorFindTarget : public BehaviorReferenceNode
 {
 public:
     BehaviorFindTarget();
+
+    virtual const char* getName() const override { return "find target"; }
 
     void setVisionSqrRadius(float dist, float hysteresis);
 
@@ -102,6 +110,8 @@ public:
 
     virtual ~BehaviorPredicate() {}
 
+    virtual const char* getName() const { return "predicate"; }
+
     virtual bool eval(Blackboard& bb) = 0;
 };
 
@@ -111,6 +121,8 @@ class BehaviorReferencePredicate : public BehaviorPredicate
 {
 public:
     BehaviorReferencePredicate();
+
+    virtual const char* getName() const override { return "reference predicate"; }
 
     void setReference(BlackboardReference ref);
 
@@ -129,17 +141,19 @@ class BehaviorDistancePredicate : public BehaviorReferencePredicate
 public:
     BehaviorDistancePredicate();
 
-    void setSqrDistance(float sqrDistance);
+    virtual const char* getName() const override { return "distance predicate"; }
 
-    void setHysteresis(float hysteresis);
+    void setSqrDistance(int sqrDistance);
+
+    void setHysteresis(int hysteresis);
 
     void setGreaterThan(bool value);
 
     virtual bool eval(Blackboard& bb) override;
 
 private:
-    float m_sqrDistance;
-    float m_hysteresis;
+    int m_sqrDistance;
+    int m_hysteresis;
     bool m_greaterThan;
     bool m_last;
 };
@@ -151,6 +165,8 @@ class BehaviorAlternative : public BehaviorNode
 public:
     BehaviorAlternative();
     virtual ~BehaviorAlternative();
+
+    virtual const char* getName() const override { return "alternative"; }
 
     void setTrue(BehaviorNode* node);
 
@@ -175,6 +191,8 @@ class BehaviorWander : public BehaviorNode
 public:
     BehaviorWander();
 
+    virtual const char* getName() const override { return "wander"; }
+
     void setRopeSqrLength(int sqrLength);
 
     virtual void tick(float dt, Blackboard& bb) override;
@@ -196,6 +214,8 @@ class BehaviorChase : public BehaviorReferenceNode
 public:
     BehaviorChase();
 
+    virtual const char* getName() const override { return "chase"; }
+
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
@@ -208,6 +228,8 @@ class BehaviorAttack : public BehaviorReferenceNode
 {
 public:
     BehaviorAttack();
+
+    virtual const char* getName() const override { return "attack"; }
 
     virtual void tick(float dt, Blackboard& bb) override;
 

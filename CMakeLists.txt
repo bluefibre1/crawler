@@ -36,6 +36,7 @@ set(SOURCES
     src/ccolors.cpp
     src/cfaction.cpp
     src/cfactions.cpp
+    src/clogger.cpp
 )	
 
 add_executable(crawler ${SOURCES})

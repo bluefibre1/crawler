@@ -59,12 +59,13 @@ void Weapon::draw(Renderer* r)
     char ch = (m_dir == Direction::LEFT || m_dir == Direction::RIGHT) ?
         m_horizontalChar : m_verticalChar;
 
-    r->drawChar(getOwner()->getX()+dx,
-                getOwner()->getY()+dy,
-                getOwner()->getZ()+1,
-                m_color,
-                Colors::INVALID(),
-                ch);
+    r->draw(
+        getOwner()->getX()+dx,
+        getOwner()->getY()+dy,
+        getOwner()->getZ()+1,
+        m_color,
+        Colors::INVALID(),
+        ch);
 }
 
 void Weapon::use(Direction dir)

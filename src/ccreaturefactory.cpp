@@ -21,7 +21,7 @@ CreaturePtr CreatureFactory::create(const CreatureTemplate* t)
 
     auto findTarget = new BehaviorFindTarget();
     findTarget->setReference(targetRef);
-    findTarget->setVisionSqrRadius(4, 3);
+    findTarget->setVisionSqrRadius(25, 9);
 
     auto attack = new BehaviorAttack();
     attack->setReference(targetRef);

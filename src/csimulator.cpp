@@ -138,7 +138,7 @@ bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
     return colliding;
 }
 
-bool Simulator::findObjectAt(int x, int y, int z, Object** result)
+bool Simulator::findObjectAt(int x, int y, int /*z*/, Object** result)
 {
     for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
     {
@@ -157,7 +157,7 @@ bool Simulator::findObjectAt(int x, int y, int z, Object** result)
     return false;
 }
 
-void Simulator::findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result)
+void Simulator::findObjectsAround(int x, int y, int /*z*/, float sqrRadius, ObjectWeakPtrs* result)
 {
     if (!result)
     {

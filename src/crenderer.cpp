@@ -153,7 +153,7 @@ void Renderer::draw(int x, int y, int z, const Tile* tile)
     }
 }
 
-void Renderer::drawChar(int x, int y, int z, Color fg, Color bg, char ch)
+void Renderer::draw(int x, int y, int z, Color fg, Color bg, char ch)
 {
     int ox = x - m_oX;
     int oy = y - m_oY;
@@ -177,6 +177,27 @@ void Renderer::drawChar(int x, int y, int z, Color fg, Color bg, char ch)
 
             c.m_z = z;
         }
+    }
+}
+
+void Renderer::drawChar(int x, int y, Color fg, Color bg, char ch)
+{
+    if (x >= 0 && y >= 0 && x < m_width && y < m_height)
+    {
+        int i = x + y * m_width;
+        Cell& c = m_front[i];
+        c.m_ch = ch;
+        if (fg != Colors::INVALID())
+        {
+            c.m_fg = fg;
+        }
+
+        if (bg != Colors::INVALID())
+        {
+            c.m_bg = bg;
+        }
+
+        c.m_z =  0x7FFFFFFF;
     }
 }
 

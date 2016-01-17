@@ -12,6 +12,7 @@
 #include "cmath.h"
 #include "ctiles.h"
 #include "ccolors.h"
+#include "clogger.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -22,6 +23,9 @@
 int main(int argc, char* argv[])
 {
     srand(time(nullptr));
+
+    Logger::get().setLevel(LogLevel::DEBUG);
+    CLOG_DEBUG("starting crawler");
 
     int x, y;
     Input input;

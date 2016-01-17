@@ -11,9 +11,13 @@
 Window::Window()
     : m_width(1)
     , m_height(1)
+    , m_hborder(0)
+    , m_vborder(0)
+    , m_showBorder(true)
     , m_maxWidth(20)
     , m_valign(VerticalAlign::TOP)
     , m_halign(HorizontalAlign::LEFT)
+    , m_borderColor(Colors::WHITE())
     , m_background(Colors::COOL_BLUE())
     , m_prints()
 {
@@ -40,12 +44,17 @@ void Window::clear()
     m_prints.clear();
 }
 
-void Window::print(Color color, const std::string& text)
+void Window::print(Color color, const String& text)
 {
     Print p;
     p.m_color = color;
     p.m_text = text;
     m_prints.push_back(p);
+}
+
+void Window::setBorderColor(Color color)
+{
+    m_borderColor = color;
 }
 
 void Window::setBackground(Color color)
@@ -74,12 +83,20 @@ void Window::internalDraw(Renderer* r)
 {
     using namespace std;
 
-    float x = getX();
-    float y = getY();
-    int lineLength = 0;
+    Color c;
+    int x = getX();
+    int y = getY();
+
+    topBorder(r, x, y);
     for (auto i = m_prints.begin(); i != m_prints.end(); ++i)
     {
         const Print& p = *i;
+        c = p.m_color;
+
+        if (x == getX())
+        {
+            leftBorder(r, x, y);
+        }
 
         if (p.m_text != "\n")
         {
@@ -90,49 +107,139 @@ void Window::internalDraw(Renderer* r)
             for (auto j = words.begin(); j != words.end(); ++j)
             {
                 string& word = *j;
-                if (lineLength + word.size() >= m_maxWidth)
+
+                if (getLineLength(x) + (int)word.size() >= m_maxWidth)
                 {
-                    if (lineLength < m_width)
-                    {
-                        string padding(m_width - lineLength, ' ');
-                        if (r)
-                        {
-                            r->drawText(x, y, p.m_color, m_background, padding);
-                        }
-                    }
-                    y++;
-                    lineLength = 0;
+                    pad(r, c, x, y);
+                    rightBorder(r, x, y);
+                    newLine(x, y);
                 }
-                if (r)
-                {
-                    r->drawText(x + lineLength, y, p.m_color, m_background, word);
-                }
-                lineLength += word.size();
+
+                print(r, c, x, y, word);
             }
         }
         else
         {
-            if (lineLength < m_width)
-            {
-                if (r)
-                {
-                    string padding(m_width - lineLength, ' ');
-                    r->drawText(x + lineLength, y, p.m_color, m_background, padding);
-
-                }
-            }
-            else
-            {
-                m_width = lineLength;
-            }
-
-            y++;
-            lineLength = 0;
+            pad(r, c, x, y);
+            rightBorder(r, x, y);
+            newLine(x, y);
         }
     }
 
-    if (lineLength > m_width)
+    pad(r, c, x, y);
+    rightBorder(r, x, y);
+    newLine(x, y);
+    bottomBorder(r, x, y);
+}
+
+void Window::pad(Renderer* r, Color c, int& x, int y)
+{
+    int n = m_width - getLineLength(x) - m_vborder - (m_showBorder ? 1 : 0);
+    if (n > 0)
     {
-        m_width = lineLength;
+        if (r)
+        {
+            r->drawText(x, y, c, m_background, String(n, ' '));
+        }
+        x += n;
     }
+}
+
+void Window::print(Renderer* r, Color c, int& x, int y, const String& text)
+{
+    if (r && !text.empty())
+    {
+        r->drawText(x, y, c, m_background, text);
+    }
+    x += text.size();
+}
+
+void Window::topBorder(Renderer* r, int x, int& y)
+{
+    if (m_showBorder && r)
+    {
+        r->drawChar(x, y, m_borderColor, m_background, '+');
+        r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
+        r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+        newLine(x, y);
+        for (int i = 0; i < m_hborder; ++i)
+        {
+            leftBorder(r, x, y);
+            pad(r, m_background, x, y);
+            rightBorder(r, x, y);
+            newLine(x, y);
+        }
+    }
+}
+
+void Window::bottomBorder(Renderer* r, int x, int& y)
+{
+    if (m_showBorder && r)
+    {
+        for (int i = 0; i < m_hborder; ++i)
+        {
+            leftBorder(r, x, y);
+            pad(r, m_background, x, y);
+            rightBorder(r, x, y);
+            newLine(x, y);
+        }
+        r->drawChar(x, y, m_borderColor, m_background, '+');
+        r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
+        r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+    }
+}
+
+void Window::leftBorder(Renderer* r, int& x, int y)
+{
+    if (m_showBorder)
+    {
+        if (r)
+        {
+            r->drawChar(x, y, m_borderColor, m_background, '|');
+            if (m_vborder)
+            {
+                r->drawText(x+1, y, m_borderColor, m_background, String(m_vborder, ' '));
+            }
+        }
+
+        x++;
+    }
+    x += m_vborder;
+}
+
+void Window::rightBorder(Renderer* r, int& x, int y)
+{
+    if (m_showBorder)
+    {
+        if (r)
+        {
+            if (m_vborder)
+            {
+                r->drawText(x, y, m_borderColor, m_background, String(m_vborder, ' '));
+            }
+            r->drawChar(x+(m_vborder ? 1 : 0), y, m_borderColor, m_background, '|');
+        }
+
+        x++;
+    }
+    x += m_vborder;
+}
+
+int Window::getLineLength(int x)
+{
+    return x - getX();
+}
+
+void Window::newLine(int& x, int& y)
+{
+    y++;
+    if (getLineLength(x) > m_width)
+    {
+        m_width = getLineLength(x);
+        if (m_width > m_maxWidth)
+        {
+            m_width = m_maxWidth;
+        }
+    }
+    x = getX();
 }

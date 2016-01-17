@@ -14,7 +14,8 @@ public:
     void clear();
     void flip();
     void draw(int x, int y, int z, const Tile* tile);
-    void drawChar(int x, int y, int z, Color fg, Color bg, char ch);
+    void draw(int x, int y, int z, Color fg, Color bg, char ch);
+    void drawChar(int x, int y, Color fg, Color bg, char ch);
     void drawText(int x, int y, Color fg, Color bg, const std::string& text);
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
