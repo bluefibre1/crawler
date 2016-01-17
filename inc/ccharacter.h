@@ -11,6 +11,7 @@
 class Item;
 class BehaviorNode;
 class Blackboard;
+class Faction;
 
 class Character : public Object
 {
@@ -25,6 +26,10 @@ public:
     void setBehavior(BehaviorNode* behavior);
 
     void setBlackboard(Blackboard* blackboard);
+
+    void setFaction(Faction* faction);
+
+    Faction* getFaction() const;
 
     const std::string& getName() const;
 
@@ -77,6 +82,7 @@ private:
     int m_level;
     BehaviorNode* m_behavior;
     Blackboard* m_blackboard;
+    Faction* m_faction;
     std::string m_name;
 
     typedef std::vector<ItemPtr> Items;

@@ -5,6 +5,7 @@
 #include "ccolors.h"
 #include "csimulator.h"
 #include "cbehavior.h"
+#include "cfactions.h"
 #include "cmath.h"
 
 Character::Character()
@@ -60,6 +61,16 @@ void Character::setBlackboard(Blackboard* blackboard)
 {
     delete m_blackboard;
     m_blackboard = blackboard;
+}
+
+void Character::setFaction(Faction* faction)
+{
+    m_faction = faction;
+}
+
+Faction* Character::getFaction() const
+{
+    return m_faction ? m_faction : &Factions::DEFAULT();
 }
 
 const std::string& Character::getName() const

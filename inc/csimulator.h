@@ -31,7 +31,7 @@ public:
 
     bool findObjectAt(int x, int y, int z, Object** result);
 
-    void findObjectsAround(int x, int y, int z, float radius, ObjectWeakPtrs* result);
+    void findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result);
 
 private:
 

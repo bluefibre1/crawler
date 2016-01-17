@@ -9,6 +9,12 @@
 
 class Character;
 
+enum class BlackboardReference
+{
+    NONE,
+    TARGET,
+};
+
 class Blackboard
 {
 public:
@@ -17,15 +23,15 @@ public:
 
     Character* getSelf() const;
 
-    void setReference(const std::string& name, const ObjectWeakPtr& obj);
+    void setReference(BlackboardReference ref, const ObjectWeakPtr& obj);
 
-    void clearReference(const std::string& name);
+    void clearReference(BlackboardReference ref);
 
-    ObjectWeakPtr getReference(const std::string& name) const;
+    ObjectWeakPtr getReference(BlackboardReference ref) const;
 
 private:
     Character* m_self;
-    typedef std::map<std::string, ObjectWeakPtr> References;
+    typedef std::map<BlackboardReference, ObjectWeakPtr> References;
     References m_references;
 };
 
@@ -40,9 +46,9 @@ public:
 
 };
 
-typedef std::vector<BehaviorNode*> BehaviorNodes;
-
 ////////////////////////////////////////////////////////////////////////////////
+
+typedef std::vector<BehaviorNode*> BehaviorNodePtrs;
 
 class BehaviorComposite : public BehaviorNode
 {
@@ -54,17 +60,29 @@ public:
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
-    BehaviorNodes m_nodes;
+    BehaviorNodePtrs m_nodes;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class BehaviorFindTarget : public BehaviorNode
+class BehaviorReferenceNode : public BehaviorNode
+{
+public:
+
+    void setReference(BlackboardReference ref);
+
+    BlackboardReference getReference() const;
+
+private:
+    BlackboardReference m_reference;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorFindTarget : public BehaviorReferenceNode
 {
 public:
     BehaviorFindTarget();
-
-    const std::string& getReferenceName() const { return m_referenceName; }
 
     void setVisionSqrRadius(float dist, float hysteresis);
 
@@ -74,7 +92,80 @@ private:
     float m_distance;
     float m_hysteresis;
     float m_elapsed;
-    static std::string m_referenceName;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorPredicate
+{
+public:
+
+    virtual ~BehaviorPredicate() {}
+
+    virtual bool eval(Blackboard& bb) = 0;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorReferencePredicate : public BehaviorPredicate
+{
+public:
+    BehaviorReferencePredicate();
+
+    void setReference(BlackboardReference ref);
+
+    BlackboardReference getReference() const;
+
+    virtual bool eval(Blackboard& bb) override;
+
+private:
+    BlackboardReference m_reference;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorDistancePredicate : public BehaviorReferencePredicate
+{
+public:
+    BehaviorDistancePredicate();
+
+    void setSqrDistance(float sqrDistance);
+
+    void setHysteresis(float hysteresis);
+
+    void setGreaterThan(bool value);
+
+    virtual bool eval(Blackboard& bb) override;
+
+private:
+    float m_sqrDistance;
+    float m_hysteresis;
+    bool m_greaterThan;
+    bool m_last;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorAlternative : public BehaviorNode
+{
+public:
+    BehaviorAlternative();
+    virtual ~BehaviorAlternative();
+
+    void setTrue(BehaviorNode* node);
+
+    void setFalse(BehaviorNode* node);
+
+    void setPredicate(BehaviorPredicate* pred);
+
+    virtual void tick(float dt, Blackboard& bb) override;
+
+private:
+    float m_elapsed;
+    BehaviorPredicate* m_predicate;
+    BehaviorNode* m_current;
+    BehaviorNode* m_true;
+    BehaviorNode* m_false;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -84,28 +175,42 @@ class BehaviorWander : public BehaviorNode
 public:
     BehaviorWander();
 
+    void setRopeSqrLength(int sqrLength);
+
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
     bool m_initialized;
     int m_anchorX;
     int m_anchorY;
-    int m_ropeLength;
-    float m_moveTime;
+    int m_dx;
+    int m_dy;
+    int m_ropeSqrLength;
+    float m_elapsed;
 };
 
-class BehaviorChase : public BehaviorNode
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorChase : public BehaviorReferenceNode
 {
 public:
+    BehaviorChase();
 
     virtual void tick(float dt, Blackboard& bb) override;
 
+private:
+    float m_elapsed;
 };
 
-class BehaviorAttack : public BehaviorNode
+////////////////////////////////////////////////////////////////////////////////
+
+class BehaviorAttack : public BehaviorReferenceNode
 {
 public:
+    BehaviorAttack();
 
     virtual void tick(float dt, Blackboard& bb) override;
 
+private:
+    float m_elapsed;
 };

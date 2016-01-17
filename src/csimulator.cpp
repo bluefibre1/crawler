@@ -157,14 +157,13 @@ bool Simulator::findObjectAt(int x, int y, int z, Object** result)
     return false;
 }
 
-void Simulator::findObjectsAround(int x, int y, int z, float radius, ObjectWeakPtrs* result)
+void Simulator::findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result)
 {
     if (!result)
     {
         return;
     }
 
-    float sqrRadius = radius * radius;
     for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
     {
         ObjectSharedPtr& obj = *j;

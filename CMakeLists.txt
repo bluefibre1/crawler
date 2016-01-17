@@ -34,6 +34,8 @@ set(SOURCES
     src/ccreaturefactory.cpp
     src/ccolor.cpp
     src/ccolors.cpp
+    src/cfaction.cpp
+    src/cfactions.cpp
 )	
 
 add_executable(crawler ${SOURCES})

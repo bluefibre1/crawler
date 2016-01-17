@@ -11,7 +11,7 @@ public:
     Object();
     virtual ~Object();
 
-    virtual void draw(Renderer* r) {};
+    virtual void draw(Renderer* /*r*/) {};
 
     virtual void tick(float dt);
 

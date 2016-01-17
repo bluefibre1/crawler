@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     Simulator* simulator = Simulator::get();
 
     WorldSharedPtr world(new World());
-    world->generate(1024);
+    world->generate(32);
     simulator->setWorld(world);
 
     HeroSharedPtr hero(new Hero());
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         &CreatureTemplates::BAT(),
     };
 
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 1; i++)
     {
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);
