@@ -92,8 +92,13 @@ void Weapon::use(Direction dir)
                 int damage = Math::ceilRandom(m_damage);
 
                 Character* target = (Character*)dest;
-                target->onReceiveHit(user, damage);
-                user->onGiveHit(target, damage);
+
+                Math::clamp(damage, 0, target->getHp());
+                if (damage)
+                {
+                    target->onReceiveHit(user, damage);
+                    user->onGiveHit(target, damage);
+                }
             }
         }
     }

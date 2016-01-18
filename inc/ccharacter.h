@@ -37,7 +37,9 @@ public:
 
     int getHp() const;
 
-    void setHp(int hp);
+    void setMapHp(int hp);
+
+    void heal();
 
     void addXp(int xp);
 
@@ -76,6 +78,7 @@ private:
     void setNextLevelXp();
 
     int m_hp;
+    int m_maxHp;
     int m_xp;
     int m_gold;
     int m_nextLevelXp;

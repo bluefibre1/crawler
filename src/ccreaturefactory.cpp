@@ -11,7 +11,8 @@ CreaturePtr CreatureFactory::create(const CreatureTemplate* t)
 {
     CreaturePtr c(new Creature());
     c->setName(t->getName());
-    c->setHp((int)Math::intervalRandom(t->getMaxHp(), t->getMinHp()));
+    c->setMapHp((int)Math::intervalRandom(t->getMaxHp(), t->getMinHp()));
+    c->heal();
     c->setMaxVelocity(t->getMaxVelocity());
     c->setColor(t->getColor());
     c->setChar(t->getChar());

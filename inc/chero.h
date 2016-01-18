@@ -13,6 +13,7 @@ public:
     virtual void draw(Renderer* r) override;
 
 private:
+    float m_refreshWindow;
     Window m_statisticWindow;
 };
 

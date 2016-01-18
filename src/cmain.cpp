@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 {
     srand(time(nullptr));
 
-    Logger::get().setLevel(LogLevel::DEBUG);
+    //Logger::get().setLevel(LogLevel::DEBUG);
     CLOG_DEBUG("starting crawler");
 
     int x, y;
@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
         &CreatureTemplates::BAT(),
     };
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 50; i++)
     {
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);

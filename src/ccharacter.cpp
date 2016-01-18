@@ -12,6 +12,7 @@ Character::Character()
     : m_ch('@')
     , m_color(Colors::MAGENTA())
     , m_hp(10)
+    , m_maxHp(10)
     , m_xp(0)
     , m_gold(0)
     , m_nextLevelXp(0)
@@ -95,17 +96,24 @@ int Character::getHp() const
     return m_hp;
 }
 
-void Character::setHp(int hp)
+void Character::setMapHp(int hp)
 {
-    m_hp = hp;
+    m_maxHp = hp;
+}
+
+void Character::heal()
+{
+    m_hp = m_maxHp;
 }
 
 void Character::addXp(int xp)
 {
     m_xp += xp;
-    if (xp > m_nextLevelXp)
+    if (m_xp >= m_nextLevelXp)
     {
         m_level++;
+        m_maxHp *= 2;
+        heal();
         setNextLevelXp();
     }
 }
@@ -200,7 +208,7 @@ void Character::hit(Direction dir)
     }
 }
 
-void Character::onReceiveHit(Object* from, int damage)
+void Character::onReceiveHit(Object* /*from*/, int damage)
 {
     int actualDmg = damage > m_hp ? m_hp : damage;
     m_hp -= actualDmg;
