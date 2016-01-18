@@ -2,12 +2,12 @@
 
 
 Item::Item()
-    : m_name()
-    , m_owner(nullptr)
+    : m_owner(nullptr)
     , m_isEquipable(false)
     , m_isUsable(false)
     , m_isWeapon(false)
     , m_isArmor(false)
+    , m_name()
 {
 
 }

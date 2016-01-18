@@ -70,11 +70,12 @@ void Window::setBorderWidth(int h, int v)
 
 void Window::draw(Renderer* r)
 {
+    m_width = 1;
     internalDraw(nullptr);
     internalDraw(r);
 }
 
-void Window::tick(float dt)
+void Window::tick(float /*dt*/)
 {
 
 }

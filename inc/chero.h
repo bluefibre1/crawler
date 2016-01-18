@@ -12,9 +12,11 @@ public:
 
     virtual void draw(Renderer* r) override;
 
+    virtual void showStats() override;
+
 private:
     float m_refreshWindow;
-    Window m_statisticWindow;
+    WindowSharedPtr m_statisticWindow;
 };
 
 typedef std::shared_ptr<Hero> HeroSharedPtr;

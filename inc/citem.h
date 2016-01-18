@@ -23,7 +23,7 @@ public:
 
     bool isArmor() const { return m_isArmor; }
 
-    virtual void use(Direction dir) {}
+    virtual void use(Direction /*dir*/) {}
 
     Object* getOwner() const;
 

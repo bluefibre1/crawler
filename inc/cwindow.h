@@ -69,3 +69,6 @@ private:
     int getLineLength(int x);
     void newLine(int& x, int& y);
 };
+
+typedef std::shared_ptr<Window> WindowSharedPtr;
+typedef std::weak_ptr<Window> WindowWeakPtr;

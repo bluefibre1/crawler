@@ -20,14 +20,13 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
     srand(time(nullptr));
 
-    //Logger::get().setLevel(LogLevel::DEBUG);
+    Logger::get().setLevel(LogLevel::DEBUG);
     CLOG_DEBUG("starting crawler");
 
-    int x, y;
     Input input;
     Renderer r;
 

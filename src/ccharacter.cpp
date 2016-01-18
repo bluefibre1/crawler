@@ -221,14 +221,14 @@ void Character::onGiveHit(Object* to, int damage)
     {
         Character* target = (Character*)to;
 
-        int levelDiff = getLevel() - target->getLevel();
-        int dxp = Math::exp(damage, levelDiff);
+        int levelDiff = target->getLevel() - getLevel();
+        int dxp = Math::exp(damage, levelDiff) + 1;
 
         addXp(dxp);
 
         if (target->getHp() <= 0)
         {
-            addXp(10); // TODO: should be relative to the difficulty and current level xp range
+            addXp(Math::exp(10, levelDiff)+1);
         }
     }
 }

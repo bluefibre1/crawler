@@ -24,6 +24,7 @@ set(SOURCES
     src/ccreature.cpp
     src/cbehavior.cpp
     src/cwindow.cpp
+    src/cwindowmanager.cpp
     src/citem.cpp
     src/cweapon.cpp
     src/cweapontemplate.cpp

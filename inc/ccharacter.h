@@ -69,6 +69,7 @@ public:
 
     virtual bool isCharacter() const override { return true; }
 
+    virtual void showStats() = 0;
 
 protected:
     char m_ch;

@@ -1,19 +1,21 @@
 #include "chero.h"
 #include "cinput.h"
 #include "ccolors.h"
+#include "cwindowmanager.h"
 
 #include <stdlib.h>
 
 Hero::Hero()
     : m_refreshWindow(1000)
+    , m_statisticWindow(new Window())
 {
     m_color = Colors::MAGENTA();
     m_ch = '0';
     setMapHp(200);
     heal();
 
-    m_statisticWindow.setPosition(2, 2, 0);
-    m_statisticWindow.setBorderWidth(0, 1);
+    m_statisticWindow->setPosition(2, 2, 0);
+    m_statisticWindow->setBorderWidth(0, 1);
 }
 
 void Hero::tick(float dt)
@@ -81,34 +83,41 @@ void Hero::tick(float dt)
     }
 
     m_refreshWindow += dt;
-    if (m_refreshWindow > 1)
-    {
-        m_statisticWindow.clear();
-
-        m_statisticWindow.print(Colors::ORANGE(), "HP:");
-        m_statisticWindow.print(Colors::WHITE(), std::to_string(getHp()));
-
-        m_statisticWindow.print(Colors::ORANGE(), "\n");
-
-        m_statisticWindow.print(Colors::ORANGE(), "LEVEL:");
-        m_statisticWindow.print(Colors::WHITE(), std::to_string(getLevel()));
-
-        m_statisticWindow.print(Colors::ORANGE(), "\n");
-
-        m_statisticWindow.print(Colors::ORANGE(), "GOLD:");
-        m_statisticWindow.print(Colors::WHITE(), std::to_string(getGold()));
-
-        m_statisticWindow.print(Colors::ORANGE(), "\n");
-
-        m_statisticWindow.print(Colors::ORANGE(), "XP:");
-        m_statisticWindow.print(Colors::WHITE(), std::to_string(getXp()));
-    }
 
     Character::tick(dt);
 }
 
 void Hero::draw(Renderer* r)
 {
-    m_statisticWindow.draw(r);
     Character::draw(r);
+}
+
+void Hero::showStats()
+{
+    if (m_refreshWindow > 1)
+    {
+        m_refreshWindow = 0;
+        m_statisticWindow->clear();
+
+        m_statisticWindow->print(Colors::ORANGE(), "HP:");
+        m_statisticWindow->print(Colors::WHITE(), std::to_string(getHp()));
+
+        m_statisticWindow->print(Colors::ORANGE(), "\n");
+
+        m_statisticWindow->print(Colors::ORANGE(), "LEVEL:");
+        m_statisticWindow->print(Colors::WHITE(), std::to_string(getLevel()));
+
+        m_statisticWindow->print(Colors::ORANGE(), "\n");
+
+        m_statisticWindow->print(Colors::ORANGE(), "GOLD:");
+        m_statisticWindow->print(Colors::WHITE(), std::to_string(getGold()));
+
+        m_statisticWindow->print(Colors::ORANGE(), "\n");
+
+        m_statisticWindow->print(Colors::ORANGE(), "XP:");
+        m_statisticWindow->print(Colors::WHITE(), std::to_string(getXp()));
+
+        WindowManager::get().popup(m_statisticWindow, 5);
+    }
+
 }
