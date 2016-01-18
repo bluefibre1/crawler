@@ -19,6 +19,6 @@ void Object::tick(float dt)
 {
     if (m_dispX != 0 || m_dispY != 0)
     {
-        Simulator::get()->activate(this);
+        Simulator::get().activate(this);
     }
 }

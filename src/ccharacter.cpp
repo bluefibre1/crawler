@@ -211,6 +211,7 @@ void Character::hit(Direction dir)
 
 void Character::onReceiveHit(Object* /*from*/, int damage)
 {
+    showStats();
     int actualDmg = damage > m_hp ? m_hp : damage;
     m_hp -= actualDmg;
 }
@@ -219,6 +220,7 @@ void Character::onGiveHit(Object* to, int damage)
 {
     if (to->isCharacter())
     {
+        showStats();
         Character* target = (Character*)to;
 
         int levelDiff = target->getLevel() - getLevel();

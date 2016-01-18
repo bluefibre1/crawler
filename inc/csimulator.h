@@ -11,7 +11,7 @@ class Simulator
 {
 public:
 
-    static Simulator* get();
+    static Simulator& get();
 
     void setWorld(const WorldSharedPtr& world);
 

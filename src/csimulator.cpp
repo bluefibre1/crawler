@@ -7,10 +7,10 @@
 
 static const int MAX_STEP = 2;
 
-Simulator* Simulator::get()
+Simulator& Simulator::get()
 {
     static Simulator instance;
-    return &instance;
+    return instance;
 }
 
 void Simulator::setWorld(const WorldSharedPtr& world)

@@ -45,8 +45,7 @@ void WindowManager::popup(const WindowSharedPtr& window, float period)
 
 void WindowManager::tick(float dt)
 {
-    int n = m_popups.size();
-    for (int i = 0; i < n; )
+    for (int i = 0; i < (int)m_popups.size(); )
     {
         Popup* p = m_popups[i];
         if (p->m_timer.elapsed() < p->m_period)
@@ -65,7 +64,7 @@ void WindowManager::tick(float dt)
 void WindowManager::draw(Renderer* r)
 {
     int n = m_popups.size();
-    for (int i = 0; i < n; )
+    for (int i = 0; i < n; i++)
     {
         Popup* p = m_popups[i];
         p->m_window->draw(r);

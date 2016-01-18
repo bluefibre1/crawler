@@ -118,7 +118,7 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
         }
 
         ObjectWeakPtrs objects;
-        Simulator::get()->findObjectsAround(
+        Simulator::get().findObjectsAround(
             x, y, z, m_distance, &objects);
 
         for (auto i = objects.begin(); i != objects.end(); ++i)

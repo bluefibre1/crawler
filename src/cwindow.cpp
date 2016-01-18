@@ -9,8 +9,10 @@
 #include <iterator>
 
 Window::Window()
-    : m_width(1)
-    , m_height(1)
+    : m_alignedX(0)
+    , m_alignedY(0)
+    , m_width(0)
+    , m_height(0)
     , m_hborder(0)
     , m_vborder(0)
     , m_showBorder(true)
@@ -37,6 +39,24 @@ void Window::setHorizontalAlign(HorizontalAlign al)
 void Window::setMaxWidth(int width)
 {
     m_maxWidth = width;
+}
+
+int Window::getWidth()
+{
+    if (!m_width)
+    {
+        internalDraw(nullptr);
+    }
+    return m_width;
+}
+
+int Window::getHeight()
+{
+    if (!m_height)
+    {
+        internalDraw(nullptr);
+    }
+    return m_height;
 }
 
 void Window::clear()
@@ -70,7 +90,8 @@ void Window::setBorderWidth(int h, int v)
 
 void Window::draw(Renderer* r)
 {
-    m_width = 1;
+    m_width = 0;
+    m_height = 0;
     internalDraw(nullptr);
     internalDraw(r);
 }
@@ -84,8 +105,41 @@ void Window::internalDraw(Renderer* r)
 {
     using namespace std;
 
+    if (r)
+    {
+        switch (m_halign)
+        {
+        case HorizontalAlign::LEFT:
+            m_alignedX = getX();
+            break;
+
+        case HorizontalAlign::CENTER:
+            m_alignedX = (r->getWidth() - m_width) / 2;
+            break;
+
+        case HorizontalAlign::RIGHT:
+            m_alignedX = r->getWidth() - getX() - m_width;
+            break;
+        }
+
+        switch (m_valign)
+        {
+        case VerticalAlign::TOP:
+            m_alignedY = getY();
+            break;
+
+        case VerticalAlign::CENTER:
+            m_alignedY = (r->getHeight() - m_height) / 2;
+            break;
+
+        case VerticalAlign::BOTTOM:
+            m_alignedY = r->getHeight() - getY() - m_height;
+            break;
+        }
+    }
+
     Color c;
-    int x = getX();
+    int x = m_alignedX;
     int y = getY();
 
     topBorder(r, x, y);
@@ -94,7 +148,7 @@ void Window::internalDraw(Renderer* r)
         const Print& p = *i;
         c = p.m_color;
 
-        if (x == getX())
+        if (x == m_alignedX)
         {
             leftBorder(r, x, y);
         }
@@ -228,7 +282,7 @@ void Window::rightBorder(Renderer* r, int& x, int y)
 
 int Window::getLineLength(int x)
 {
-    return x - getX();
+    return x - m_alignedX;
 }
 
 void Window::newLine(int& x, int& y)
@@ -242,5 +296,6 @@ void Window::newLine(int& x, int& y)
             m_width = m_maxWidth;
         }
     }
-    x = getX();
+    x = m_alignedX;
+    m_height++;
 }

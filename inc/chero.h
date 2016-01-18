@@ -15,8 +15,7 @@ public:
     virtual void showStats() override;
 
 private:
-    float m_refreshWindow;
-    WindowSharedPtr m_statisticWindow;
+    WindowWeakPtr m_statsPopup;
 };
 
 typedef std::shared_ptr<Hero> HeroSharedPtr;

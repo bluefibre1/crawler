@@ -13,6 +13,7 @@
 #include "ctiles.h"
 #include "ccolors.h"
 #include "clogger.h"
+#include "cwindowmanager.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -30,21 +31,25 @@ int main(int /*argc*/, char* /*argv*/[])
     Input input;
     Renderer r;
 
-    Simulator* simulator = Simulator::get();
+    auto& simulator = Simulator::get();
+    auto& windowManager = WindowManager::get();
 
     WorldSharedPtr world(new World());
     // Possibility: 2, 4, 8, 16, 64, 128, 256, 512, 1024, 2048, 4096...
     world->generate(256);
-    simulator->setWorld(world);
+    simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
+    hero->setMapHp(200);
+    hero->heal();
+    hero->setName("John");
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
 
-    simulator->spawn(hero);
+    simulator.spawn(hero);
 
     const CreatureTemplate* creatureTemplates[] = {
         &CreatureTemplates::DRAGON(),
@@ -59,7 +64,7 @@ int main(int /*argc*/, char* /*argv*/[])
         int idx = Math::ceilRandom(numTemplates);
 
         ObjectSharedPtr creature(CreatureFactory::create(creatureTemplates[idx]));
-        simulator->spawn(creature);
+        simulator.spawn(creature);
     }
 
     Timer timer;
@@ -67,7 +72,8 @@ int main(int /*argc*/, char* /*argv*/[])
     {
         float dt = timer.elapsed();
         timer.reset();
-        simulator->tick(dt);
+        simulator.tick(dt);
+        windowManager.tick(dt);
 
         // control camera around hero
         int centerX = hero->getX() - r.getWidth() / 2;
@@ -92,7 +98,8 @@ int main(int /*argc*/, char* /*argv*/[])
         r.setOrigin(centerX, centerY, hero->getZ());
 
         r.clear();
-        simulator->draw(&r);
+        simulator.draw(&r);
+        windowManager.draw(&r);
         r.flip();
 
         int sleepTime = (int)(33333.3f - timer.elapsed() * 1000000.0f);

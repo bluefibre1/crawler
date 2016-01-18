@@ -33,6 +33,9 @@ public:
 
     void setBorderWidth(int h, int v);
 
+    int getWidth();
+    int getHeight();
+
     void clear();
     void print(Color color, const String& text);
 
@@ -41,6 +44,8 @@ public:
     virtual void tick(float dt) override;
 
 private:
+    int m_alignedX;
+    int m_alignedY;
     int m_width;
     int m_height;
     int m_hborder;

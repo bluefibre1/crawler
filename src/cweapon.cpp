@@ -81,7 +81,7 @@ void Weapon::use(Direction dir)
         getDeltas(dx, dy);
 
         Object* dest = nullptr;
-        if (Simulator::get()->findObjectAt(
+        if (Simulator::get().findObjectAt(
                 user->getX() + dx,
                 user->getY() + dy,
                 user->getZ(),
