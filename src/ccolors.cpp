@@ -13,7 +13,8 @@ const Color& Colors::COOL_BLUE() { static Color c(93); return c; }
 const Color& Colors::LIGHT_BLUE() { static Color c(159); return c; }
 const Color& Colors::ICY_BLUE() { static Color c(123); return c; }
 const Color& Colors::WHITE() { static Color c(231); return c; }
-const Color& Colors::LIGHT_GREY() { static Color c(237); return c; }
+const Color& Colors::LIGHT_GREY() { static Color c(246); return c; }
+const Color& Colors::NORMAL_GREY() { static Color c(251); return c; }
 const Color& Colors::GREY() { static Color c(244); return c; }
 const Color& Colors::DARK_GREY() { static Color c(237); return c; }
 const Color& Colors::MAGENTA() { static Color c(200); return c; }

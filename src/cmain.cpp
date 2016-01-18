@@ -34,14 +34,15 @@ int main(int argc, char* argv[])
     Simulator* simulator = Simulator::get();
 
     WorldSharedPtr world(new World());
-    world->generate(32);
+    // Possibility: 2, 4, 8, 16, 64, 128, 256, 512, 1024, 2048, 4096...
+    world->generate(256);
     simulator->setWorld(world);
 
     HeroSharedPtr hero(new Hero());
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
-    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
+    hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
     hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
 
     simulator->spawn(hero);
@@ -53,7 +54,7 @@ int main(int argc, char* argv[])
         &CreatureTemplates::BAT(),
     };
 
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 200; i++)
     {
         int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
         int idx = Math::ceilRandom(numTemplates);

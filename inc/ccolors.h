@@ -20,6 +20,7 @@ public:
     static const Color& ICY_BLUE();
     static const Color& WHITE();
     static const Color& GREY();
+    static const Color& NORMAL_GREY();
     static const Color& LIGHT_GREY();
     static const Color& BROWN();
     static const Color& MAGENTA();

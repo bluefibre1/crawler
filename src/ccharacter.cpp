@@ -128,6 +128,7 @@ int Character::getXp() const
     return m_xp;
 }
 
+
 int Character::getGold() const
 {
     return m_gold;

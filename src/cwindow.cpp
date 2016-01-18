@@ -18,7 +18,7 @@ Window::Window()
     , m_valign(VerticalAlign::TOP)
     , m_halign(HorizontalAlign::LEFT)
     , m_borderColor(Colors::WHITE())
-    , m_background(Colors::COOL_BLUE())
+    , m_background(Colors::BLACK())
     , m_prints()
 {
 

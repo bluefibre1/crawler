@@ -1,0 +1,46 @@
+/*  MISSION
+ trouver:
+ - tige metal
+ - clef a molette
+ - marteau
+ - plate-forme
+ - fil metalique
+ - plan
+ fabriquer:
+ 1:armes
+ sword(10x)
+ snowball(20x)
+ 2:matiere
+ feu
+ glace
+ vitre
+ pierre
+ electricite
+ cristal
+ 3:object
+ convertiseur(1)
+ interupteur(2)
+ mission:
+ -aider une maman a retrouver son enfant(reconpense: 200 gold+permission aller dans sa maison):
+ 1-
+ 2-
+ 3-
+ -retrouver le parchemain du sorcier(reconpense: un spell+permission aller a sa talbe d'enchantement):
+ 1-
+ 2-
+ 3-
+ -battre Terreur le dragon de feu(reconpense: un spell+feu+os+40 loveness(villager)):
+ 1-
+ 2-
+ 3-
+ -tuer la sorciere apres l'avoir reperer(reconpense: trois potion+deux spell):
+ 1-
+ 2-
+ 3-
+ -gagner le troffe de course a cheval a la place de Nisolo(reconpense:troffe):
+ 1-
+ 2-
+ 3-
+
+
+ */
