@@ -94,11 +94,8 @@ void Weapon::use(Direction dir)
                 Character* target = (Character*)dest;
 
                 Math::clamp(damage, 0, target->getHp());
-                if (damage)
-                {
-                    target->onReceiveHit(user, damage);
-                    user->onGiveHit(target, damage);
-                }
+                target->onReceiveHit(user, damage);
+                user->onGiveHit(target, damage);
             }
         }
     }

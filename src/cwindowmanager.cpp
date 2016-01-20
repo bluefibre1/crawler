@@ -1,4 +1,6 @@
 #include "cwindowmanager.h"
+#include "crenderer.h"
+#include "ccolors.h"
 
 WindowManager::WindowManager()
     : m_popups()
@@ -63,10 +65,30 @@ void WindowManager::tick(float dt)
 
 void WindowManager::draw(Renderer* r)
 {
-    int n = m_popups.size();
-    for (int i = 0; i < n; i++)
+    const int numAlign = (int)Window::VerticalAlign::MAX +
+        (int)Window::HorizontalAlign::MAX * (int)Window::VerticalAlign::MAX;
+
+    int xos[numAlign] = {2};
+    int yos[numAlign] = {2};
+    for (int i = 0; i < numAlign; ++i)
     {
-        Popup* p = m_popups[i];
-        p->m_window->draw(r);
+        xos[i] = 2;
+        yos[i] = 1;
+    }
+
+    for (auto i = m_popups.begin(); i != m_popups.end(); ++i)
+    {
+        Popup* p = *i;
+        Window* w = p->m_window.get();
+
+        int alignIdx = (int)w->getVerticalAlign() +
+            (int)w->getHorizontalAlign() * (int)Window::VerticalAlign::MAX;
+
+        int& xOffset = xos[alignIdx];
+        int& yOffset = yos[alignIdx];
+
+        w->setPosition(xOffset, yOffset, 0);
+        yOffset += w->getHeight() + 1;
+        w->draw(r);
     }
 }

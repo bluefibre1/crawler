@@ -43,7 +43,7 @@ void Window::setMaxWidth(int width)
 
 int Window::getWidth()
 {
-    if (!m_width)
+    if (m_width == 0)
     {
         internalDraw(nullptr);
     }
@@ -52,7 +52,7 @@ int Window::getWidth()
 
 int Window::getHeight()
 {
-    if (!m_height)
+    if (m_height == 0)
     {
         internalDraw(nullptr);
     }
@@ -109,6 +109,7 @@ void Window::internalDraw(Renderer* r)
     {
         switch (m_halign)
         {
+        default:
         case HorizontalAlign::LEFT:
             m_alignedX = getX();
             break;
@@ -124,6 +125,7 @@ void Window::internalDraw(Renderer* r)
 
         switch (m_valign)
         {
+        default:
         case VerticalAlign::TOP:
             m_alignedY = getY();
             break;
@@ -167,7 +169,7 @@ void Window::internalDraw(Renderer* r)
                 {
                     pad(r, c, x, y);
                     rightBorder(r, x, y);
-                    newLine(x, y);
+                    newLine(r, x, y);
                 }
 
                 print(r, c, x, y, word);
@@ -177,13 +179,13 @@ void Window::internalDraw(Renderer* r)
         {
             pad(r, c, x, y);
             rightBorder(r, x, y);
-            newLine(x, y);
+            newLine(r, x, y);
         }
     }
 
     pad(r, c, x, y);
     rightBorder(r, x, y);
-    newLine(x, y);
+    newLine(r, x, y);
     bottomBorder(r, x, y);
 }
 
@@ -211,36 +213,45 @@ void Window::print(Renderer* r, Color c, int& x, int y, const String& text)
 
 void Window::topBorder(Renderer* r, int x, int& y)
 {
-    if (m_showBorder && r)
+    if (m_showBorder)
     {
-        r->drawChar(x, y, m_borderColor, m_background, '+');
-        r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
-        r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
-        newLine(x, y);
+        if (r)
+        {
+            r->drawChar(x, y, m_borderColor, m_background, '+');
+            r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
+            r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+        }
+        newLine(r, x, y);
+
         for (int i = 0; i < m_hborder; ++i)
         {
             leftBorder(r, x, y);
             pad(r, m_background, x, y);
             rightBorder(r, x, y);
-            newLine(x, y);
+            newLine(r, x, y);
         }
     }
 }
 
 void Window::bottomBorder(Renderer* r, int x, int& y)
 {
-    if (m_showBorder && r)
+    if (m_showBorder)
     {
         for (int i = 0; i < m_hborder; ++i)
         {
             leftBorder(r, x, y);
             pad(r, m_background, x, y);
             rightBorder(r, x, y);
-            newLine(x, y);
+            newLine(r, x, y);
         }
-        r->drawChar(x, y, m_borderColor, m_background, '+');
-        r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
-        r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+
+        if (r)
+        {
+            r->drawChar(x, y, m_borderColor, m_background, '+');
+            r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
+            r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+        }
+        newLine(r, x, y);
     }
 }
 
@@ -285,17 +296,20 @@ int Window::getLineLength(int x)
     return x - m_alignedX;
 }
 
-void Window::newLine(int& x, int& y)
+void Window::newLine(Renderer* r, int& x, int& y)
 {
     y++;
-    if (getLineLength(x) > m_width)
+    if (!r)
     {
-        m_width = getLineLength(x);
-        if (m_width > m_maxWidth)
+        if (getLineLength(x) > m_width)
         {
-            m_width = m_maxWidth;
+            m_width = getLineLength(x);
+            if (m_width > m_maxWidth)
+            {
+                m_width = m_maxWidth;
+            }
         }
+        m_height++;
     }
     x = m_alignedX;
-    m_height++;
 }

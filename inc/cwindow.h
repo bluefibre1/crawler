@@ -11,22 +11,26 @@ class Window : public Object
 public:
     Window();
 
-    enum class VerticalAlign
+    enum class VerticalAlign : int
     {
-        TOP,
+        TOP=0,
             CENTER,
-            BOTTOM
+            BOTTOM,
+            MAX
     };
 
-    enum class HorizontalAlign
+    enum class HorizontalAlign : int
     {
-        LEFT,
+        LEFT=0,
             CENTER,
-            RIGHT
+            RIGHT,
+            MAX
     };
 
     void setVerticalAlign(VerticalAlign al);
+    VerticalAlign getVerticalAlign() const { return m_valign; }
     void setHorizontalAlign(HorizontalAlign al);
+    HorizontalAlign getHorizontalAlign() const { return m_halign; }
     void setMaxWidth(int width);
     void setBorderColor(Color color);
     void setBackground(Color color);
@@ -72,7 +76,7 @@ private:
     void leftBorder(Renderer* r, int& x, int y);
     void rightBorder(Renderer* r, int& x, int y);
     int getLineLength(int x);
-    void newLine(int& x, int& y);
+    void newLine(Renderer* r, int& x, int& y);
 };
 
 typedef std::shared_ptr<Window> WindowSharedPtr;

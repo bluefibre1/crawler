@@ -40,7 +40,7 @@ int main(int /*argc*/, char* /*argv*/[])
     simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
-    hero->setMapHp(200);
+    hero->setMapHp(20000);
     hero->heal();
     hero->setName("John");
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));

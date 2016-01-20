@@ -218,9 +218,9 @@ void Character::onReceiveHit(Object* /*from*/, int damage)
 
 void Character::onGiveHit(Object* to, int damage)
 {
-    if (to->isCharacter())
+    showStats();
+    if (to->isCharacter() && damage)
     {
-        showStats();
         Character* target = (Character*)to;
 
         int levelDiff = target->getLevel() - getLevel();

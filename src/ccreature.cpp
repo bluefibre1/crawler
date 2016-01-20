@@ -22,9 +22,11 @@ void Creature::showStats()
 {
     WindowSharedPtr w(m_statsPopup.expired() ?
                       WindowSharedPtr(new Window()) : m_statsPopup.lock());
+    m_statsPopup = w;
 
     w->setHorizontalAlign(Window::HorizontalAlign::RIGHT);
-    w->setPosition(2, 1, 0);
+    w->setVerticalAlign(Window::VerticalAlign::TOP);
+
     w->clear();
 
     w->print(Colors::ORANGE(), "NAME:");
