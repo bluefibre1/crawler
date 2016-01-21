@@ -15,7 +15,21 @@ public:
     virtual void showStats() override;
 
 private:
+    enum class State
+    {
+        InGame,
+            Inventory
+    };
+
+    State m_state;
+
     WindowWeakPtr m_statsPopup;
+    WindowSharedPtr m_inventoryWindow;
+
+    void handleStateInGame(bool pressed, int key);
+    void handleStateInventory(bool pressed, int key);
+
+    void showInventory();
 };
 
 typedef std::shared_ptr<Hero> HeroSharedPtr;

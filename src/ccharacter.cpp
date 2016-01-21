@@ -101,6 +101,11 @@ void Character::setMapHp(int hp)
     m_maxHp = hp;
 }
 
+int Character::getMaxHp() const
+{
+    return m_maxHp;
+}
+
 void Character::heal()
 {
     m_hp = m_maxHp;
@@ -112,7 +117,7 @@ void Character::addXp(int xp)
     if (m_xp >= m_nextLevelXp)
     {
         m_level++;
-        m_maxHp *= 2;
+        m_maxHp = (int)(m_maxHp * 1.1f);
         heal();
         setNextLevelXp();
     }
@@ -128,6 +133,10 @@ int Character::getXp() const
     return m_xp;
 }
 
+int Character::getNextLevelXp() const
+{
+    return m_nextLevelXp;
+}
 
 int Character::getGold() const
 {
@@ -224,13 +233,14 @@ void Character::onGiveHit(Object* to, int damage)
         Character* target = (Character*)to;
 
         int levelDiff = target->getLevel() - getLevel();
-        int dxp = Math::exp(damage, levelDiff) + 1;
+        float factor = levelDiff >= 0 ? levelDiff+1 : -1.0f/levelDiff;
+        int dxp = damage * factor;
 
         addXp(dxp);
 
         if (target->getHp() <= 0)
         {
-            addXp(Math::exp(10, levelDiff)+1);
+            addXp(target->getLevel() * 10 * factor);
         }
     }
 }

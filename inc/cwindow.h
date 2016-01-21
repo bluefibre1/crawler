@@ -27,6 +27,7 @@ public:
             MAX
     };
 
+    void setTitle(const String& title);
     void setVerticalAlign(VerticalAlign al);
     VerticalAlign getVerticalAlign() const { return m_valign; }
     void setHorizontalAlign(HorizontalAlign al);
@@ -60,6 +61,7 @@ private:
     HorizontalAlign m_halign;
     Color m_borderColor;
     Color m_background;
+    String m_title;
 
     struct Print
     {

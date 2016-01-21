@@ -46,6 +46,16 @@ void Math::clamp(int& value, int min, int max)
     }
 }
 
+int Math::maximum(int v1, int v2)
+{
+    return v1 > v2 ? v1 : v2;
+}
+
+int Math::minimum(int v1, int v2)
+{
+    return v1 < v2 ? v1 : v2;
+}
+
 int Math::sqrDistance(int x1, int y1, int x2, int y2)
 {
     int dx = x1 - x2;

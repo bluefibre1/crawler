@@ -39,11 +39,15 @@ public:
 
     void setMapHp(int hp);
 
+    int getMaxHp() const;
+
     void heal();
 
     void addXp(int xp);
 
     int getXp() const;
+
+    int getNextLevelXp() const;
 
     int getGold() const;
 

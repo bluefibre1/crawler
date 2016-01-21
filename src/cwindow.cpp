@@ -1,6 +1,7 @@
 #include "cwindow.h"
 #include "crenderer.h"
 #include "ccolors.h"
+#include "cmath.h"
 
 #include <iostream>
 #include <string>
@@ -21,9 +22,15 @@ Window::Window()
     , m_halign(HorizontalAlign::LEFT)
     , m_borderColor(Colors::WHITE())
     , m_background(Colors::BLACK())
+    , m_title()
     , m_prints()
 {
 
+}
+
+void Window::setTitle(const String& title)
+{
+    m_title = title;
 }
 
 void Window::setVerticalAlign(VerticalAlign al)
@@ -142,7 +149,7 @@ void Window::internalDraw(Renderer* r)
 
     Color c;
     int x = m_alignedX;
-    int y = getY();
+    int y = m_alignedY;
 
     topBorder(r, x, y);
     for (auto i = m_prints.begin(); i != m_prints.end(); ++i)
@@ -215,10 +222,24 @@ void Window::topBorder(Renderer* r, int x, int& y)
 {
     if (m_showBorder)
     {
-        if (r)
+        if (r && m_width)
         {
             r->drawChar(x, y, m_borderColor, m_background, '+');
-            r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
+            if (!m_title.empty())
+            {
+                int titleStart = Math::maximum(x + (m_width - 2 - m_title.size()) / 2, x+2);
+                r->drawText(x+1, y, m_borderColor, m_background, String(titleStart-x-1, '-'));
+                r->drawChar(titleStart, y, m_borderColor, m_background, ' ');
+                r->drawText(titleStart+1, y, m_borderColor, m_background, m_title);
+                r->drawChar(titleStart+1+m_title.size(), y, m_borderColor, m_background, ' ');
+                int titleEnd = Math::maximum(titleStart + m_title.size() + 2, 0);
+                r->drawText(titleEnd, y, m_borderColor, m_background, String(m_width-titleEnd+1, '-'));
+            }
+            else
+            {
+                r->drawText(x+1, y, m_borderColor, m_background, String(m_width-2, '-'));
+            }
+
             r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
         }
         newLine(r, x, y);

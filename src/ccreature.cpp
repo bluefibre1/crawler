@@ -34,13 +34,11 @@ void Creature::showStats()
 
     w->print(Colors::ORANGE(), "\n");
 
-    w->print(Colors::ORANGE(), "HP:");
-    w->print(Colors::WHITE(), std::to_string(getHp()));
+    const int hpTotalBar = w->getWidth()-2;
+    int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
 
-    w->print(Colors::ORANGE(), "\n");
-
-    w->print(Colors::ORANGE(), "LEVEL:");
-    w->print(Colors::WHITE(), std::to_string(getLevel()));
+    w->print(Colors::GREEN(), String(hpBars, '='));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, 'x'));
 
     WindowManager::get().popup(w, 3);
 }
