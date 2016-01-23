@@ -3,6 +3,7 @@
 #include "ccolors.h"
 #include "cwindowmanager.h"
 #include "cmath.h"
+#include "csimulator.h"
 
 static const int INVENTORY_PAGE_SIZE = 5;
 
@@ -96,6 +97,47 @@ void Hero::showStats()
     WindowManager::get().popup(w, 10);
 }
 
+void Hero::takeAll()
+{
+    Object* dest = nullptr;
+    if (Simulator::get().findObjectAt(
+            getX(),
+            getY(),
+            getZ(),
+            &dest))
+    {
+        if (dest->isCharacter())
+        {
+            Character* target = (Character*)dest;
+            if (target->getHp() == 0)
+            {
+                addItems(target->getItems());
+                target->removeAllItems();
+            }
+        }
+    }
+}
+
+void Hero::onGiveHit(Object* to, int damage)
+{
+    Character::onGiveHit(to, damage);
+    if (to->isCharacter() && damage)
+    {
+        Character* target = (Character*)to;
+
+        int levelDiff = target->getLevel() - getLevel();
+        float factor = levelDiff >= 0 ? levelDiff+1 : -1.0f/levelDiff;
+        int dxp = damage * factor;
+
+        addXp(dxp);
+
+        if (target->getHp() <= 0)
+        {
+            addXp(target->getLevel() * 10 * factor);
+        }
+    }
+}
+
 void Hero::handleStateInGame(bool pressed, int key)
 {
     // only when alive
@@ -120,6 +162,11 @@ void Hero::handleStateInGame(bool pressed, int key)
 
     case (int)Key::RIGHT:
         setDisplacement(1, 0);
+        break;
+
+    case 't':
+    case 'T':
+        takeAll();
         break;
 
     case 'a':

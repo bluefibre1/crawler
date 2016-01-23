@@ -8,10 +8,11 @@
 #include <string>
 #include <vector>
 
-class Item;
 class BehaviorNode;
 class Blackboard;
 class Faction;
+
+typedef std::vector<ItemSharedPtr> Items;
 
 class Character : public Object
 {
@@ -59,7 +60,13 @@ public:
 
     void addItem(const ItemSharedPtr& item);
 
+    void addItems(const Items& items);
+
     void removeItem(const ItemSharedPtr& item);
+
+    void removeAllItems();
+
+    const Items& getItems() const;
 
     void equip(const ItemSharedPtr& item);
 
@@ -96,7 +103,6 @@ protected:
     Faction* m_faction;
     std::string m_name;
 
-    typedef std::vector<ItemSharedPtr> Items;
     Items m_items;
     Items m_equipped;
 

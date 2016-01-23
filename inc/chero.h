@@ -14,6 +14,10 @@ public:
 
     virtual void showStats() override;
 
+    void takeAll();
+
+    virtual void onGiveHit(Object* to, int damage) override;
+
 private:
     enum class State
     {

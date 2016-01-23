@@ -167,12 +167,28 @@ void Character::addItem(const ItemSharedPtr& item)
     item->setOwner(this);
 }
 
+void Character::addItems(const Items& items)
+{
+    m_items.reserve(m_items.size() + items.size());
+    m_items.insert(m_items.end(), items.begin(), items.end());
+}
+
 void Character::removeItem(const ItemSharedPtr& item)
 {
     item->setOwner(nullptr);
     unequip(item);
     m_items.erase(std::remove(m_items.begin(), m_items.end(), item),
         m_items.end());
+}
+
+void Character::removeAllItems()
+{
+    m_items.clear();
+}
+
+const Items& Character::getItems() const
+{
+    return m_items;
 }
 
 void Character::equip(const ItemSharedPtr& item)
@@ -215,7 +231,7 @@ void Character::hit(Direction dir)
         m_equipped.begin(), m_equipped.end(),
         [](const ItemSharedPtr& item)
         {
-            return item->getType() & Item::Type::TYPE_WEAPON;
+            return item->getType() == Item::Type::TYPE_WEAPON;
         });
 
     if (w != m_equipped.end())
@@ -234,19 +250,4 @@ void Character::onReceiveHit(Object* /*from*/, int damage)
 void Character::onGiveHit(Object* to, int damage)
 {
     showStats();
-    if (to->isCharacter() && damage)
-    {
-        Character* target = (Character*)to;
-
-        int levelDiff = target->getLevel() - getLevel();
-        float factor = levelDiff >= 0 ? levelDiff+1 : -1.0f/levelDiff;
-        int dxp = damage * factor;
-
-        addXp(dxp);
-
-        if (target->getHp() <= 0)
-        {
-            addXp(target->getLevel() * 10 * factor);
-        }
-    }
 }
