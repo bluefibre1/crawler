@@ -10,6 +10,7 @@
 static struct termios m_origTermios;  
 
 bool Input::m_quit = false;
+bool Input::m_pause = false;
 
 Input::Input()
 {
@@ -45,6 +46,15 @@ bool Input::quit()
 void Input::setQuit()
 {
     m_quit = true;
+}
+bool Input::isPaused()
+{
+    return m_pause;
+}
+
+void Input::setPause(bool pause)
+{
+    m_pause = pause;
 }
 
 bool Input::getKey(int& key)

@@ -23,6 +23,8 @@ void Hero::tick(float dt)
         pressed = true;
     }
 
+    Input::setPause(m_state != State::InGame);
+
     switch (m_state)
     {
     case State::InGame:
@@ -66,6 +68,7 @@ void Hero::showStats()
     w->setHorizontalAlign(Window::HorizontalAlign::LEFT);
     w->setVerticalAlign(Window::VerticalAlign::TOP);
 
+    w->setTitle("Battle window");
     w->clear();
 
     w->print(Colors::ORANGE(), "NAME:");
@@ -73,20 +76,13 @@ void Hero::showStats()
 
     w->print(Colors::ORANGE(), "\n");
 
-    w->print(Colors::ORANGE(), "HP:");
-    w->print(Colors::WHITE(), std::to_string(getHp()));
+    const int hpTotalBar = w->getWidth()-2;
+    int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
 
-    w->print(Colors::ORANGE(), "\n");
+    w->print(Colors::GREEN(), String(hpBars, '='));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, 'x'));
 
-    w->print(Colors::ORANGE(), "LEVEL:");
-    w->print(Colors::WHITE(), std::to_string(getLevel()));
-
-    w->print(Colors::ORANGE(), "\n");
-
-    w->print(Colors::ORANGE(), "XP:");
-    w->print(Colors::WHITE(), std::to_string(getXp()));
-
-    WindowManager::get().popup(w, 10);
+    WindowManager::get().popup(w, 5);
 }
 
 void Hero::handleStateInGame(bool pressed, int key)

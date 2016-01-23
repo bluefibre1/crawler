@@ -1,6 +1,7 @@
 #include "ccreature.h"
 #include "cwindowmanager.h"
 #include "ccolors.h"
+#include "cinput.h"
 
 Creature::Creature()
     : m_maxVelocity(1)
@@ -10,7 +11,10 @@ Creature::Creature()
 
 void Creature::tick(float dt)
 {
-    Character::tick(dt);
+    if (!Input::isPaused())
+    {
+        Character::tick(dt);
+    }
 }
 
 void Creature::setMaxVelocity(float maxVel)
