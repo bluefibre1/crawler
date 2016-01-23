@@ -65,6 +65,8 @@ public:
 
     void unequip(const ItemPtr& item);
 
+    bool isEquipped(const ItemPtr& item);
+
     void hit(Direction dir);
 
     virtual void onReceiveHit(Object* from, int damage);
@@ -79,7 +81,6 @@ protected:
     char m_ch;
     Color m_color;
 
-private:
     void setNextLevelXp();
 
     int m_hp;

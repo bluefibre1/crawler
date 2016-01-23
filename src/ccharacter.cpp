@@ -192,6 +192,11 @@ void Character::equip(const ItemPtr& item)
     }
 }
 
+bool Character::isEquipped(const ItemPtr& item)
+{
+    return std::find(m_equipped.begin(), m_equipped.end(), item) != m_equipped.end();
+}
+
 void Character::unequip(const ItemPtr& item)
 {
     auto i = std::find(m_equipped.begin(), m_equipped.end(), item);

@@ -8,7 +8,7 @@
 Hero::Hero()
     : m_state(State::InGame)
     , m_statsPopup()
-    , m_inventoryWindow()
+    , m_menuWindow()
 {
     m_color = Colors::MAGENTA();
     m_ch = '0';
@@ -27,6 +27,10 @@ void Hero::tick(float dt)
     {
     case State::InGame:
         handleStateInGame(pressed, key);
+        break;
+
+    case State::Status:
+        handleStateStatus(pressed, key);
         break;
 
     case State::Inventory:
@@ -127,13 +131,33 @@ void Hero::handleStateInGame(bool pressed, int key)
         break;
 
     case ' ':
-        m_state = State::Inventory;
+        m_state = State::Status;
         break;
 
     case 'w':
     case 'W':
         hit(Direction::UP);
         break;
+    }
+}
+
+void Hero::handleStateStatus(bool pressed, int key)
+{
+    showStatus();
+
+    if (pressed)
+    {
+        switch (key)
+        {
+        case ' ':
+            m_state = State::InGame;
+            break;
+
+        case 'i':
+        case 'I':
+            m_state = State::Inventory;
+            break;
+        }
     }
 }
 
@@ -148,33 +172,38 @@ void Hero::handleStateInventory(bool pressed, int key)
         case ' ':
             m_state = State::InGame;
             break;
+
+        case 's':
+        case 'S':
+            m_state = State::Status;
+            break;
         }
     }
 }
 
-void Hero::showInventory()
+void Hero::showStatus()
 {
-    if (!m_inventoryWindow)
+    if (!m_menuWindow)
     {
-        m_inventoryWindow = WindowSharedPtr(new Window());
-        m_inventoryWindow->setPosition(2, 1, 0);
-        m_inventoryWindow->setHorizontalAlign(Window::HorizontalAlign::LEFT);
-        m_inventoryWindow->setVerticalAlign(Window::VerticalAlign::BOTTOM);
-        m_inventoryWindow->setTitle("Inventory");
-        m_inventoryWindow->setMaxWidth(50);
+        m_menuWindow = WindowSharedPtr(new Window());
+        m_menuWindow->setPosition(2, 1, 0);
+        m_menuWindow->setHorizontalAlign(Window::HorizontalAlign::LEFT);
+        m_menuWindow->setVerticalAlign(Window::VerticalAlign::BOTTOM);
+        m_menuWindow->setMaxWidth(50);
     }
 
-    Window* w = m_inventoryWindow.get();
+    Window* w = m_menuWindow.get();
 
+    w->setTitle("Status");
     w->clear();
 
     w->print(Colors::ORANGE(), "NAME:");
     w->print(Colors::WHITE(), getName());
 
-    w->print(Colors::ORANGE(), "    HP:");
+    w->print(Colors::ORANGE(), " HP:");
     w->print(Colors::WHITE(), std::to_string(getHp()));
 
-    w->print(Colors::ORANGE(), "    GOLD:");
+    w->print(Colors::ORANGE(), " GOLD:");
     w->print(Colors::WHITE(), std::to_string(getGold()));
 
     w->print(Colors::ORANGE(), "\n");
@@ -182,11 +211,67 @@ void Hero::showInventory()
     w->print(Colors::ORANGE(), "LEVEL:");
     w->print(Colors::WHITE(), std::to_string(getLevel()));
 
-    w->print(Colors::ORANGE(), "    XP:");
+    w->print(Colors::ORANGE(), " XP:");
     w->print(Colors::WHITE(), std::to_string(getXp()));
 
-    w->print(Colors::ORANGE(), "    NEXT:");
+    w->print(Colors::ORANGE(), " NEXT:");
     w->print(Colors::WHITE(), std::to_string(getNextLevelXp()));
 
-    WindowManager::get().popup(m_inventoryWindow, 0.1);
+    w->print(Colors::ORANGE(), "\n");
+    w->print(Colors::ORANGE(), "\n");
+
+    w->print(Colors::ORANGE(), "I: ");
+    w->print(Colors::BLUE(), "inventory");
+
+    WindowManager::get().popup(m_menuWindow, 0.1);
+}
+
+void Hero::showInventory()
+{
+    if (!m_menuWindow)
+    {
+        m_menuWindow = WindowSharedPtr(new Window());
+        m_menuWindow->setPosition(2, 1, 0);
+        m_menuWindow->setHorizontalAlign(Window::HorizontalAlign::LEFT);
+        m_menuWindow->setVerticalAlign(Window::VerticalAlign::BOTTOM);
+        m_menuWindow->setMaxWidth(50);
+    }
+
+    Window* w = m_menuWindow.get();
+
+    w->setTitle("Inventory");
+    w->clear();
+
+    for (int i = 0; i < 10; ++i)
+    {
+        if (i >= (int)m_items.size())
+        {
+            break;
+        }
+
+        ItemPtr item = m_items[i];
+        w->print(Colors::ORANGE(), std::to_string(i+1));
+        w->print(Colors::ORANGE(), ": ");
+
+        if (isEquipped(item))
+        {
+            w->print(Colors::YELLOW(), "<");
+        }
+
+        w->print(Colors::WHITE(), item->getName());
+
+        if (isEquipped(item))
+        {
+            w->print(Colors::YELLOW(), ">");
+        }
+
+        w->print(Colors::ORANGE(), "\n");
+    }
+
+    w->print(Colors::ORANGE(), "\n");
+
+    w->print(Colors::ORANGE(), "S: ");
+    w->print(Colors::BLUE(), "status");
+
+    WindowManager::get().popup(m_menuWindow, 0.1);
 }

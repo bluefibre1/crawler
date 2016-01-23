@@ -162,31 +162,36 @@ void Window::internalDraw(Renderer* r)
             leftBorder(r, x, y);
         }
 
-        if (p.m_text != "\n")
+        const char* ch = p.m_text.c_str();
+
+        string word;
+        while (*ch)
         {
-            istringstream iss(p.m_text);
-            vector<string> words{istream_iterator<string>{iss},
-                    istream_iterator<string>{}};
+            word.clear();
 
-            for (auto j = words.begin(); j != words.end(); ++j)
+            do
             {
-                string& word = *j;
+                word += *ch;
+                ch++;
+            }
+            while (*ch && *ch != ' ' && *ch != '\n');
 
+            if (*word.c_str() != '\n')
+            {
                 if (getLineLength(x) + (int)word.size() >= m_maxWidth)
                 {
                     pad(r, c, x, y);
                     rightBorder(r, x, y);
                     newLine(r, x, y);
                 }
-
                 print(r, c, x, y, word);
             }
-        }
-        else
-        {
-            pad(r, c, x, y);
-            rightBorder(r, x, y);
-            newLine(r, x, y);
+            else
+            {
+                pad(r, c, x, y);
+                rightBorder(r, x, y);
+                newLine(r, x, y);
+            }
         }
     }
 

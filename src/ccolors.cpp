@@ -4,7 +4,7 @@ const Color& Colors::BLACK() { static Color c(0); return c; }
 const Color& Colors::RED() { static Color c(9); return c; }
 const Color& Colors::LIGHT_GREEN() { static Color c(154); return c; }
 const Color& Colors::GREEN() { static Color c(10); return c; }
-const Color& Colors::DARK_GREEN() { static Color c(40); return c; }
+const Color& Colors::DARK_GREEN() { static Color c(2); return c; }
 const Color& Colors::YELLOW() { static Color c(226); return c; }
 const Color& Colors::SANDYELLOW() { static Color c(228); return c; }
 const Color& Colors::DARK_BLUE() { static Color c(20); return c; }

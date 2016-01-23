@@ -18,17 +18,20 @@ private:
     enum class State
     {
         InGame,
+            Status,
             Inventory
     };
 
     State m_state;
 
     WindowWeakPtr m_statsPopup;
-    WindowSharedPtr m_inventoryWindow;
+    WindowSharedPtr m_menuWindow;
 
     void handleStateInGame(bool pressed, int key);
+    void handleStateStatus(bool pressed, int key);
     void handleStateInventory(bool pressed, int key);
 
+    void showStatus();
     void showInventory();
 };
 
