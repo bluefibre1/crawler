@@ -15,12 +15,6 @@
 #include "clogger.h"
 #include "cwindowmanager.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
-
 int main(int /*argc*/, char* /*argv*/[])
 {
     srand(time(nullptr));
