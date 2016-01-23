@@ -30,13 +30,13 @@ int main(int /*argc*/, char* /*argv*/[])
 
     WorldSharedPtr world(new World());
     // Possibility: 2, 4, 8, 16, 64, 128, 256, 512, 1024, 2048, 4096...
-    world->generate(256);
+    world->generate(512);
     simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
-    hero->setMapHp(20000);
+    hero->setMapHp(20);
     hero->heal();
-    hero->setName("John");
+    hero->setName("Jacob");
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
 
     simulator.spawn(hero);

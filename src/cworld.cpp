@@ -48,17 +48,12 @@ void World::generate(int size)
             &Tiles::WATER,
             &Tiles::WATER,
             &Tiles::WATER,
-            &Tiles::WATER,
-            &Tiles::WATER,
-            &Tiles::WATER,
             &Tiles::SAND,
             &Tiles::GRASS,
             &Tiles::GRASS,
             &Tiles::GRASS,
             &Tiles::GRASS,
             &Tiles::GRASS,
-            &Tiles::GRASS,
-            &Tiles::MOUNTAIN,
             &Tiles::MOUNTAIN,
             &Tiles::MOUNTAIN,
             &Tiles::MOUNTAIN,
@@ -66,7 +61,6 @@ void World::generate(int size)
             &Tiles::CLOUDS,
             &Tiles::ICE_MOUNTAIN,
             &Tiles::ICE_MOUNTAIN,
-            &Tiles::ICE_MOUNTAIN
         };
 
     int numTemplates = sizeof(templates) / sizeof(Tile*);

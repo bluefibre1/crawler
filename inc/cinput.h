@@ -18,10 +18,15 @@ public:
     static bool quit();
     static void setQuit();
 
+    static bool isPaused();
+    static void setPause(bool pause);
+
 private:
     static int kbhit();
     static int getch();
     static void reset();
 
     static bool m_quit;
+
+    static bool m_pause;
 };
