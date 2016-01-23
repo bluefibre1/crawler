@@ -70,7 +70,7 @@ void Weapon::draw(Renderer* r)
 
 void Weapon::use(Direction dir)
 {
-    if (getOwner() && getOwner()->isCharacter())
+    if (getOwner() && getOwner()->getObjectType() == Object::OBJECT_TYPE_CHARACTER)
     {
         Character* owner = (Character*)getOwner();
 
@@ -92,7 +92,7 @@ void Weapon::use(Direction dir)
                 [this, owner](const ObjectWeakPtr& o)
                 {
                     ObjectSharedPtr object = o.lock();
-                    if (object->isCharacter())
+                    if (object->getObjectType() == Object::OBJECT_TYPE_CHARACTER)
                     {
                         int damage = Math::ceilRandom(m_damage);
 

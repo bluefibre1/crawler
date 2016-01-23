@@ -31,7 +31,14 @@ public:
 
     float getDisplacementY() const { return m_dispY; }
 
-    virtual bool isCharacter() const { return false; }
+    enum ObjectType
+    {
+        OBJECT_TYPE_UNKNOWN,
+        OBJECT_TYPE_CHEST,
+        OBJECT_TYPE_CHARACTER
+    };
+
+    virtual ObjectType getObjectType() const { return OBJECT_TYPE_UNKNOWN; }
 
     virtual bool isCollidable() const { return true; }
 

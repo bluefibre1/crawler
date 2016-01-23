@@ -12,8 +12,6 @@ class BehaviorNode;
 class Blackboard;
 class Faction;
 
-typedef std::vector<ItemSharedPtr> ItemSharedPtrs;
-
 class Character : public Object
 {
 public:
@@ -82,7 +80,7 @@ public:
 
     virtual bool isCollidable() const override { return getHp() > 0; }
 
-    virtual bool isCharacter() const override { return true; }
+    virtual ObjectType getObjectType() const override { return OBJECT_TYPE_CHARACTER; }
 
     virtual void showStats() = 0;
 

@@ -5,6 +5,7 @@
 #include "cmath.h"
 #include "csimulator.h"
 #include "cweapon.h"
+#include "cchest.h"
 
 static const int INVENTORY_PAGE_SIZE = 5;
 
@@ -108,7 +109,9 @@ void Hero::takeAll()
             objects.begin(), objects.end(), [&items](const ObjectWeakPtr& o)
             {
                 ObjectSharedPtr object = o.lock();
-                if (object->isCharacter())
+                switch (object->getObjectType())
+                {
+                case OBJECT_TYPE_CHARACTER:
                 {
                     Character* target = (Character*)object.get();
                     if (target->getHp() == 0)
@@ -117,6 +120,20 @@ void Hero::takeAll()
                         items.insert(items.end(), target->getItems().begin(), target->getItems().end());
                         target->removeAllItems();
                     }
+                }
+                break;
+
+                case OBJECT_TYPE_CHEST:
+                {
+                    Chest* target = (Chest*)object.get();
+                    items.reserve(items.size() + target->getItems().size());
+                    items.insert(items.end(), target->getItems().begin(), target->getItems().end());
+                    target->removeAllItems();
+                }
+                break;
+
+                default:
+                    break;
                 }
             });
 
@@ -150,7 +167,7 @@ void Hero::takeAll()
 void Hero::onGiveHit(Object* to, int damage)
 {
     Character::onGiveHit(to, damage);
-    if (to->isCharacter() && damage)
+    if (to->getObjectType() == OBJECT_TYPE_CHARACTER && damage)
     {
         Character* target = (Character*)to;
 

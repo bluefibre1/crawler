@@ -14,6 +14,7 @@
 #include "ccolors.h"
 #include "clogger.h"
 #include "cwindowmanager.h"
+#include "cchestfactory.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {
@@ -54,6 +55,12 @@ int main(int /*argc*/, char* /*argv*/[])
 
         ObjectSharedPtr creature(CreatureFactory::create(creatureTemplates[idx]));
         simulator.spawn(creature);
+    }
+
+    for (int i = 0; i < 200; i++)
+    {
+        ObjectSharedPtr chest(ChestFactory::create());
+        simulator.spawn(chest);
     }
 
     Timer timer;

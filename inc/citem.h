@@ -47,3 +47,4 @@ protected:
 };
 
 typedef std::shared_ptr<Item> ItemSharedPtr;
+typedef std::vector<ItemSharedPtr> ItemSharedPtrs;

@@ -7,6 +7,16 @@
 
 static const int MAX_STEP = 2;
 
+Simulator::Simulator()
+    : m_zoneSize(50)
+    , m_world()
+    , m_objects()
+    , m_removed()
+    , m_activated()
+{
+
+}
+
 Simulator& Simulator::get()
 {
     static Simulator instance;

@@ -10,6 +10,7 @@ class Character;
 class Simulator
 {
 public:
+    Simulator();
 
     static Simulator& get();
 
@@ -34,7 +35,7 @@ public:
     bool findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result);
 
 private:
-
+    int m_zoneSize;
     WorldSharedPtr m_world;
     ObjectSharedPtrs m_objects;
     ObjectPtrs m_removed;
