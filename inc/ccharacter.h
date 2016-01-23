@@ -12,7 +12,7 @@ class BehaviorNode;
 class Blackboard;
 class Faction;
 
-typedef std::vector<ItemSharedPtr> Items;
+typedef std::vector<ItemSharedPtr> ItemSharedPtrs;
 
 class Character : public Object
 {
@@ -60,13 +60,13 @@ public:
 
     void addItem(const ItemSharedPtr& item);
 
-    void addItems(const Items& items);
+    void addItems(const ItemSharedPtrs& items);
 
     void removeItem(const ItemSharedPtr& item);
 
     void removeAllItems();
 
-    const Items& getItems() const;
+    const ItemSharedPtrs& getItems() const;
 
     void equip(const ItemSharedPtr& item);
 
@@ -103,8 +103,8 @@ protected:
     Faction* m_faction;
     std::string m_name;
 
-    Items m_items;
-    Items m_equipped;
+    ItemSharedPtrs m_items;
+    ItemSharedPtrs m_equipped;
 
 };
 

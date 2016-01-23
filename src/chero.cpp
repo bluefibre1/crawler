@@ -99,21 +99,53 @@ void Hero::showStats()
 
 void Hero::takeAll()
 {
-    Object* dest = nullptr;
-    if (Simulator::get().findObjectAt(
+    ObjectWeakPtrs objects;
+    if (Simulator::get().listObjectsAt(
             getX(),
             getY(),
             getZ(),
-            &dest))
+            &objects))
     {
-        if (dest->isCharacter())
-        {
-            Character* target = (Character*)dest;
-            if (target->getHp() == 0)
+        ItemSharedPtrs items;
+        std::for_each(
+            objects.begin(), objects.end(), [&items](const ObjectWeakPtr& o)
             {
-                addItems(target->getItems());
-                target->removeAllItems();
-            }
+                ObjectSharedPtr object = o.lock();
+                if (object->isCharacter())
+                {
+                    Character* target = (Character*)object.get();
+                    if (target->getHp() == 0)
+                    {
+                        items.reserve(items.size() + target->getItems().size());
+                        items.insert(items.end(), target->getItems().begin(), target->getItems().end());
+                        target->removeAllItems();
+                    }
+                }
+            });
+
+        if (!items.empty())
+        {
+            WindowSharedPtr w(new Window());
+            w->setHorizontalAlign(Window::HorizontalAlign::CENTER);
+            w->setVerticalAlign(Window::VerticalAlign::BOTTOM);
+            w->setTitle("Added To Inventory");
+            w->setMaxWidth(50);
+
+            bool first = true;
+            for_each(items.begin(), items.end(),
+                     [w, &first] (const ItemSharedPtr& item)
+                     {
+                         if (!first)
+                         {
+                             w->printEndLine();
+                         }
+                         first = false;
+                         w->print(Colors::WHITE(), item->getName());
+                     });
+
+            WindowManager::get().popup(w, 5);
+
+            addItems(items);
         }
     }
 }

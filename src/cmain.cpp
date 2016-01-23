@@ -44,11 +44,6 @@ int main(int /*argc*/, char* /*argv*/[])
     hero->heal();
     hero->setName("John");
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
-    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
-    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
-    hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
-    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
-    hero->equip(WeaponFactory::create(&WeaponTemplates::SWORD()));
 
     simulator.spawn(hero);
 

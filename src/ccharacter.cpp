@@ -167,7 +167,7 @@ void Character::addItem(const ItemSharedPtr& item)
     item->setOwner(this);
 }
 
-void Character::addItems(const Items& items)
+void Character::addItems(const ItemSharedPtrs& items)
 {
     m_items.reserve(m_items.size() + items.size());
     m_items.insert(m_items.end(), items.begin(), items.end());
@@ -186,7 +186,7 @@ void Character::removeAllItems()
     m_items.clear();
 }
 
-const Items& Character::getItems() const
+const ItemSharedPtrs& Character::getItems() const
 {
     return m_items;
 }

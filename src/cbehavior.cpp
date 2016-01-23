@@ -121,23 +121,23 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
         Simulator::get().findObjectsAround(
             x, y, z, m_distance, &objects);
 
-        for (auto i = objects.begin(); i != objects.end(); ++i)
-        {
-            ObjectSharedPtr obj = (*i).lock();
-            if (!obj || !obj->isCharacter())
+        std::find_if(
+            objects.begin(), objects.end(),
+            [this, &bb] (const ObjectWeakPtr& o)
             {
-                continue;
-            }
-
-            Character* c = (Character*)obj.get();
-            if (bb.getSelf()->getFaction()->isEnemy(c->getFaction()))
-            {
-                CLOG_DEBUG("found target:" << c->getName());
-                bb.setReference(getReference(), obj);
-                break;
-            }
-        }
-
+                const ObjectSharedPtr& obj = o.lock();
+                if (obj && obj->isCharacter())
+                {
+                    Character* c = (Character*)obj.get();
+                    if (bb.getSelf()->getFaction()->isEnemy(c->getFaction()))
+                    {
+                        CLOG_DEBUG("found target:" << c->getName());
+                        bb.setReference(getReference(), obj);
+                        return true;
+                    }
+                }
+                return false;
+            });
     }
 }
 
