@@ -33,6 +33,8 @@ public:
 
     virtual bool isCharacter() const { return false; }
 
+    virtual bool isCollidable() const { return true; }
+
 private:
     int m_x;
     int m_y;

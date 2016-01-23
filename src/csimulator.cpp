@@ -126,7 +126,8 @@ bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
             continue;
         }
 
-        if (collider->getX() == x &&
+        if (collider->isCollidable() &&
+            collider->getX() == x &&
             collider->getY() == y &&
             Math::abs(collider->getZ() - z) < MAX_STEP)
         {

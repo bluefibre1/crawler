@@ -19,17 +19,20 @@ private:
     {
         InGame,
             Status,
-            Inventory
+            Equip,
+            Drop
     };
 
     State m_state;
 
     WindowWeakPtr m_statsPopup;
     WindowSharedPtr m_menuWindow;
+    int m_inventoryPage;
 
     void handleStateInGame(bool pressed, int key);
     void handleStateStatus(bool pressed, int key);
-    void handleStateInventory(bool pressed, int key);
+    void handleStateEquip(bool pressed, int key);
+    void handleStateDrop(bool pressed, int key);
 
     void showStatus();
     void showInventory();

@@ -57,21 +57,23 @@ public:
 
     void setChar(char ch);
 
-    void addItem(const ItemPtr& item);
+    void addItem(const ItemSharedPtr& item);
 
-    void removeItem(const ItemPtr& item);
+    void removeItem(const ItemSharedPtr& item);
 
-    void equip(const ItemPtr& item);
+    void equip(const ItemSharedPtr& item);
 
-    void unequip(const ItemPtr& item);
+    void unequip(const ItemSharedPtr& item);
 
-    bool isEquipped(const ItemPtr& item);
+    bool isEquipped(const ItemSharedPtr& item);
 
     void hit(Direction dir);
 
     virtual void onReceiveHit(Object* from, int damage);
 
     virtual void onGiveHit(Object* to, int damage);
+
+    virtual bool isCollidable() const override { return getHp() > 0; }
 
     virtual bool isCharacter() const override { return true; }
 
@@ -94,7 +96,7 @@ protected:
     Faction* m_faction;
     std::string m_name;
 
-    typedef std::vector<ItemPtr> Items;
+    typedef std::vector<ItemSharedPtr> Items;
     Items m_items;
     Items m_equipped;
 

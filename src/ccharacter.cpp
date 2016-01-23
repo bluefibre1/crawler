@@ -39,7 +39,7 @@ void Character::draw(Renderer* r)
             r->draw(getX(), getY(), getZ(), m_color, Colors::INVALID(), m_ch);
             for (auto i = m_items.begin(); i != m_items.end(); i++)
             {
-                const ItemPtr& item = *i;
+                const ItemSharedPtr& item = *i;
                 item->draw(r);
             }
         }
@@ -158,68 +158,69 @@ void Character::setChar(char ch)
     m_ch = ch;
 }
 
-void Character::addItem(const ItemPtr& item)
+void Character::addItem(const ItemSharedPtr& item)
 {
-    auto i = std::find(m_items.begin(), m_items.end(), item);
-    if (i == m_items.end())
+    if (std::find(m_items.begin(), m_items.end(), item) == m_items.end())
     {
         m_items.push_back(item);
     }
     item->setOwner(this);
 }
 
-void Character::removeItem(const ItemPtr& item)
+void Character::removeItem(const ItemSharedPtr& item)
 {
     item->setOwner(nullptr);
     unequip(item);
-    auto i = std::find(m_items.begin(), m_items.end(), item);
-    if (i != m_items.end())
-    {
-        m_items.erase(i);
-    }
+    m_items.erase(std::remove(m_items.begin(), m_items.end(), item),
+        m_items.end());
 }
 
-void Character::equip(const ItemPtr& item)
+void Character::equip(const ItemSharedPtr& item)
 {
     addItem(item);
-    if (item->isEquipable())
+    if (item->getAction() == Item::Action::ACTION_EQUIPPABLE)
     {
         auto i = std::find(m_equipped.begin(), m_equipped.end(), item);
         if (i == m_equipped.end())
         {
+            m_equipped.erase(
+                std::remove_if(
+                    m_equipped.begin(), m_equipped.end(),
+                    [item] (const ItemSharedPtr& equipped)
+                    {
+                        return equipped->getType() == item->getType();
+                    }),
+                m_equipped.end());
+
             m_equipped.push_back(item);
         }
     }
 }
 
-bool Character::isEquipped(const ItemPtr& item)
+bool Character::isEquipped(const ItemSharedPtr& item)
 {
     return std::find(m_equipped.begin(), m_equipped.end(), item) != m_equipped.end();
 }
 
-void Character::unequip(const ItemPtr& item)
+void Character::unequip(const ItemSharedPtr& item)
 {
-    auto i = std::find(m_equipped.begin(), m_equipped.end(), item);
-    if (i == m_equipped.end())
-    {
-        m_equipped.push_back(item);
-    }
+    m_equipped.erase(
+        std::remove(m_equipped.begin(), m_equipped.end(), item),
+        m_equipped.end());
 }
 
 void Character::hit(Direction dir)
 {
-    Item* weapon = nullptr;
-    for (auto i = m_items.begin(); i != m_items.end(); ++i)
-    {
-        if ((*i)->isWeapon())
+    auto w = std::find_if(
+        m_equipped.begin(), m_equipped.end(),
+        [](const ItemSharedPtr& item)
         {
-            weapon = (*i).get();
-        }
-    }
+            return item->getType() & Item::Type::TYPE_WEAPON;
+        });
 
-    if (weapon)
+    if (w != m_equipped.end())
     {
-        weapon->use(dir);
+        (*w)->use(dir);
     }
 }
 
