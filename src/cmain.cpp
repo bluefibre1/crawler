@@ -30,7 +30,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
     WorldSharedPtr world(new World());
     // Possibility: 2, 4, 8, 16, 64, 128, 256, 512, 1024, 2048, 4096...
-    world->generate(512);
+    world->generate(128);
     simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
@@ -38,7 +38,6 @@ int main(int /*argc*/, char* /*argv*/[])
     hero->heal();
     hero->setName("Jacob");
     hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
-
     simulator.spawn(hero);
 
     const CreatureTemplate* creatureTemplates[] = {

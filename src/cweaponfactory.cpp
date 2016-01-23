@@ -9,7 +9,7 @@ WeaponPtr WeaponFactory::create(const WeaponTemplate* t)
     w->setDamage((int)Math::intervalRandom(t->getMaxDamage(), t->getMinDamage()));
 
     const char* qualifier[] = {
-        " ",
+        "",
         "Rusted ",
         "Brass ",
         "Iron ",

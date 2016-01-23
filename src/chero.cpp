@@ -4,6 +4,7 @@
 #include "cwindowmanager.h"
 #include "cmath.h"
 #include "csimulator.h"
+#include "cweapon.h"
 
 static const int INVENTORY_PAGE_SIZE = 5;
 
@@ -454,10 +455,16 @@ void Hero::showInventory()
             w->print(Colors::YELLOW(), ">");
         }
 
-        w->print(Colors::ORANGE(), "\n");
+        if (item->getType() == Item::TYPE_WEAPON)
+        {
+            w->print(Colors::ORANGE(), " D:");
+            w->print(Colors::RED(), std::to_string(((Weapon*)item.get())->getDamage()));
+        }
+
+        w->printEndLine();
     }
 
-    w->print(Colors::ORANGE(), "\n");
+    w->printEndLine();
 
     w->print(Colors::ORANGE(), "S: ");
     w->print(Colors::ORANGE(), "status");
