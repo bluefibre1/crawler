@@ -29,9 +29,9 @@ public:
 
     bool isColliding(Object* collidee, int x, int y, int& z);
 
-    bool findObjectAt(int x, int y, int z, Object** result);
+    bool listObjectsAt(int x, int y, int z, ObjectWeakPtrs* result);
 
-    void findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result);
+    bool findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result);
 
 private:
 

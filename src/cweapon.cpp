@@ -11,8 +11,8 @@ Weapon::Weapon()
     , m_visible(false)
     , m_showTimer()
 {
-    m_isWeapon = true;
-    m_isEquipable = true;
+    m_type = Item::TYPE_WEAPON;
+    m_action = Item::ACTION_EQUIPPABLE;
 }
 
 void Weapon::setDamage(int value)
@@ -72,7 +72,7 @@ void Weapon::use(Direction dir)
 {
     if (getOwner() && getOwner()->isCharacter())
     {
-        Character* user = (Character*)getOwner();
+        Character* owner = (Character*)getOwner();
 
         m_dir = dir;
         show();
@@ -80,23 +80,29 @@ void Weapon::use(Direction dir)
         float dx, dy;
         getDeltas(dx, dy);
 
-        Object* dest = nullptr;
-        if (Simulator::get().findObjectAt(
-                user->getX() + dx,
-                user->getY() + dy,
-                user->getZ(),
-                &dest))
+        ObjectWeakPtrs objects;
+        if (Simulator::get().listObjectsAt(
+                owner->getX() + dx,
+                owner->getY() + dy,
+                owner->getZ(),
+                &objects))
         {
-            if (dest->isCharacter())
-            {
-                int damage = Math::ceilRandom(m_damage);
+            std::for_each(
+                objects.begin(), objects.end(),
+                [this, owner](const ObjectWeakPtr& o)
+                {
+                    ObjectSharedPtr object = o.lock();
+                    if (object->isCharacter())
+                    {
+                        int damage = Math::ceilRandom(m_damage);
 
-                Character* target = (Character*)dest;
+                        Character* target = (Character*)object.get();
 
-                Math::clamp(damage, 0, target->getHp());
-                target->onReceiveHit(user, damage);
-                user->onGiveHit(target, damage);
-            }
+                        Math::clamp(damage, 0, target->getHp());
+                        target->onReceiveHit(owner, damage);
+                        owner->onGiveHit(target, damage);
+                    }
+                });
         }
     }
 }

@@ -2,13 +2,17 @@
 #include "cinput.h"
 #include "ccolors.h"
 #include "cwindowmanager.h"
+#include "cmath.h"
+#include "csimulator.h"
 
-#include <stdlib.h>
+static const int INVENTORY_PAGE_SIZE = 5;
+
 
 Hero::Hero()
     : m_state(State::InGame)
     , m_statsPopup()
     , m_menuWindow()
+    , m_inventoryPage(0)
 {
     m_color = Colors::MAGENTA();
     m_ch = '0';
@@ -35,8 +39,12 @@ void Hero::tick(float dt)
         handleStateStatus(pressed, key);
         break;
 
-    case State::Inventory:
-        handleStateInventory(pressed, key);
+    case State::Equip:
+        handleStateEquip(pressed, key);
+        break;
+
+    case State::Drop:
+        handleStateDrop(pressed, key);
         break;
     }
 
@@ -85,6 +93,79 @@ void Hero::showStats()
     WindowManager::get().popup(w, 5);
 }
 
+void Hero::takeAll()
+{
+    ObjectWeakPtrs objects;
+    if (Simulator::get().listObjectsAt(
+            getX(),
+            getY(),
+            getZ(),
+            &objects))
+    {
+        ItemSharedPtrs items;
+        std::for_each(
+            objects.begin(), objects.end(), [&items](const ObjectWeakPtr& o)
+            {
+                ObjectSharedPtr object = o.lock();
+                if (object->isCharacter())
+                {
+                    Character* target = (Character*)object.get();
+                    if (target->getHp() == 0)
+                    {
+                        items.reserve(items.size() + target->getItems().size());
+                        items.insert(items.end(), target->getItems().begin(), target->getItems().end());
+                        target->removeAllItems();
+                    }
+                }
+            });
+
+        if (!items.empty())
+        {
+            WindowSharedPtr w(new Window());
+            w->setHorizontalAlign(Window::HorizontalAlign::CENTER);
+            w->setVerticalAlign(Window::VerticalAlign::BOTTOM);
+            w->setTitle("Added To Inventory");
+            w->setMaxWidth(50);
+
+            bool first = true;
+            for_each(items.begin(), items.end(),
+                     [w, &first] (const ItemSharedPtr& item)
+                     {
+                         if (!first)
+                         {
+                             w->printEndLine();
+                         }
+                         first = false;
+                         w->print(Colors::WHITE(), item->getName());
+                     });
+
+            WindowManager::get().popup(w, 5);
+
+            addItems(items);
+        }
+    }
+}
+
+void Hero::onGiveHit(Object* to, int damage)
+{
+    Character::onGiveHit(to, damage);
+    if (to->isCharacter() && damage)
+    {
+        Character* target = (Character*)to;
+
+        int levelDiff = target->getLevel() - getLevel();
+        float factor = levelDiff >= 0 ? levelDiff+1 : -1.0f/levelDiff;
+        int dxp = damage * factor;
+
+        addXp(dxp);
+
+        if (target->getHp() <= 0)
+        {
+            addXp(target->getLevel() * 10 * factor);
+        }
+    }
+}
+
 void Hero::handleStateInGame(bool pressed, int key)
 {
     // only when alive
@@ -111,6 +192,11 @@ void Hero::handleStateInGame(bool pressed, int key)
         setDisplacement(1, 0);
         break;
 
+    case 't':
+    case 'T':
+        takeAll();
+        break;
+
     case 'a':
     case 'A':
         hit(Direction::LEFT);
@@ -126,13 +212,13 @@ void Hero::handleStateInGame(bool pressed, int key)
         hit(Direction::DOWN);
         break;
 
-    case ' ':
-        m_state = State::Status;
-        break;
-
     case 'w':
     case 'W':
         hit(Direction::UP);
+        break;
+
+    case ' ':
+        m_state = State::Status;
         break;
     }
 }
@@ -149,15 +235,20 @@ void Hero::handleStateStatus(bool pressed, int key)
             m_state = State::InGame;
             break;
 
-        case 'i':
-        case 'I':
-            m_state = State::Inventory;
+        case 'e':
+        case 'E':
+            m_state = State::Equip;
+            break;
+
+        case 'd':
+        case 'D':
+            m_state = State::Drop;
             break;
         }
     }
 }
 
-void Hero::handleStateInventory(bool pressed, int key)
+void Hero::handleStateEquip(bool pressed, int key)
 {
     showInventory();
 
@@ -165,8 +256,97 @@ void Hero::handleStateInventory(bool pressed, int key)
     {
         switch (key)
         {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        {
+            int i = m_inventoryPage * INVENTORY_PAGE_SIZE + key - '1';
+            if (i < (int)m_items.size())
+            {
+                ItemSharedPtr item = m_items[i];
+                if (isEquipped(item))
+                {
+                    unequip(item);
+                }
+                else
+                {
+                    equip(item);
+                }
+            }
+        }
+        break;
+
+        case 'n':
+        case 'N':
+        {
+            m_inventoryPage++;
+            if (m_inventoryPage * INVENTORY_PAGE_SIZE > (int)m_items.size())
+            {
+                m_inventoryPage = 0;
+            }
+        }
+        break;
+
         case ' ':
             m_state = State::InGame;
+            break;
+
+        case 's':
+        case 'S':
+            m_state = State::Status;
+            break;
+
+        case 'd':
+        case 'D':
+            m_state = State::Drop;
+            break;
+        }
+    }
+}
+
+void Hero::handleStateDrop(bool pressed, int key)
+{
+    showInventory();
+
+    if (pressed)
+    {
+        switch (key)
+        {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        {
+            int i = m_inventoryPage * INVENTORY_PAGE_SIZE + key - '1';
+            if (i < (int)m_items.size())
+            {
+                ItemSharedPtr item = m_items[i];
+                removeItem(item);
+            }
+        }
+        break;
+
+        case 'n':
+        case 'N':
+        {
+            m_inventoryPage++;
+            if (m_inventoryPage * INVENTORY_PAGE_SIZE > (int)m_items.size())
+            {
+                m_inventoryPage = 0;
+            }
+        }
+        break;
+
+        case ' ':
+            m_state = State::InGame;
+            break;
+
+        case 'e':
+        case 'E':
+            m_state = State::Equip;
             break;
 
         case 's':
@@ -216,8 +396,11 @@ void Hero::showStatus()
     w->print(Colors::ORANGE(), "\n");
     w->print(Colors::ORANGE(), "\n");
 
-    w->print(Colors::ORANGE(), "I: ");
-    w->print(Colors::BLUE(), "inventory");
+    w->print(Colors::ORANGE(), "e: ");
+    w->print(Colors::ORANGE(), "equip");
+
+    w->print(Colors::ORANGE(), " d: ");
+    w->print(Colors::ORANGE(), "drop");
 
     WindowManager::get().popup(m_menuWindow, 0.1);
 }
@@ -235,17 +418,27 @@ void Hero::showInventory()
 
     Window* w = m_menuWindow.get();
 
-    w->setTitle("Inventory");
+    if (m_state == State::Drop)
+    {
+        w->setTitle("Inventory Drop");
+    }
+    else
+    {
+        w->setTitle("Inventory Equip");
+    }
     w->clear();
 
-    for (int i = 0; i < 10; ++i)
+    Math::clamp(m_inventoryPage, 0, (m_items.size() - 1) / INVENTORY_PAGE_SIZE);
+
+    for (int i = 0; i < INVENTORY_PAGE_SIZE; ++i)
     {
-        if (i >= (int)m_items.size())
+        int idx = i + m_inventoryPage * INVENTORY_PAGE_SIZE;
+        if (idx >= (int)m_items.size())
         {
             break;
         }
 
-        ItemPtr item = m_items[i];
+        ItemSharedPtr item = m_items[idx];
         w->print(Colors::ORANGE(), std::to_string(i+1));
         w->print(Colors::ORANGE(), ": ");
 
@@ -267,7 +460,21 @@ void Hero::showInventory()
     w->print(Colors::ORANGE(), "\n");
 
     w->print(Colors::ORANGE(), "S: ");
-    w->print(Colors::BLUE(), "status");
+    w->print(Colors::ORANGE(), "status");
+
+    if (m_state == State::Equip)
+    {
+        w->print(Colors::ORANGE(), " D: ");
+        w->print(Colors::ORANGE(), "drop");
+    }
+    else
+    {
+        w->print(Colors::ORANGE(), " E: ");
+        w->print(Colors::ORANGE(), "equip");
+    }
+
+    w->print(Colors::ORANGE(), " N: ");
+    w->print(Colors::ORANGE(), "next");
 
     WindowManager::get().popup(m_menuWindow, 0.1);
 }

@@ -3,16 +3,14 @@
 
 Item::Item()
     : m_owner(nullptr)
-    , m_isEquipable(false)
-    , m_isUsable(false)
-    , m_isWeapon(false)
-    , m_isArmor(false)
+    , m_action(ACTION_NONE)
+    , m_type(TYPE_NONE)
     , m_name()
 {
 
 }
 
-void Item::setName(const std::string& name)
+void Item::setName(const String& name)
 {
     m_name = name;
 }
@@ -20,6 +18,16 @@ void Item::setName(const std::string& name)
 const std::string& Item::getName() const
 {
     return m_name;
+}
+
+Item::Action Item::getAction() const
+{
+    return m_action;
+}
+
+Item::Type Item::getType() const
+{
+    return m_type;
 }
 
 Object* Item::getOwner() const

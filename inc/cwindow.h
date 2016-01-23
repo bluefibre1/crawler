@@ -43,6 +43,7 @@ public:
 
     void clear();
     void print(Color color, const String& text);
+    void printEndLine();
 
     virtual void draw(Renderer* r) override;
 

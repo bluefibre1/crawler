@@ -1,3 +1,4 @@
+
 #include "cwindow.h"
 #include "crenderer.h"
 #include "ccolors.h"
@@ -76,6 +77,13 @@ void Window::print(Color color, const String& text)
     Print p;
     p.m_color = color;
     p.m_text = text;
+    m_prints.push_back(p);
+}
+
+void Window::printEndLine()
+{
+    Print p;
+    p.m_text = '\n';
     m_prints.push_back(p);
 }
 
@@ -232,13 +240,14 @@ void Window::topBorder(Renderer* r, int x, int& y)
             r->drawChar(x, y, m_borderColor, m_background, '+');
             if (!m_title.empty())
             {
-                int titleStart = Math::maximum(x + (m_width - 2 - m_title.size()) / 2, x+2);
-                r->drawText(x+1, y, m_borderColor, m_background, String(titleStart-x-1, '-'));
-                r->drawChar(titleStart, y, m_borderColor, m_background, ' ');
-                r->drawText(titleStart+1, y, m_borderColor, m_background, m_title);
-                r->drawChar(titleStart+1+m_title.size(), y, m_borderColor, m_background, ' ');
-                int titleEnd = Math::maximum(titleStart + m_title.size() + 2, 0);
-                r->drawText(titleEnd, y, m_borderColor, m_background, String(m_width-titleEnd+1, '-'));
+                int padding = (m_width - 2 > (int)m_title.size() ?
+                                   (m_width - 2 - (int)m_title.size()) / 2 : 0) - 1;
+                r->drawText(x+1, y, m_borderColor, m_background, String(padding, '-'));
+                r->drawChar(x+padding+1, y, m_borderColor, m_background, ' ');
+                r->drawText(x+padding+2, y, m_borderColor, m_background, m_title);
+                r->drawChar(x+padding+2+m_title.size(), y, m_borderColor, m_background, ' ');
+                r->drawText(x+padding+2+m_title.size()+1, y, m_borderColor, m_background,
+                            String(padding + (m_width % 2 ? 1:0), '-'));
             }
             else
             {
@@ -246,6 +255,10 @@ void Window::topBorder(Renderer* r, int x, int& y)
             }
 
             r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+        }
+        else if (m_width < (int)m_title.size() + 6)
+        {
+            m_width = m_title.size() + 6;
         }
         newLine(r, x, y);
 

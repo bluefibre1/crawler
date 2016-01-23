@@ -2,8 +2,8 @@
 
 #include "cobject.h"
 #include "cdirection.h"
+#include "cstring.h"
 
-#include <string>
 #include <memory>
 
 class Item : public Object
@@ -11,17 +11,27 @@ class Item : public Object
 public:
     Item();
 
-    void setName(const std::string& name);
+    void setName(const String& name);
 
-    const std::string& getName() const;
+    const String& getName() const;
 
-    bool isEquipable() const { return m_isEquipable; }
+    enum Action
+    {
+        ACTION_NONE = 0,
+        ACTION_EQUIPPABLE,
+        ACTION_USABLE
+    };
 
-    bool isUsable() const { return m_isUsable; }
+    Action getAction() const;
 
-    bool isWeapon() const { return m_isWeapon; }
+    enum Type
+    {
+        TYPE_NONE = 0,
+        TYPE_WEAPON,
+        TYPE_ARMOR
+    };
 
-    bool isArmor() const { return m_isArmor; }
+    Type getType() const;
 
     virtual void use(Direction /*dir*/) {}
 
@@ -31,13 +41,9 @@ public:
 
 protected:
     Object* m_owner;
-    bool m_isEquipable;
-    bool m_isUsable;
-    bool m_isWeapon;
-    bool m_isArmor;
-
-private:
-    std::string m_name;
+    Action m_action;
+    Type m_type;
+    String m_name;
 };
 
-typedef std::shared_ptr<Item> ItemPtr;
+typedef std::shared_ptr<Item> ItemSharedPtr;

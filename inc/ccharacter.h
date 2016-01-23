@@ -8,10 +8,11 @@
 #include <string>
 #include <vector>
 
-class Item;
 class BehaviorNode;
 class Blackboard;
 class Faction;
+
+typedef std::vector<ItemSharedPtr> ItemSharedPtrs;
 
 class Character : public Object
 {
@@ -57,21 +58,29 @@ public:
 
     void setChar(char ch);
 
-    void addItem(const ItemPtr& item);
+    void addItem(const ItemSharedPtr& item);
 
-    void removeItem(const ItemPtr& item);
+    void addItems(const ItemSharedPtrs& items);
 
-    void equip(const ItemPtr& item);
+    void removeItem(const ItemSharedPtr& item);
 
-    void unequip(const ItemPtr& item);
+    void removeAllItems();
 
-    bool isEquipped(const ItemPtr& item);
+    const ItemSharedPtrs& getItems() const;
+
+    void equip(const ItemSharedPtr& item);
+
+    void unequip(const ItemSharedPtr& item);
+
+    bool isEquipped(const ItemSharedPtr& item);
 
     void hit(Direction dir);
 
     virtual void onReceiveHit(Object* from, int damage);
 
     virtual void onGiveHit(Object* to, int damage);
+
+    virtual bool isCollidable() const override { return getHp() > 0; }
 
     virtual bool isCharacter() const override { return true; }
 
@@ -94,9 +103,8 @@ protected:
     Faction* m_faction;
     std::string m_name;
 
-    typedef std::vector<ItemPtr> Items;
-    Items m_items;
-    Items m_equipped;
+    ItemSharedPtrs m_items;
+    ItemSharedPtrs m_equipped;
 
 };
 

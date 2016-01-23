@@ -126,7 +126,8 @@ bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
             continue;
         }
 
-        if (collider->getX() == x &&
+        if (collider->isCollidable() &&
+            collider->getX() == x &&
             collider->getY() == y &&
             Math::abs(collider->getZ() - z) < MAX_STEP)
         {
@@ -138,39 +139,42 @@ bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
     return colliding;
 }
 
-bool Simulator::findObjectAt(int x, int y, int /*z*/, Object** result)
-{
-    for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
-    {
-        Object* obj = (*j).get();
-
-        if (obj->getX() == x &&
-            obj->getY() == y)
-        {
-            if (result)
-            {
-                *result = obj;
-            }
-            return true;
-        }
-    }
-    return false;
-}
-
-void Simulator::findObjectsAround(int x, int y, int /*z*/, float sqrRadius, ObjectWeakPtrs* result)
+bool Simulator::listObjectsAt(int x, int y, int /*z*/, ObjectWeakPtrs* result)
 {
     if (!result)
     {
-        return;
+        return false;
     }
 
-    for (auto j = m_objects.begin(); j != m_objects.end(); ++j)
-    {
-        ObjectSharedPtr& obj = *j;
-
-        if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
+    std::for_each(
+        m_objects.begin(), m_objects.end(),
+        [result, x, y] (const ObjectSharedPtr& obj)
         {
-            result->push_back(obj);
-        }
+            if (obj->getX() == x && obj->getY() == y)
+            {
+                result->push_back(obj);
+            }
+        });
+
+    return !result->empty();
+}
+
+bool Simulator::findObjectsAround(int x, int y, int /*z*/, float sqrRadius, ObjectWeakPtrs* result)
+{
+    if (!result)
+    {
+        return false;
     }
+
+    std::for_each(
+        m_objects.begin(), m_objects.end(),
+        [result, x, y, sqrRadius] (const ObjectSharedPtr& obj)
+        {
+            if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
+            {
+                result->push_back(obj);
+            }
+        });
+
+    return !result->empty();
 }
