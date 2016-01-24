@@ -11,8 +11,8 @@ Weapon::Weapon()
     , m_visible(false)
     , m_showTimer()
 {
-    m_type = Item::TYPE_WEAPON;
-    m_action = Item::ACTION_EQUIPPABLE;
+    m_type = Item::Type::WEAPON;
+    m_action = Item::Action::EQUIPPABLE;
 }
 
 void Weapon::setDamage(int value)

@@ -7,6 +7,8 @@
 #include "cbehavior.h"
 #include "cfactions.h"
 #include "cmath.h"
+#include "cinput.h"
+#include "cwindowmanager.h"
 
 Character::Character()
     : m_ch('@')
@@ -18,8 +20,12 @@ Character::Character()
     , m_nextLevelXp(0)
     , m_level(1)
     , m_behavior(nullptr)
+    , m_blackboard(nullptr)
+    , m_faction(nullptr)
     , m_name()
     , m_items()
+    , m_equipped()
+    , m_statsPopup()
 {
     setNextLevelXp();
 }
@@ -52,7 +58,7 @@ void Character::draw(Renderer* r)
 
 void Character::tick(float dt)
 {
-    if (m_behavior && m_hp)
+    if (m_behavior && m_hp && !Input::isPaused())
     {
         m_behavior->tick(dt, *m_blackboard);
     }
@@ -81,12 +87,12 @@ Faction* Character::getFaction() const
     return m_faction ? m_faction : &Factions::DEFAULT();
 }
 
-const std::string& Character::getName() const
+const String& Character::getName() const
 {
     return m_name;
 }
 
-void Character::setName(const std::string& name)
+void Character::setName(const String& name)
 {
     m_name = name;
 }
@@ -194,7 +200,7 @@ const ItemSharedPtrs& Character::getItems() const
 void Character::equip(const ItemSharedPtr& item)
 {
     addItem(item);
-    if (item->getAction() == Item::Action::ACTION_EQUIPPABLE)
+    if (item->getAction() == Item::Action::EQUIPPABLE)
     {
         auto i = std::find(m_equipped.begin(), m_equipped.end(), item);
         if (i == m_equipped.end())
@@ -231,7 +237,7 @@ void Character::hit(Direction dir)
         m_equipped.begin(), m_equipped.end(),
         [](const ItemSharedPtr& item)
         {
-            return item->getType() == Item::Type::TYPE_WEAPON;
+            return item->getType() == Item::Type::WEAPON;
         });
 
     if (w != m_equipped.end())
@@ -250,4 +256,29 @@ void Character::onReceiveHit(Object* /*from*/, int damage)
 void Character::onGiveHit(Object* to, int damage)
 {
     showStats();
+}
+
+void Character::showStats()
+{
+    WindowSharedPtr w(m_statsPopup.expired() ?
+                      WindowSharedPtr(new Window()) : m_statsPopup.lock());
+    m_statsPopup = w;
+
+    w->setHorizontalAlign(Window::HorizontalAlign::RIGHT);
+    w->setVerticalAlign(Window::VerticalAlign::TOP);
+
+    w->clear();
+
+    w->print(Colors::ORANGE(), "NAME:");
+    w->print(Colors::WHITE(), getName());
+
+    w->print(Colors::ORANGE(), "\n");
+
+    const int hpTotalBar = w->getWidth()-2;
+    int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
+
+    w->print(Colors::GREEN(), String(hpBars, '='));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, 'x'));
+
+    WindowManager::get().popup(w, 3);
 }

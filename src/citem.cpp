@@ -3,8 +3,8 @@
 
 Item::Item()
     : m_owner(nullptr)
-    , m_action(ACTION_NONE)
-    , m_type(TYPE_NONE)
+    , m_action(Action::NONE)
+    , m_type(Type::NONE)
     , m_name()
 {
 

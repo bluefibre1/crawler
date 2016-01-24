@@ -4,11 +4,9 @@
 #include "cinput.h"
 #include "ctimer.h"
 #include "csimulator.h"
-#include "ccreaturefactory.h"
-#include "ccreaturetemplates.h"
-#include "cweaponfactory.h"
-#include "cweapon.h"
-#include "ccreature.h"
+#include "ccharacterfactory.h"
+#include "ccharactertemplates.h"
+#include "citemfactory.h"
 #include "cmath.h"
 #include "ctiles.h"
 #include "ccolors.h"
@@ -35,29 +33,32 @@ int main(int /*argc*/, char* /*argv*/[])
     simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
-    hero->setMapHp(20);
+    hero->setMapHp(40);
     hero->heal();
     hero->setName("Jacob");
-    hero->equip(WeaponFactory::create(&WeaponTemplates::PUNCH()));
+    hero->equip(ItemFactory::create(ItemTemplates::PUNCH()));
     simulator.spawn(hero);
 
-    const CreatureTemplate* creatureTemplates[] = {
-        &CreatureTemplates::DRAGON(),
-        &CreatureTemplates::VILLAGER(),
-        &CreatureTemplates::KID(),
-        &CreatureTemplates::BAT(),
-    };
+    CharacterTemplateSharedPtrs creatureTemplates;
+    creatureTemplates.push_back(CharacterTemplates::DRAGON());
+    creatureTemplates.push_back(CharacterTemplates::VILLAGER());
+    creatureTemplates.push_back(CharacterTemplates::KID());
+    creatureTemplates.push_back(CharacterTemplates::BAT());
 
+    int worldArea = world->getWidth() * world->getHeight();
+
+    float creatureDensity = 10 / (float)(64*64);
+    int numCreature = (int)(worldArea * creatureDensity);
     for (int i = 0; i < 200; i++)
     {
-        int numTemplates = sizeof(creatureTemplates) / sizeof(CreatureTemplates*);
-        int idx = Math::ceilRandom(numTemplates);
-
-        ObjectSharedPtr creature(CreatureFactory::create(creatureTemplates[idx]));
+        int idx = Math::ceilRandom(creatureTemplates.size());
+        ObjectSharedPtr creature(CharacterFactory::create(creatureTemplates[idx]));
         simulator.spawn(creature);
     }
 
-    for (int i = 0; i < 200; i++)
+    float chestDensity = 2 / (float)(64*64);
+    int numChest = (int)(worldArea * chestDensity);
+    for (int i = 0; i < numChest; i++)
     {
         ObjectSharedPtr chest(ChestFactory::create());
         simulator.spawn(chest);

@@ -2,6 +2,8 @@
 
 #include "ccolor.h"
 
+#include <vector>
+
 class Tile
 {
 public:
@@ -25,3 +27,6 @@ private:
     Color m_bg;
     char m_value;
 };
+
+typedef std::vector<const Tile*> TilePtrs;
+typedef std::vector<TilePtrs> TilePtrSurface;

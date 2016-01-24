@@ -45,22 +45,22 @@ void World::generate(int size)
 
     const Tile* templates[] =
         {
-            &Tiles::WATER,
-            &Tiles::WATER,
-            &Tiles::WATER,
-            &Tiles::SAND,
-            &Tiles::GRASS,
-            &Tiles::GRASS,
-            &Tiles::GRASS,
-            &Tiles::GRASS,
-            &Tiles::GRASS,
-            &Tiles::MOUNTAIN,
-            &Tiles::MOUNTAIN,
-            &Tiles::MOUNTAIN,
-            &Tiles::MOUNTAIN,
-            &Tiles::CLOUDS,
-            &Tiles::ICE_MOUNTAIN,
-            &Tiles::ICE_MOUNTAIN,
+            &Tiles::WATER(),
+            &Tiles::WATER(),
+            &Tiles::WATER(),
+            &Tiles::SAND(),
+            &Tiles::GRASS(),
+            &Tiles::GRASS(),
+            &Tiles::GRASS(),
+            &Tiles::GRASS(),
+            &Tiles::GRASS(),
+            &Tiles::MOUNTAIN(),
+            &Tiles::MOUNTAIN(),
+            &Tiles::MOUNTAIN(),
+            &Tiles::MOUNTAIN(),
+            &Tiles::CLOUDS(),
+            &Tiles::ICE_MOUNTAIN(),
+            &Tiles::ICE_MOUNTAIN(),
         };
 
     int numTemplates = sizeof(templates) / sizeof(Tile*);

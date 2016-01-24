@@ -1,23 +1,23 @@
 #include "cchestfactory.h"
 
-#include "cweaponfactory.h"
-#include "cweapontemplates.h"
+#include "citemfactory.h"
+#include "citemtemplates.h"
 #include "cmath.h"
 
 ChestSharedPtr ChestFactory::create()
 {
     ChestSharedPtr c(new Chest());
 
-    std::vector<const WeaponTemplate*> weapons;
-    weapons.push_back(&WeaponTemplates::SPELL());
-    weapons.push_back(&WeaponTemplates::SWORD());
-    weapons.push_back(&WeaponTemplates::SNOWBALL());
+    ItemTemplateSharedPtrs items;
+    items.push_back(ItemTemplates::SPELL());
+    items.push_back(ItemTemplates::SWORD());
+    items.push_back(ItemTemplates::SNOWBALL());
 
     int n = Math::ceilRandom(3) + 1;
     for (int i = 0; i < n; i++)
     {
-        int wIdx = Math::ceilRandom(weapons.size());
-        WeaponPtr w(WeaponFactory::create(weapons[wIdx]));
+        int wIdx = Math::ceilRandom(items.size());
+        ItemSharedPtr w(ItemFactory::create(items[wIdx]));
         c->addItem(w);
     }
     return c;

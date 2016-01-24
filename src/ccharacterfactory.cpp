@@ -1,19 +1,17 @@
-#include "ccreaturefactory.h"
+#include "ccharacterfactory.h"
 
-#include "ccreaturetemplate.h"
+#include "ccharactertemplate.h"
 #include "cbehavior.h"
-#include "cweaponfactory.h"
-#include "cweapon.h"
+#include "citemfactory.h"
 #include "cmath.h"
 #include "cfactions.h"
 
-CreaturePtr CreatureFactory::create(const CreatureTemplate* t)
+CharacterSharedPtr CharacterFactory::create(const CharacterTemplateSharedPtr& t)
 {
-    CreaturePtr c(new Creature());
+    CharacterSharedPtr c(new Character());
     c->setName(t->getName());
     c->setMapHp((int)Math::intervalRandom(t->getMaxHp(), t->getMinHp()));
     c->heal();
-    c->setMaxVelocity(t->getMaxVelocity());
     c->setColor(t->getColor());
     c->setChar(t->getChar());
     c->setFaction(&Factions::WILDERNESS());
@@ -59,8 +57,11 @@ CreaturePtr CreatureFactory::create(const CreatureTemplate* t)
     bb->setSelf(c.get());
     c->setBlackboard(bb);
 
-    int wIdx = Math::ceilRandom(t->getWeaponTemplates().size());
-    WeaponPtr w(WeaponFactory::create(t->getWeaponTemplates()[wIdx]));
-    c->equip(w);
+    if (t->getItemTemplates().empty())
+    {
+        int wIdx = Math::ceilRandom(t->getItemTemplates().size());
+        ItemSharedPtr w(ItemFactory::create(t->getItemTemplates()[wIdx]));
+        c->equip(w);
+    }
     return c;
 }

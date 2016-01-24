@@ -4,9 +4,7 @@
 #include "ccolor.h"
 #include "citem.h"
 #include "cdirection.h"
-
-#include <string>
-#include <vector>
+#include "cwindow.h"
 
 class BehaviorNode;
 class Blackboard;
@@ -30,9 +28,9 @@ public:
 
     Faction* getFaction() const;
 
-    const std::string& getName() const;
+    const String& getName() const;
 
-    void setName(const std::string& name);
+    void setName(const String& name);
 
     int getHp() const;
 
@@ -82,7 +80,7 @@ public:
 
     virtual ObjectType getObjectType() const override { return OBJECT_TYPE_CHARACTER; }
 
-    virtual void showStats() = 0;
+    virtual void showStats();
 
 protected:
     char m_ch;
@@ -99,11 +97,12 @@ protected:
     BehaviorNode* m_behavior;
     Blackboard* m_blackboard;
     Faction* m_faction;
-    std::string m_name;
+    String m_name;
 
     ItemSharedPtrs m_items;
     ItemSharedPtrs m_equipped;
 
+    WindowWeakPtr m_statsPopup;
 };
 
-typedef std::shared_ptr<Character> CharacterPtr;
+typedef std::shared_ptr<Character> CharacterSharedPtr;

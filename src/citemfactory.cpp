@@ -1,11 +1,28 @@
-#include "cweaponfactory.h"
+#include "citemfactory.h"
 
+#include "citemtemplate.h"
 #include "cweapontemplate.h"
+#include "cweapon.h"
 #include "cmath.h"
 
-WeaponPtr WeaponFactory::create(const WeaponTemplate* t)
+ItemSharedPtr ItemFactory::create(const ItemTemplateSharedPtr& t)
 {
-    WeaponPtr w(new Weapon());
+    switch (t->getType())
+    {
+    case ItemTemplate::Type::WEAPON:
+        return createWeapon((WeaponTemplate*)t.get());
+
+    case ItemTemplate::Type::POTION:
+        return createPotion((PotionTemplate*)t.get());
+
+    default:
+        return nullptr;
+    };
+}
+
+ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
+{
+    Weapon* w = new Weapon();
     w->setDamage((int)Math::intervalRandom(t->getMaxDamage(), t->getMinDamage()));
 
     const char* qualifier[] = {
@@ -33,5 +50,10 @@ WeaponPtr WeaponFactory::create(const WeaponTemplate* t)
     w->setVerticalChar(t->getVerticalChar());
     w->setHorizontalChar(t->getHorizontalChar());
 
-    return w;
+    return ItemSharedPtr(w);
+}
+
+ItemSharedPtr ItemFactory::createPotion(const PotionTemplate* t)
+{
+    return ItemSharedPtr();
 }

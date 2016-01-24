@@ -15,20 +15,20 @@ public:
 
     const String& getName() const;
 
-    enum Action
+    enum class Action
     {
-        ACTION_NONE = 0,
-        ACTION_EQUIPPABLE,
-        ACTION_USABLE
+        NONE = 0,
+        EQUIPPABLE,
+        USABLE
     };
 
     Action getAction() const;
 
-    enum Type
+    enum class Type
     {
-        TYPE_NONE = 0,
-        TYPE_WEAPON,
-        TYPE_ARMOR
+        NONE = 0,
+        WEAPON,
+        ARMOR
     };
 
     Type getType() const;

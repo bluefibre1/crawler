@@ -1,24 +1,21 @@
 #pragma once
 
-#include "ccolor.h"
+#include "citemtemplate.h"
 
-#include <string>
-
-class WeaponTemplate
+class WeaponTemplate : public ItemTemplate
 {
 public:
 
-    WeaponTemplate(int probabylityWeight,
-                   const std::string& name,
-                   int minDamage,
-                   int maxDamage,
-                   const Color& color,
-                   char vch,
-                   char hch);
+    WeaponTemplate(
+        int probabilityWeight,
+        const std::string& name,
+        int minDamage,
+        int maxDamage,
+        const Color& color,
+        char vch,
+        char hch);
 
-    int getProbabilityWeight() const { return m_probabilityWeight; }
-
-    const std::string& getName() const { return m_name; }
+    virtual Type getType() const { return Type::WEAPON; }
 
     int getMinDamage() const { return m_minDamage; }
 
@@ -31,8 +28,6 @@ public:
     char getHorizontalChar() const { return m_hch; }
 
 private:
-    int m_probabilityWeight;
-    std::string m_name;
     int m_minDamage;
     int m_maxDamage;
     float m_maxVelocity;

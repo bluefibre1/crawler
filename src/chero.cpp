@@ -472,7 +472,7 @@ void Hero::showInventory()
             w->print(Colors::YELLOW(), ">");
         }
 
-        if (item->getType() == Item::TYPE_WEAPON)
+        if (item->getType() == Item::Type::WEAPON)
         {
             w->print(Colors::ORANGE(), " D:");
             w->print(Colors::RED(), std::to_string(((Weapon*)item.get())->getDamage()));

@@ -31,9 +31,9 @@ Renderer::Renderer()
     , m_back(nullptr)
     , m_empty()
 {
-    m_empty.m_ch = Tiles::EMPTY.getValue();
-    m_empty.m_fg = Tiles::EMPTY.getForeground();
-    m_empty.m_bg = Tiles::EMPTY.getBackground();
+    m_empty.m_ch = Tiles::EMPTY().getValue();
+    m_empty.m_fg = Tiles::EMPTY().getForeground();
+    m_empty.m_bg = Tiles::EMPTY().getBackground();
 
     clear();
 }

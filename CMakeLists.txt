@@ -21,24 +21,25 @@ set(SOURCES
 	src/cinput.cpp
 	src/chero.cpp
 	src/ccharacter.cpp
-    src/ccreature.cpp
     src/cbehavior.cpp
     src/cwindow.cpp
     src/cwindowmanager.cpp
     src/citem.cpp
     src/cweapon.cpp
+    src/citemtemplate.cpp
     src/cweapontemplate.cpp
-    src/cweapontemplates.cpp
-    src/cweaponfactory.cpp
-    src/ccreaturetemplate.cpp
-    src/ccreaturetemplates.cpp
-    src/ccreaturefactory.cpp
+    src/citemtemplates.cpp
+    src/citemfactory.cpp
+    src/ccharactertemplate.cpp
+    src/ccharactertemplates.cpp
+    src/ccharacterfactory.cpp
     src/ccolor.cpp
     src/ccolors.cpp
     src/cfaction.cpp
     src/cfactions.cpp
     src/clogger.cpp
-    src/chouse.cpp
+    src/croom.cpp
+    src/croomtemplate.cpp
     src/cchest.cpp
     src/cchestfactory.cpp
 )	
