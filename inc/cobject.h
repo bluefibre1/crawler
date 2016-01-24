@@ -33,12 +33,13 @@ public:
 
     enum ObjectType
     {
-        OBJECT_TYPE_UNKNOWN,
-        OBJECT_TYPE_CHEST,
-        OBJECT_TYPE_CHARACTER
+        OBJECT_TYPE_UNKNOWN   = 0x0,
+        OBJECT_TYPE_CHEST     = 0x1,
+        OBJECT_TYPE_CHARACTER = 0x2,
+        OBJECT_TYPE_HERO      = 0x4,
     };
 
-    virtual ObjectType getObjectType() const { return OBJECT_TYPE_UNKNOWN; }
+    virtual int getObjectType() const { return OBJECT_TYPE_UNKNOWN; }
 
     virtual bool isCollidable() const { return true; }
 

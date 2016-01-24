@@ -1,21 +1,22 @@
 #include "cfactions.h"
 
-Faction& Factions::DRAGON()
+FactionSharedPtr& Factions::DRAGON()
 {
-    static Faction f("dragon");
-    f.setFriendlyness(&DEFAULT(), -10);
+    static FactionSharedPtr f(new Faction("dragon"));
+    f->setFriendlyness(DEFAULT(), -10);
+    f->setFriendlyness(WILDERNESS(), -10);
     return f;
 }
 
-Faction& Factions::WILDERNESS()
+FactionSharedPtr& Factions::WILDERNESS()
 {
-    static Faction f("wilderness");
-    f.setFriendlyness(&DEFAULT(), -10);
+    static FactionSharedPtr f(new Faction("wilderness"));
+    f->setFriendlyness(DEFAULT(), -10);
     return f;
 }
 
-Faction& Factions::DEFAULT()
+FactionSharedPtr& Factions::DEFAULT()
 {
-    static Faction f("default");
+    static FactionSharedPtr f(new Faction("default"));
     return f;
 }

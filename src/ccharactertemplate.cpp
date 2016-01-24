@@ -7,6 +7,7 @@ CharacterTemplate::CharacterTemplate(
     int maxHp,
     Color color,
     char ch,
+    const FactionSharedPtr& faction,
     const ItemTemplateSharedPtrs& itemTemplates)
     : m_probabilityWeight(probabilityWeight)
     , m_name(name)
@@ -14,6 +15,7 @@ CharacterTemplate::CharacterTemplate(
     , m_maxHp(maxHp)
     , m_color(color)
     , m_ch(ch)
+    , m_faction(faction)
     , m_itemTemplates(itemTemplates)
 {
 

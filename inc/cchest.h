@@ -23,7 +23,7 @@ public:
 
     virtual bool isCollidable() const override { return false; }
 
-    virtual ObjectType getObjectType() const override { return OBJECT_TYPE_CHEST; }
+    virtual int getObjectType() const override { return OBJECT_TYPE_CHEST; }
 
 private:
     char m_ch;

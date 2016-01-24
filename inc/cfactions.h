@@ -6,8 +6,9 @@ class Factions
 {
 public:
 
-    static Faction& DRAGON();
-    static Faction& WILDERNESS();
-    static Faction& DEFAULT();
+    static FactionSharedPtr& DRAGON();
+    static FactionSharedPtr& WILDERNESS();
+    static FactionSharedPtr& DEFAULT();
 
 };
+

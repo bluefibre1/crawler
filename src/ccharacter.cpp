@@ -77,14 +77,14 @@ void Character::setBlackboard(Blackboard* blackboard)
     m_blackboard = blackboard;
 }
 
-void Character::setFaction(Faction* faction)
+void Character::setFaction(const FactionSharedPtr& faction)
 {
     m_faction = faction;
 }
 
-Faction* Character::getFaction() const
+const FactionSharedPtr& Character::getFaction() const
 {
-    return m_faction ? m_faction : &Factions::DEFAULT();
+    return m_faction ? m_faction : Factions::DEFAULT();
 }
 
 const String& Character::getName() const
@@ -246,16 +246,18 @@ void Character::hit(Direction dir)
     }
 }
 
-void Character::onReceiveHit(Object* /*from*/, int damage)
+void Character::onReceiveHit(Object* from, int damage)
 {
     int actualDmg = damage > m_hp ? m_hp : damage;
     m_hp -= actualDmg;
-    showStats();
 }
 
 void Character::onGiveHit(Object* to, int damage)
 {
-    showStats();
+    if (to->getObjectType() & OBJECT_TYPE_HERO)
+    {
+        showStats();
+    }
 }
 
 void Character::showStats()

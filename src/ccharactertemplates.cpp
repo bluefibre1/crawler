@@ -1,5 +1,6 @@
 #include "ccharactertemplates.h"
 #include "citemtemplates.h"
+#include "cfactions.h"
 #include "ccolors.h"
 
 const CharacterTemplateSharedPtr& CharacterTemplates::DRAGON()
@@ -9,7 +10,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::DRAGON()
     items.push_back(ItemTemplates::CLAW());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(10, "Dragon", 10, 20, Colors::RED(), 'D', items));
+        new CharacterTemplate(10, "Dragon", 10, 20, Colors::RED(), 'D', Factions::DRAGON(), items));
     return c;
 }
 
@@ -19,7 +20,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::BAT()
     items.push_back(ItemTemplates::CLAW());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(50, "Bat", 5, 5, Colors::BLACK(), 'b', items));
+        new CharacterTemplate(50, "Bat", 5, 5, Colors::BLACK(), 'b', Factions::WILDERNESS(), items));
     return c;
 }
 
@@ -30,7 +31,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::VILLAGER()
     items.push_back(ItemTemplates::PUNCH());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(100, "Villager", 15, 25, Colors::LIGHT_BLUE(), 'V', items));
+        new CharacterTemplate(100, "Villager", 15, 25, Colors::LIGHT_BLUE(), 'V', Factions::WILDERNESS(), items));
     return c;
 }
 
@@ -40,7 +41,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::KID()
     items.push_back(ItemTemplates::SNOWBALL());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(100, "Kid", 1, 2, Colors::LIGHT_BLUE(), 'v', items));
+        new CharacterTemplate(100, "Kid", 1, 2, Colors::LIGHT_BLUE(), 'v', Factions::WILDERNESS(), items));
     return c;
 }
 

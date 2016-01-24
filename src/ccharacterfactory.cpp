@@ -14,7 +14,7 @@ CharacterSharedPtr CharacterFactory::create(const CharacterTemplateSharedPtr& t)
     c->heal();
     c->setColor(t->getColor());
     c->setChar(t->getChar());
-    c->setFaction(&Factions::WILDERNESS());
+    c->setFaction(t->getFaction());
 
     BlackboardReference targetRef = BlackboardReference::TARGET;
 
@@ -57,7 +57,7 @@ CharacterSharedPtr CharacterFactory::create(const CharacterTemplateSharedPtr& t)
     bb->setSelf(c.get());
     c->setBlackboard(bb);
 
-    if (t->getItemTemplates().empty())
+    if (!t->getItemTemplates().empty())
     {
         int wIdx = Math::ceilRandom(t->getItemTemplates().size());
         ItemSharedPtr w(ItemFactory::create(t->getItemTemplates()[wIdx]));

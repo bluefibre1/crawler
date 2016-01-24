@@ -109,9 +109,7 @@ void Hero::takeAll()
             objects.begin(), objects.end(), [&items](const ObjectWeakPtr& o)
             {
                 ObjectSharedPtr object = o.lock();
-                switch (object->getObjectType())
-                {
-                case OBJECT_TYPE_CHARACTER:
+                if (object->getObjectType() & OBJECT_TYPE_CHARACTER)
                 {
                     Character* target = (Character*)object.get();
                     if (target->getHp() == 0)
@@ -121,19 +119,12 @@ void Hero::takeAll()
                         target->removeAllItems();
                     }
                 }
-                break;
-
-                case OBJECT_TYPE_CHEST:
+                else if (object->getObjectType() & OBJECT_TYPE_CHEST)
                 {
                     Chest* target = (Chest*)object.get();
                     items.reserve(items.size() + target->getItems().size());
                     items.insert(items.end(), target->getItems().begin(), target->getItems().end());
                     target->removeAllItems();
-                }
-                break;
-
-                default:
-                    break;
                 }
             });
 
@@ -164,10 +155,17 @@ void Hero::takeAll()
     }
 }
 
+void Hero::onReceiveHit(Object* from, int damage)
+{
+    Character::onReceiveHit(from, damage);
+    showStats();
+}
+
 void Hero::onGiveHit(Object* to, int damage)
 {
     Character::onGiveHit(to, damage);
-    if (to->getObjectType() == OBJECT_TYPE_CHARACTER && damage)
+    showStats();
+    if (to->getObjectType() & OBJECT_TYPE_CHARACTER && damage)
     {
         Character* target = (Character*)to;
 

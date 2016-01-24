@@ -8,15 +8,15 @@ Faction::Faction(const std::string& name)
 
 }
 
-void Faction::setFriendlyness(Faction* faction, float value)
+void Faction::setFriendlyness(const FactionSharedPtr& faction, float value)
 {
-    m_friendlynesses.insert(Friendlynesses::value_type(faction, value));
+    m_friendlynesses.insert(Friendlynesses::value_type(faction.get(), value));
     faction->m_friendlynesses.insert(Friendlynesses::value_type(this, value));
 }
 
-bool Faction::isEnemy(Faction* faction) const
+bool Faction::isEnemy(const FactionSharedPtr& faction) const
 {
-    auto i = m_friendlynesses.find(faction);
+    auto i = m_friendlynesses.find(faction.get());
     if (i != m_friendlynesses.end())
     {
         return (*i).second < 1;

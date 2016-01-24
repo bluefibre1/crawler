@@ -16,7 +16,11 @@ public:
 
     void takeAll();
 
+    virtual void onReceiveHit(Object* from, int damage) override;
+
     virtual void onGiveHit(Object* to, int damage) override;
+
+    virtual int getObjectType() const override { return OBJECT_TYPE_CHARACTER|OBJECT_TYPE_HERO; }
 
 private:
     enum class State

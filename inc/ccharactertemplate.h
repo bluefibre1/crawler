@@ -2,6 +2,7 @@
 
 #include "ccolor.h"
 #include "citemtemplates.h"
+#include "cfaction.h"
 #include "cstring.h"
 
 
@@ -9,13 +10,15 @@ class CharacterTemplate
 {
 public:
 
-    CharacterTemplate(int probabylityWeight,
-                     const std::string& name,
-                     int minHp,
-                     int maxHp,
-                     Color color,
-                     char ch,
-                     const ItemTemplateSharedPtrs& itemTemplates);
+    CharacterTemplate(
+        int probabylityWeight,
+        const std::string& name,
+        int minHp,
+        int maxHp,
+        Color color,
+        char ch,
+        const FactionSharedPtr& faction,
+        const ItemTemplateSharedPtrs& itemTemplates);
 
     int getProbabilityWeight() const { return m_probabilityWeight; }
 
@@ -29,6 +32,8 @@ public:
 
     char getChar() const { return m_ch; }
 
+    const FactionSharedPtr& getFaction() const { return m_faction; }
+
     const ItemTemplateSharedPtrs& getItemTemplates() const { return m_itemTemplates; }
 
 private:
@@ -38,6 +43,7 @@ private:
     int m_maxHp;
     Color m_color;
     char m_ch;
+    FactionSharedPtr m_faction;
     ItemTemplateSharedPtrs m_itemTemplates;
 };
 

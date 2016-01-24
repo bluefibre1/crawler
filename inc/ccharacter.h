@@ -5,10 +5,10 @@
 #include "citem.h"
 #include "cdirection.h"
 #include "cwindow.h"
+#include "cfaction.h"
 
 class BehaviorNode;
 class Blackboard;
-class Faction;
 
 class Character : public Object
 {
@@ -24,9 +24,9 @@ public:
 
     void setBlackboard(Blackboard* blackboard);
 
-    void setFaction(Faction* faction);
+    void setFaction(const FactionSharedPtr& faction);
 
-    Faction* getFaction() const;
+    const FactionSharedPtr& getFaction() const;
 
     const String& getName() const;
 
@@ -78,7 +78,7 @@ public:
 
     virtual bool isCollidable() const override { return getHp() > 0; }
 
-    virtual ObjectType getObjectType() const override { return OBJECT_TYPE_CHARACTER; }
+    virtual int getObjectType() const override { return OBJECT_TYPE_CHARACTER; }
 
     virtual void showStats();
 
@@ -96,7 +96,7 @@ protected:
     int m_level;
     BehaviorNode* m_behavior;
     Blackboard* m_blackboard;
-    Faction* m_faction;
+    FactionSharedPtr m_faction;
     String m_name;
 
     ItemSharedPtrs m_items;
