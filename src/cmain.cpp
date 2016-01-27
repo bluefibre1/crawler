@@ -14,6 +14,8 @@
 #include "cwindowmanager.h"
 #include "cchestfactory.h"
 
+#include <unistd.h>
+
 int main(int /*argc*/, char* /*argv*/[])
 {
     srand(time(nullptr));
