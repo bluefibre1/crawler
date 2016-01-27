@@ -9,7 +9,7 @@ const Color& Colors::YELLOW() { static Color c(226); return c; }
 const Color& Colors::SANDYELLOW() { static Color c(228); return c; }
 const Color& Colors::DARK_BLUE() { static Color c(20); return c; }
 const Color& Colors::BLUE() { static Color c(21); return c; }
-const Color& Colors::COOL_BLUE() { static Color c(93); return c; }
+const Color& Colors::COOL_BLUE() { static Color c(43); return c; }
 const Color& Colors::LIGHT_BLUE() { static Color c(159); return c; }
 const Color& Colors::ICY_BLUE() { static Color c(123); return c; }
 const Color& Colors::WHITE() { static Color c(231); return c; }

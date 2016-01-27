@@ -126,7 +126,9 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
             [this, &bb] (const ObjectWeakPtr& o)
             {
                 const ObjectSharedPtr& obj = o.lock();
-                if (obj && obj->getObjectType() & Object::OBJECT_TYPE_CHARACTER)
+                if (obj &&
+                    obj.get() != bb.getSelf() &&
+                    obj->getObjectType() & Object::OBJECT_TYPE_CHARACTER)
                 {
                     Character* c = (Character*)obj.get();
                     if (bb.getSelf()->getFaction()->isEnemy(c->getFaction()))

@@ -31,12 +31,13 @@ ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
         "Brass ",
         "Iron ",
         "Glass ",
+        "Diamond ",
         "Ebonite ",
         "Ultimate "
     };
 
     int numQualifier = sizeof(qualifier) / sizeof(const char*);
-    int idx = numQualifier * w->getDamage() / 1000;
+    int idx = numQualifier * w->getDamage() / 100;
     if (idx > numQualifier)
     {
         idx = numQualifier;

@@ -6,7 +6,7 @@ class CharacterTemplates
 {
 public:
 
-    static const CharacterTemplateSharedPtr& DRAGON();
+    static const CharacterTemplateSharedPtr& DEMON();
     static const CharacterTemplateSharedPtr& VILLAGER();
     static const CharacterTemplateSharedPtr& KID();
     static const CharacterTemplateSharedPtr& BAT();

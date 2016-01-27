@@ -3,14 +3,13 @@
 #include "cfactions.h"
 #include "ccolors.h"
 
-const CharacterTemplateSharedPtr& CharacterTemplates::DRAGON()
+const CharacterTemplateSharedPtr& CharacterTemplates::DEMON()
 {
     ItemTemplateSharedPtrs items;
     items.push_back(ItemTemplates::FIRE());
-    items.push_back(ItemTemplates::CLAW());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(10, "Dragon", 10, 20, Colors::RED(), 'D', Factions::DRAGON(), items));
+        new CharacterTemplate(10, "Demon", 10, 20, Colors::RED(), 'D', Factions::DRAGON(), items));
     return c;
 }
 

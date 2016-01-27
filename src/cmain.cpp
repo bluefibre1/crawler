@@ -30,19 +30,18 @@ int main(int /*argc*/, char* /*argv*/[])
     auto& windowManager = WindowManager::get();
 
     WorldSharedPtr world(new World());
-    // Possibility: 2, 4, 8, 16, 64, 128, 256, 512, 1024, 2048, 4096...
-    world->generate(128);
+    // Possibility: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096...
+    world->generate(256);
     simulator.setWorld(world);
-
     HeroSharedPtr hero(new Hero());
-    hero->setMapHp(40);
+    hero->setMapHp(100);
     hero->heal();
     hero->setName("Jacob");
     hero->equip(ItemFactory::create(ItemTemplates::PUNCH()));
     simulator.spawn(hero);
 
     CharacterTemplateSharedPtrs creatureTemplates;
-    creatureTemplates.push_back(CharacterTemplates::DRAGON());
+    creatureTemplates.push_back(CharacterTemplates::DEMON());
     creatureTemplates.push_back(CharacterTemplates::VILLAGER());
     creatureTemplates.push_back(CharacterTemplates::KID());
     creatureTemplates.push_back(CharacterTemplates::BAT());
