@@ -75,6 +75,9 @@ int main(int /*argc*/, char* /*argv*/[])
         debugger.incFrameId();
         float dt = timer.elapsed();
         timer.reset();
+
+        CDEBUG_LOW(debugger.tick(dt));
+
         simulator.tick(dt);
         windowManager.tick(dt);
 
@@ -103,7 +106,7 @@ int main(int /*argc*/, char* /*argv*/[])
         r.clear();
         simulator.draw(&r);
         windowManager.draw(&r);
-        CDEBUG(debugger.draw(&r));
+        CDEBUG_LOW(debugger.draw(&r));
         r.flip();
 
         int sleepTime = (int)(33333.3f - timer.elapsed() * 1000000.0f);

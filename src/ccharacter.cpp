@@ -55,9 +55,9 @@ void Character::draw(Renderer* r)
         {
             r->draw(getX(), getY(), getZ(), m_color, Colors::RED(), m_ch);
         }
-        CDEBUG(if (Debugger::get().getFrameId() == m_lastTickFrameId)
+        CDEBUG_MEDIUM(if (Debugger::get().getFrameId() == m_lastTickFrameId)
                {
-                   debugStringAppend("U");
+                   debugStringAppend("t");
                }
                r->draw(getX(), getY()-1, Renderer::TOP(), Colors::YELLOW(), Colors::BLUE(), m_debugString);
             );
@@ -66,7 +66,7 @@ void Character::draw(Renderer* r)
 
 void Character::tick(float dt)
 {
-    CDEBUG(m_debugString.clear());
+    CDEBUG_LOW(m_debugString.clear());
 
     if (m_hp && !Input::isPaused())
     {
@@ -75,7 +75,7 @@ void Character::tick(float dt)
             m_behavior->tick(dt, *m_blackboard);
         }
         Object::tick(dt);
-        CDEBUG(m_lastTickFrameId = Debugger::get().getFrameId());
+        CDEBUG_MEDIUM(m_lastTickFrameId = Debugger::get().getFrameId());
     }
 }
 

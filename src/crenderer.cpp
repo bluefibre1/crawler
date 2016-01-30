@@ -134,7 +134,7 @@ void Renderer::flip()
 
 
     const String& s = out.str();
-    CDEBUG(Debugger::get().setDrawSize(s.size()));
+    CDEBUG_LOW(Debugger::get().setDrawSize(s.size()));
     fwrite(s.c_str(), s.size(), 1, stdout);
     fflush(stdout);
 }
@@ -146,7 +146,7 @@ void Renderer::draw(int x, int y, int z, const Tile* tile)
 
 void Renderer::drawScreen(int x, int y, int z, const Tile* tile)
 {
-    CDEBUG(Debugger::get().incDrawCall());
+    CDEBUG_LOW(Debugger::get().incDrawCall());
     if (x >= 0 && y >= 0 && x < m_width && y < m_height)
     {
         int i = x + y * m_width;
@@ -176,7 +176,7 @@ void Renderer::draw(int x, int y, int z, Color fg, Color bg, char ch)
 
 void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, char ch)
 {
-    CDEBUG(Debugger::get().incDrawCall());
+    CDEBUG_LOW(Debugger::get().incDrawCall());
     if (x >= 0 && y >= 0 && x < m_width && y < m_height)
     {
         int i = x + y * m_width;
@@ -206,7 +206,7 @@ void Renderer::draw(int x, int y, int z, Color fg, Color bg, const std::string& 
 
 void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, const std::string& text)
 {
-    CDEBUG(Debugger::get().incDrawCall());
+    CDEBUG_LOW(Debugger::get().incDrawCall());
     int n = text.size();
     if (x + n > m_width)
     {

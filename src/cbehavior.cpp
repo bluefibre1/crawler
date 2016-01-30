@@ -91,7 +91,7 @@ void BehaviorFindTarget::setVisionRadius(float dist, float hysteresis)
 
 void BehaviorFindTarget::tick(float dt, Blackboard& bb)
 {
-    CDEBUG(ObjectWeakPtr ref = bb.getReference(getReference());
+    CDEBUG_HIGH(ObjectWeakPtr ref = bb.getReference(getReference());
            if (!ref.expired())
            {
                ObjectSharedPtr target = ref.lock();
@@ -317,7 +317,7 @@ void BehaviorWander::setRopeSqrLength(int sqrLength)
 
 void BehaviorWander::tick(float dt, Blackboard& bb)
 {
-    CDEBUG(bb.getSelf()->debugStringAppend("W"));
+    CDEBUG_HIGH(bb.getSelf()->debugStringAppend("w"));
 
     if (!m_initialized)
     {
@@ -402,7 +402,7 @@ BehaviorChase::BehaviorChase()
 
 void BehaviorChase::tick(float dt, Blackboard& bb)
 {
-    CDEBUG(bb.getSelf()->debugStringAppend("C"));
+    CDEBUG_HIGH(bb.getSelf()->debugStringAppend("c"));
 
     m_remain -= dt;
     if (m_remain >= 0)
@@ -444,7 +444,7 @@ BehaviorAttack::BehaviorAttack()
 
 void BehaviorAttack::tick(float dt, Blackboard& bb)
 {
-    CDEBUG(bb.getSelf()->debugStringAppend("A"));
+    CDEBUG_HIGH(bb.getSelf()->debugStringAppend("a"));
 
     m_remain -= dt;
     if (m_remain >= 0)

@@ -61,7 +61,7 @@ void Hero::tick(float dt)
             break;
 
         case '`':
-            Debugger::get().toggleDebugInfo();
+            Debugger::get().cycleDebugLevel();
         }
     }
 

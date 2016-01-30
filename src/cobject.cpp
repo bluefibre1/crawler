@@ -18,7 +18,7 @@ Object::~Object()
 
 void Object::tick(float dt)
 {
-    CDEBUG(Debugger::get().incObjectTicked());
+    CDEBUG_LOW(Debugger::get().incObjectTicked());
     if (m_dispX != 0 || m_dispY != 0)
     {
         Simulator::get().activate(this);
