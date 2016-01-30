@@ -15,6 +15,9 @@ public:
     void toggleDebugInfo();
     bool isDebugInfoEnabled();
 
+    void incDrawCall();
+    void setDrawSize(int size);
+
     void draw(Renderer* r);
 
 private:
@@ -23,6 +26,8 @@ private:
     bool m_debugInfoEnabled;
     int m_frameId;
     int m_objectTicked;
+    int m_drawCalls;
+    int m_drawSize;
 };
 
 #define CDEBUG(...)                               \

@@ -3,6 +3,7 @@
 
 ((c++-mode . ((eval . (progn
                         (require 'projectile)
+                        (setq projectile-default-run-command "crawler")
                         (setq company-clang-arguments
                               (delete-dups (append
                                             company-clang-arguments
