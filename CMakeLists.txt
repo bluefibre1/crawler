@@ -40,6 +40,7 @@ set(SOURCES
     src/croom.cpp
     src/croomfactory.cpp
     src/croomtemplate.cpp
+    src/croomtemplates.cpp
     src/cweapon.cpp
     src/cweapontemplate.cpp
     src/cwindow.cpp

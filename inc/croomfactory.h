@@ -7,6 +7,8 @@ class RoomFactory
 {
 public:
 
-    static RoomSharedPtr createRoom(const RoomTemplateSharedPtr& t);
+    static RoomSharedPtr create(const RoomTemplateSharedPtr& t);
 
+private:
+    static void createSurface(const Strings& surface, TilePtrSurface& out);
 };

@@ -30,7 +30,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::VILLAGER()
     items.push_back(ItemTemplates::PUNCH());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(100, "Villager", 15, 25, Colors::LIGHT_BLUE(), 'V', Factions::WILDERNESS(), items));
+        new CharacterTemplate(100, "Villager", 15, 25, Colors::LIGHT_BLUE(), 'V', Factions::DEFAULT(), items));
     return c;
 }
 

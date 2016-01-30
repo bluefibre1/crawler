@@ -14,6 +14,8 @@
 #include "cwindowmanager.h"
 #include "cchestfactory.h"
 #include "cdebugger.h"
+#include "croomfactory.h"
+#include "croomtemplates.h"
 
 #include <unistd.h>
 
@@ -32,7 +34,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
     WorldSharedPtr world(new World());
     // Possibility: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096...
-    world->generate(4096);
+    world->generate(128);
     simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
@@ -50,9 +52,15 @@ int main(int /*argc*/, char* /*argv*/[])
 
     int worldArea = world->getWidth() * world->getHeight();
 
+    for (int i = 0; i < 10; i++)
+    {
+        ObjectSharedPtr room = RoomFactory::create(RoomTemplates::INN());
+        simulator.spawn(room);
+    }
+
     float creatureDensity = 10 / (float)(64*64);
     int numCreature = (int)(worldArea * creatureDensity);
-    for (int i = 0; i < 200000; i++)
+    for (int i = 0; i < numCreature; i++)
     {
         int idx = Math::ceilRandom(creatureTemplates.size());
         ObjectSharedPtr creature(CharacterFactory::create(creatureTemplates[idx]));
