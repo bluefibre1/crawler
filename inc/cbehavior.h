@@ -92,14 +92,14 @@ public:
 
     virtual const char* getName() const override { return "find target"; }
 
-    void setVisionSqrRadius(float dist, float hysteresis);
+    void setVisionRadius(float dist, float hysteresis);
 
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
     float m_distance;
     float m_hysteresis;
-    float m_elapsed;
+    float m_remain;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ public:
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
-    float m_elapsed;
+    float m_remain;
     BehaviorPredicate* m_predicate;
     BehaviorNode* m_current;
     BehaviorNode* m_true;
@@ -204,7 +204,7 @@ private:
     int m_dx;
     int m_dy;
     int m_ropeSqrLength;
-    float m_elapsed;
+    float m_remain;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -219,7 +219,7 @@ public:
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
-    float m_elapsed;
+    float m_remain;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -234,5 +234,5 @@ public:
     virtual void tick(float dt, Blackboard& bb) override;
 
 private:
-    float m_elapsed;
+    float m_remain;
 };

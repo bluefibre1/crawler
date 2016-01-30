@@ -4,13 +4,20 @@
 
 #include <stdio.h>
 #include <float.h>
+#include <assert.h>
 
 static const int MAX_STEP = 2;
 
 Simulator::Simulator()
-    : m_zoneSize(50)
+    : m_cellSize(30)
+    , m_cellNumX(0)
+    , m_cellNumY(0)
+    , m_viewPortX(0)
+    , m_viewPortY(0)
+    , m_viewPortWidth(0)
+    , m_viewPortHeight(0)
+    , m_cells()
     , m_world()
-    , m_objects()
     , m_removed()
     , m_activated()
 {
@@ -26,11 +33,19 @@ Simulator& Simulator::get()
 void Simulator::setWorld(const WorldSharedPtr& world)
 {
     m_world = world;
+    initCell();
 }
 
 void Simulator::add(const ObjectSharedPtr& object)
 {
-    m_objects.push_back(object);
+    int idx = getCellIndex(object->getX(), object->getY());
+    assert(idx < (int)m_cells.size());
+    ObjectSharedPtrs& objs = m_cells[idx];
+    if (objs.size() + 1 >= objs.capacity())
+    {
+        objs.reserve((int)(objs.size() * 1.5f)+1);
+    }
+    objs.push_back(object);
 }
 
 void Simulator::spawn(const ObjectSharedPtr& object)
@@ -62,10 +77,24 @@ void Simulator::activate(Object* object)
 
 void Simulator::tick(float dt)
 {
-    for (auto i = m_objects.begin(); i != m_objects.end(); ++i)
+    int cellIndex = getCellIndex(m_viewPortX, m_viewPortY);
+    int cellCols  = m_viewPortWidth / m_cellSize + 2;
+    int cellRows  = m_viewPortHeight / m_cellSize + 2;
+
+    for (int cellY = 0; cellY < cellRows; cellY++)
     {
-        const ObjectSharedPtr& obj = *i;
-        obj->tick(dt);
+        for (int cellX = 0; cellX < cellCols; cellX++)
+        {
+            int idx = cellIndex + cellX + cellY * m_cellNumX;
+            if (idx < (int)m_cells.size())
+            {
+                ObjectSharedPtrs& objs = m_cells[idx];
+                for (auto i = objs.begin(); i != objs.end(); ++i)
+                {
+                    (*i)->tick(dt);
+                }
+            }
+        }
     }
 
     for (auto i = m_activated.begin(); i != m_activated.end(); ++i)
@@ -81,6 +110,27 @@ void Simulator::tick(float dt)
 
         if (!isColliding(collidee, newX, newY, newZ))
         {
+            int oldCellIndex = getCellIndex(collidee->getX(), collidee->getY());
+            int newCellIndex = getCellIndex(newX, newY);
+
+            if (oldCellIndex != newCellIndex)
+            {
+                assert(oldCellIndex < (int)m_cells.size());
+                assert(newCellIndex < (int)m_cells.size());
+                ObjectSharedPtrs& oldCell = m_cells[oldCellIndex];
+                auto it = std::find_if(
+                    oldCell.begin(), oldCell.end(), [collidee](const ObjectSharedPtr& other)
+                    {
+                        return other.get() == collidee;
+                    });
+                assert(it != oldCell.end());
+                ObjectSharedPtr obj = *it;
+                oldCell.erase(it);
+
+                ObjectSharedPtrs& newCell = m_cells[newCellIndex];
+                newCell.push_back(obj);
+            }
+
             collidee->setPosition(newX, newY, newZ);
         }
 
@@ -92,26 +142,50 @@ void Simulator::tick(float dt)
     for (auto i = m_removed.begin(); i != m_removed.end(); ++i)
     {
         Object* obj = *i;
+        int cellIndex = getCellIndex(obj->getX(), obj->getY());
+        assert(cellIndex < (int)m_cells.size());
+        ObjectSharedPtrs& cell = m_cells[cellIndex];
+
         auto it = std::find_if(
-            m_objects.begin(), m_objects.end(),
-            [obj](const ObjectSharedPtr& other)
+            cell.begin(), cell.end(), [obj](const ObjectSharedPtr& other)
             {
                 return other.get() == obj;
             });
 
-        if (it != m_objects.end())
+        assert(it != cell.end());
+        if (it != cell.end())
         {
-            m_objects.erase(it);
+            cell.erase(it);
         }
     }
 }
 
 void Simulator::draw(Renderer* r)
 {
+    m_viewPortX = r->getOriginX();
+    m_viewPortY = r->getOriginY();
+    m_viewPortWidth = r->getWidth();
+    m_viewPortHeight = r->getHeight();
+
     m_world->draw(r);
-    for (auto i = m_objects.begin(); i != m_objects.end(); ++i)
+    int cellIndex = getCellIndex(m_viewPortX, m_viewPortY);
+    int cellCols  = m_viewPortWidth / m_cellSize + 2;
+    int cellRows  = m_viewPortHeight / m_cellSize + 2;
+
+    for (int cellY = 0; cellY < cellRows; cellY++)
     {
-        (*i)->draw(r);
+        for (int cellX = 0; cellX < cellCols; cellX++)
+        {
+            int idx = cellIndex + cellX + cellY * m_cellNumX;
+            if (idx < (int)m_cells.size())
+            {
+                ObjectSharedPtrs& objs = m_cells[idx];
+                for (auto i = objs.begin(); i != objs.end(); ++i)
+                {
+                    (*i)->draw(r);
+                }
+            }
+        }
     }
 }
 
@@ -127,7 +201,11 @@ bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
 
     z = worldZ+1;
 
-    for (auto j = m_objects.begin(); !colliding && j != m_objects.end(); ++j)
+    int cellIndex = getCellIndex(x, y);
+    assert(cellIndex < (int)m_cells.size());
+    ObjectSharedPtrs& cell = m_cells[cellIndex];
+
+    for (auto j = cell.begin(); !colliding && j != cell.end(); ++j)
     {
         Object* collider = (*j).get();
 
@@ -156,9 +234,12 @@ bool Simulator::listObjectsAt(int x, int y, int /*z*/, ObjectWeakPtrs* result)
         return false;
     }
 
+    int cellIndex = getCellIndex(x, y);
+    assert(cellIndex < (int)m_cells.size());
+    ObjectSharedPtrs& cell = m_cells[cellIndex];
+
     std::for_each(
-        m_objects.begin(), m_objects.end(),
-        [result, x, y] (const ObjectSharedPtr& obj)
+        cell.begin(), cell.end(), [result, x, y] (const ObjectSharedPtr& obj)
         {
             if (obj->getX() == x && obj->getY() == y)
             {
@@ -169,22 +250,64 @@ bool Simulator::listObjectsAt(int x, int y, int /*z*/, ObjectWeakPtrs* result)
     return !result->empty();
 }
 
-bool Simulator::findObjectsAround(int x, int y, int /*z*/, float sqrRadius, ObjectWeakPtrs* result)
+bool Simulator::findObjectsAround(int x, int y, int /*z*/, float radius, ObjectWeakPtrs* result)
 {
     if (!result)
     {
         return false;
     }
 
-    std::for_each(
-        m_objects.begin(), m_objects.end(),
-        [result, x, y, sqrRadius] (const ObjectSharedPtr& obj)
+    int iradius   = (int)radius;
+    int sqrRadius = iradius * iradius;
+    int cellIndex = getCellIndex(x - iradius, y - iradius);
+    int cells     = iradius / m_cellSize + 1;
+
+    for (int cellY = 0; cellY < cells; cellY++)
+    {
+        for (int cellX = 0; cellX < cells; cellX++)
         {
-            if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
-            {
-                result->push_back(obj);
-            }
-        });
+            int idx = cellIndex + cellX + cellY * m_cellNumX;
+            assert(idx < (int)m_cells.size());
+
+            ObjectSharedPtrs& cell = m_cells[idx];
+            std::for_each(
+                cell.begin(), cell.end(),
+                [result, x, y, sqrRadius] (const ObjectSharedPtr& obj)
+                {
+                    if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
+                    {
+                        result->push_back(obj);
+                    }
+                });
+        }
+    }
 
     return !result->empty();
+}
+
+void Simulator::initCell()
+{
+    if (!m_world)
+    {
+        m_cellNumX = 0;
+        m_cellNumY = 0;
+        m_cells.clear();
+        return;
+    }
+
+    m_cellNumX = m_world->getWidth() / m_cellSize + 1;
+    m_cellNumY = m_world->getHeight() / m_cellSize + 1;
+
+    int numCell = m_cellNumX * m_cellNumY;
+    m_cells.resize(numCell);
+    std::for_each(
+        m_cells.begin(), m_cells.end(), [] (ObjectSharedPtrs& objs)
+        {
+            objs.reserve(10);
+        });
+}
+
+int Simulator::getCellIndex(int x, int y)
+{
+    return x / m_cellSize + y / m_cellSize * m_cellNumX;
 }

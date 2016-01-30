@@ -216,7 +216,7 @@ void Window::pad(Renderer* r, Color c, int& x, int y)
     {
         if (r)
         {
-            r->drawText(x, y, c, m_background, String(n, ' '));
+            r->drawScreen(x, y, Renderer::TOP(), c, m_background, String(n, ' '));
         }
         x += n;
     }
@@ -226,7 +226,7 @@ void Window::print(Renderer* r, Color c, int& x, int y, const String& text)
 {
     if (r && !text.empty())
     {
-        r->drawText(x, y, c, m_background, text);
+        r->drawScreen(x, y, Renderer::TOP(), c, m_background, text);
     }
     x += text.size();
 }
@@ -237,24 +237,24 @@ void Window::topBorder(Renderer* r, int x, int& y)
     {
         if (r && m_width)
         {
-            r->drawChar(x, y, m_borderColor, m_background, '+');
+            r->drawScreen(x, y, Renderer::TOP(), m_borderColor, m_background, '+');
             if (!m_title.empty())
             {
                 int padding = (m_width - 2 > (int)m_title.size() ?
                                    (m_width - 2 - (int)m_title.size()) / 2 : 0) - 1;
-                r->drawText(x+1, y, m_borderColor, m_background, String(padding, '-'));
-                r->drawChar(x+padding+1, y, m_borderColor, m_background, ' ');
-                r->drawText(x+padding+2, y, m_borderColor, m_background, m_title);
-                r->drawChar(x+padding+2+m_title.size(), y, m_borderColor, m_background, ' ');
-                r->drawText(x+padding+2+m_title.size()+1, y, m_borderColor, m_background,
+                r->drawScreen(x+1, y, Renderer::TOP(), m_borderColor, m_background, String(padding, '-'));
+                r->drawScreen(x+padding+1, y, Renderer::TOP(), m_borderColor, m_background, ' ');
+                r->drawScreen(x+padding+2, y, Renderer::TOP(), m_borderColor, m_background, m_title);
+                r->drawScreen(x+padding+2+m_title.size(), y, Renderer::TOP(), m_borderColor, m_background, ' ');
+                r->drawScreen(x+padding+2+m_title.size()+1, y, Renderer::TOP(), m_borderColor, m_background,
                             String(padding + (m_width % 2 ? 1:0), '-'));
             }
             else
             {
-                r->drawText(x+1, y, m_borderColor, m_background, String(m_width-2, '-'));
+                r->drawScreen(x+1, y, Renderer::TOP(), m_borderColor, m_background, String(m_width-2, '-'));
             }
 
-            r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+            r->drawScreen(x + m_width - 1, y, Renderer::TOP(), m_borderColor, m_background, '+');
         }
         else if (m_width < (int)m_title.size() + 6)
         {
@@ -286,9 +286,9 @@ void Window::bottomBorder(Renderer* r, int x, int& y)
 
         if (r)
         {
-            r->drawChar(x, y, m_borderColor, m_background, '+');
-            r->drawText(x+1, y, m_borderColor, m_background, String(m_width - 2, '-'));
-            r->drawChar(x + m_width - 1, y, m_borderColor, m_background, '+');
+            r->drawScreen(x, y, Renderer::TOP(), m_borderColor, m_background, '+');
+            r->drawScreen(x+1, y, Renderer::TOP(), m_borderColor, m_background, String(m_width - 2, '-'));
+            r->drawScreen(x + m_width - 1, y, Renderer::TOP(), m_borderColor, m_background, '+');
         }
         newLine(r, x, y);
     }
@@ -300,10 +300,10 @@ void Window::leftBorder(Renderer* r, int& x, int y)
     {
         if (r)
         {
-            r->drawChar(x, y, m_borderColor, m_background, '|');
+            r->drawScreen(x, y, Renderer::TOP(), m_borderColor, m_background, '|');
             if (m_vborder)
             {
-                r->drawText(x+1, y, m_borderColor, m_background, String(m_vborder, ' '));
+                r->drawScreen(x+1, y, Renderer::TOP(), m_borderColor, m_background, String(m_vborder, ' '));
             }
         }
 
@@ -320,9 +320,9 @@ void Window::rightBorder(Renderer* r, int& x, int y)
         {
             if (m_vborder)
             {
-                r->drawText(x, y, m_borderColor, m_background, String(m_vborder, ' '));
+                r->drawScreen(x, y, Renderer::TOP(), m_borderColor, m_background, String(m_vborder, ' '));
             }
-            r->drawChar(x+(m_vborder ? 1 : 0), y, m_borderColor, m_background, '|');
+            r->drawScreen(x+(m_vborder ? 1 : 0), y, Renderer::TOP(), m_borderColor, m_background, '|');
         }
 
         x++;

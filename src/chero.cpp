@@ -6,6 +6,7 @@
 #include "csimulator.h"
 #include "cweapon.h"
 #include "cchest.h"
+#include "cdebugger.h"
 
 static const int INVENTORY_PAGE_SIZE = 5;
 
@@ -58,6 +59,9 @@ void Hero::tick(float dt)
         case 'Q':
             Input::setQuit();
             break;
+
+        case '`':
+            Debugger::get().toggleDebugInfo();
         }
     }
 

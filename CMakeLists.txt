@@ -42,6 +42,7 @@ set(SOURCES
     src/croomtemplate.cpp
     src/cchest.cpp
     src/cchestfactory.cpp
+    src/cdebugger.cpp
 )	
 
 add_executable(crawler ${SOURCES})

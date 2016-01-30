@@ -14,15 +14,18 @@ public:
     void clear();
     void flip();
     void draw(int x, int y, int z, const Tile* tile);
+    void drawScreen(int x, int y, int z, const Tile* tile);
     void draw(int x, int y, int z, Color fg, Color bg, char ch);
-    void drawChar(int x, int y, Color fg, Color bg, char ch);
-    void drawText(int x, int y, Color fg, Color bg, const std::string& text);
+    void drawScreen(int x, int y, int z, Color fg, Color bg, char ch);
+    void draw(int x, int y, int z, Color fg, Color bg, const std::string& text);
+    void drawScreen(int x, int y, int z, Color fg, Color bg, const std::string& text);
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
     int getOriginX() const { return m_oX; }
     int getOriginY() const { return m_oY; }
     void setOrigin(int x, int y, int z) { m_oX = x; m_oY = y; m_oZ = z; }
     bool isVisible(Object* object) const;
+    static int TOP();
 
 private:
     int m_width;
@@ -44,7 +47,5 @@ private:
     Cell m_empty;
 
     void size(int& w, int& h);
-    void setFg(Color color);
-    void setBg(Color color);
     bool raycast(int x, int y, int z);
 };

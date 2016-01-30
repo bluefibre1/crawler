@@ -13,6 +13,7 @@
 #include "clogger.h"
 #include "cwindowmanager.h"
 #include "cchestfactory.h"
+#include "cdebugger.h"
 
 #include <unistd.h>
 
@@ -31,8 +32,9 @@ int main(int /*argc*/, char* /*argv*/[])
 
     WorldSharedPtr world(new World());
     // Possibility: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096...
-    world->generate(256);
+    world->generate(4096);
     simulator.setWorld(world);
+
     HeroSharedPtr hero(new Hero());
     hero->setMapHp(100);
     hero->heal();
@@ -50,7 +52,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
     float creatureDensity = 10 / (float)(64*64);
     int numCreature = (int)(worldArea * creatureDensity);
-    for (int i = 0; i < 200; i++)
+    for (int i = 0; i < 200000; i++)
     {
         int idx = Math::ceilRandom(creatureTemplates.size());
         ObjectSharedPtr creature(CharacterFactory::create(creatureTemplates[idx]));
@@ -65,9 +67,12 @@ int main(int /*argc*/, char* /*argv*/[])
         simulator.spawn(chest);
     }
 
+    Debugger& debugger = Debugger::get();
+
     Timer timer;
     while (!input.quit())
     {
+        debugger.incFrameId();
         float dt = timer.elapsed();
         timer.reset();
         simulator.tick(dt);
@@ -98,6 +103,7 @@ int main(int /*argc*/, char* /*argv*/[])
         r.clear();
         simulator.draw(&r);
         windowManager.draw(&r);
+        CDEBUG(debugger.draw(&r));
         r.flip();
 
         int sleepTime = (int)(33333.3f - timer.elapsed() * 1000000.0f);

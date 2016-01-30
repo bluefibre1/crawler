@@ -1,5 +1,6 @@
 #include "cobject.h"
 #include "csimulator.h"
+#include "cdebugger.h"
 
 Object::Object()
     : m_x(0)
@@ -17,6 +18,7 @@ Object::~Object()
 
 void Object::tick(float dt)
 {
+    CDEBUG(Debugger::get().incObjectTicked());
     if (m_dispX != 0 || m_dispY != 0)
     {
         Simulator::get().activate(this);

@@ -9,6 +9,7 @@
 #include "cmath.h"
 #include "cinput.h"
 #include "cwindowmanager.h"
+#include "cdebugger.h"
 
 Character::Character()
     : m_ch('@')
@@ -19,6 +20,7 @@ Character::Character()
     , m_gold(10)
     , m_nextLevelXp(0)
     , m_level(1)
+    , m_lastTickFrameId(-1)
     , m_behavior(nullptr)
     , m_blackboard(nullptr)
     , m_faction(nullptr)
@@ -53,16 +55,28 @@ void Character::draw(Renderer* r)
         {
             r->draw(getX(), getY(), getZ(), m_color, Colors::RED(), m_ch);
         }
+        CDEBUG(if (Debugger::get().getFrameId() == m_lastTickFrameId)
+               {
+                   debugStringAppend("U");
+               }
+               r->draw(getX(), getY()-1, Renderer::TOP(), Colors::YELLOW(), Colors::BLUE(), m_debugString);
+            );
     }
 }
 
 void Character::tick(float dt)
 {
-    if (m_behavior && m_hp && !Input::isPaused())
+    CDEBUG(m_debugString.clear());
+
+    if (m_hp && !Input::isPaused())
     {
-        m_behavior->tick(dt, *m_blackboard);
+        if (m_behavior)
+        {
+            m_behavior->tick(dt, *m_blackboard);
+        }
+        Object::tick(dt);
+        CDEBUG(m_lastTickFrameId = Debugger::get().getFrameId());
     }
-    Object::tick(dt);
 }
 
 void Character::setBehavior(BehaviorNode* behavior)
@@ -283,4 +297,13 @@ void Character::showStats()
     w->print(Colors::RED(), String(hpTotalBar-hpBars, 'x'));
 
     WindowManager::get().popup(w, 3);
+}
+
+void Character::debugStringAppend(const String& value)
+{
+    if (!m_debugString.empty())
+    {
+        m_debugString += '|';
+    }
+    m_debugString += value;
 }

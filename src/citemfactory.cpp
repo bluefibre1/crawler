@@ -23,7 +23,7 @@ ItemSharedPtr ItemFactory::create(const ItemTemplateSharedPtr& t)
 ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
 {
     Weapon* w = new Weapon();
-    w->setDamage((int)Math::intervalRandom(t->getMaxDamage(), t->getMinDamage()));
+    w->setDamage((int)Math::intervalRandom(t->getMinDamage(), t->getMaxDamage()));
 
     const char* qualifier[] = {
         "",

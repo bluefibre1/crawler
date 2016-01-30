@@ -40,6 +40,7 @@ private:
             ss << __VA_ARGS__;                  \
             inst.write(ss.str());               \
         }                                       \
-    } while (0)
+    }                                           \
+    while (0)
 
 #define CLOG_DEBUG(...) CLOG(LogLevel::DEBUG, __VA_ARGS__)

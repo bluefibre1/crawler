@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include <stdio.h>
 
 Renderer::Cell::Cell()
     : m_ch(' ')
@@ -76,8 +77,11 @@ void Renderer::clear()
 
 void Renderer::flip()
 {
+    std::stringstream out;
     int lastH = -1;
     int lastW = -1;
+    Color lastFg = Colors::INVALID();
+    Color lastBg = Colors::INVALID();
     int n = m_width*m_height;
     for (int h = 0; h < m_height; h++)
     {
@@ -98,22 +102,24 @@ void Renderer::flip()
             {
                 if (lastH != h || lastW != w)
                 {
-                    printf("\033[%d;%dH", h+1, w+1);
+                    out << "\033[" << h+1 << ";" << w+1 << "H";
                     lastH = h;
                     lastW = w;
                 }
 
-                if (f->m_fg != Colors::INVALID())
+                if (f->m_fg != lastFg)
                 {
-                    setFg(f->m_fg);
+                    lastFg = f->m_fg;
+                    out << "\033[38;5;" << f->m_fg.getValue() << "m";
                 }
 
-                if (f->m_bg != Colors::INVALID())
+                if (f->m_bg != lastBg)
                 {
-                    setBg(f->m_bg);
+                    lastBg = f->m_bg;
+                    out << "\033[48;5;" << f->m_bg.getValue() << "m";
                 }
 
-                printf("%c", f->m_ch);
+                out << f->m_ch;
                 lastW++;
             }
         }
@@ -123,17 +129,23 @@ void Renderer::flip()
     m_back = m_front;
     m_front = tmp;
 
+    out << "\033[0m";
+
+    const String& s = out.str();
+    fwrite(s.c_str(), s.size(), 1, stdout);
     fflush(stdout);
 }
 
 void Renderer::draw(int x, int y, int z, const Tile* tile)
 {
-    int ox = x - m_oX;
-    int oy = y - m_oY;
+    drawScreen(x - m_oX, y - m_oY, z, tile);
+}
 
-    if (ox >= 0 && oy >= 0 && ox < m_width && oy < m_height)
+void Renderer::drawScreen(int x, int y, int z, const Tile* tile)
+{
+    if (x >= 0 && y >= 0 && x < m_width && y < m_height)
     {
-        int i = ox + oy * m_width;
+        int i = x + y * m_width;
         Cell& c = m_front[i];
         if (z >= c.m_z)
         {
@@ -155,12 +167,14 @@ void Renderer::draw(int x, int y, int z, const Tile* tile)
 
 void Renderer::draw(int x, int y, int z, Color fg, Color bg, char ch)
 {
-    int ox = x - m_oX;
-    int oy = y - m_oY;
+    drawScreen(x - m_oX, y - m_oY, z, fg, bg, ch);
+}
 
-    if (ox >= 0 && oy >= 0 && ox < m_width && oy < m_height)
+void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, char ch)
+{
+    if (x >= 0 && y >= 0 && x < m_width && y < m_height)
     {
-        int i = ox + oy * m_width;
+        int i = x + y * m_width;
         Cell& c = m_front[i];
         if (z >= c.m_z)
         {
@@ -180,28 +194,12 @@ void Renderer::draw(int x, int y, int z, Color fg, Color bg, char ch)
     }
 }
 
-void Renderer::drawChar(int x, int y, Color fg, Color bg, char ch)
+void Renderer::draw(int x, int y, int z, Color fg, Color bg, const std::string& text)
 {
-    if (x >= 0 && y >= 0 && x < m_width && y < m_height)
-    {
-        int i = x + y * m_width;
-        Cell& c = m_front[i];
-        c.m_ch = ch;
-        if (fg != Colors::INVALID())
-        {
-            c.m_fg = fg;
-        }
-
-        if (bg != Colors::INVALID())
-        {
-            c.m_bg = bg;
-        }
-
-        c.m_z =  0x7FFFFFFF;
-    }
+    drawScreen(x - m_oX, y - m_oY, z, fg, bg, text);
 }
 
-void Renderer::drawText(int x, int y, Color fg, Color bg, const std::string& text)
+void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, const std::string& text)
 {
     int n = text.size();
     if (x + n > m_width)
@@ -253,23 +251,13 @@ void Renderer::size(int& w, int& h)
     }
 }
 
-void Renderer::setFg(Color color)
-{
-    printf("\033[38;5;%im", color.getValue());
-}
-
-void Renderer::setBg(Color color)
-{
-    printf("\033[48;5;%im", color.getValue());
-}
-
 bool Renderer::raycast(int x, int y, int z)
 {
     /*
-      int ox = m_width / 2;
+      int x = m_width / 2;
       int oy = m_height / 2;
 
-      int dx = x - ox;
+      int dx = x - x;
       int dy = y - oy;
       int dz = z - m_oZ;
       bool rising = false;
@@ -280,7 +268,7 @@ bool Renderer::raycast(int x, int y, int z)
       int stepX = dx > 0 ? 1 : -1;
       float stepY = dy / steps;
       float stepZ = dz / steps;
-      int cx = ox;
+      int cx = x;
       float cy = oy;
       float cz = m_oZ;
       for (int i = 1; i < steps; ++i)
@@ -313,7 +301,7 @@ bool Renderer::raycast(int x, int y, int z)
       float stepX = dx / steps;
       int stepY = dy > 0 ? 1 : -1;
       float stepZ = dz / steps;
-      float cx = ox;
+      float cx = x;
       int cy = oy;
       float cz = m_oZ;
       for (int i = 1; i < steps; ++i)
@@ -342,4 +330,9 @@ bool Renderer::raycast(int x, int y, int z)
       }
     */
     return false;
+}
+
+int Renderer::TOP()
+{
+    return 0x7FFFFFFF;
 }

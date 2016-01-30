@@ -7,7 +7,7 @@ public:
     static bool isPowerOf2(int n);
     static float unitRandom();
     static float wrapRandom();
-    static float intervalRandom(float high, float low);
+    static float intervalRandom(float low, float high);
     static int ceilRandom(int ceil);
 
     static void clamp(int& value, int min, int max);

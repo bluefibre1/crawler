@@ -4,9 +4,7 @@
 #include "cmath.h"
 #include "cfaction.h"
 #include "clogger.h"
-
-#include <stdio.h>
-
+#include "cdebugger.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // mistke this hello
@@ -80,12 +78,12 @@ BlackboardReference BehaviorReferenceNode::getReference() const
 BehaviorFindTarget::BehaviorFindTarget()
     : m_distance(0)
     , m_hysteresis(0)
-    , m_elapsed(0)
+    , m_remain(0)
 {
 
 }
 
-void BehaviorFindTarget::setVisionSqrRadius(float dist, float hysteresis)
+void BehaviorFindTarget::setVisionRadius(float dist, float hysteresis)
 {
     m_distance = dist;
     m_hysteresis = hysteresis;
@@ -93,10 +91,24 @@ void BehaviorFindTarget::setVisionSqrRadius(float dist, float hysteresis)
 
 void BehaviorFindTarget::tick(float dt, Blackboard& bb)
 {
-    m_elapsed += dt;
-    if (m_elapsed > 0.5f)
+    CDEBUG(ObjectWeakPtr ref = bb.getReference(getReference());
+           if (!ref.expired())
+           {
+               ObjectSharedPtr target = ref.lock();
+               std::stringstream s;
+               s << ":" << ((Character*)target.get())->getName();
+               bb.getSelf()->debugStringAppend(s.str());
+           }
+           else
+           {
+               bb.getSelf()->debugStringAppend(":");
+           }
+        );
+
+    m_remain -= dt;
+    if (m_remain < 0)
     {
-        m_elapsed = 0;
+        m_remain = Math::intervalRandom(0.4f, 0.6f);
 
         int x = bb.getSelf()->getX();
         int y = bb.getSelf()->getY();
@@ -106,14 +118,15 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
         if (!ref.expired())
         {
             ObjectSharedPtr target = ref.lock();
+            Character* c = (Character*)target.get();
             float dist = Math::sqrDistance(
                 target->getX(), target->getY(), x, y);
 
-            if (dist < m_distance + m_hysteresis)
+            if (c->getHp() && dist < m_distance + m_hysteresis)
             {
                 return;
             }
-            CLOG_DEBUG("lost sight of target:" << ((Character*)target.get())->getName());
+            CLOG_DEBUG("lost sight of target:" << c->getName());
             bb.clearReference(getReference());
         }
 
@@ -131,7 +144,8 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
                     obj->getObjectType() & Object::OBJECT_TYPE_CHARACTER)
                 {
                     Character* c = (Character*)obj.get();
-                    if (bb.getSelf()->getFaction()->isEnemy(c->getFaction()))
+                    if (c->getHp() &&
+                        bb.getSelf()->getFaction()->isEnemy(c->getFaction()))
                     {
                         CLOG_DEBUG("found target:" << c->getName());
                         bb.setReference(getReference(), obj);
@@ -232,7 +246,7 @@ bool BehaviorDistancePredicate::eval(Blackboard& bb)
 ////////////////////////////////////////////////////////////////////////////////
 
 BehaviorAlternative::BehaviorAlternative()
-    : m_elapsed(0)
+    : m_remain(0)
     , m_predicate(nullptr)
     , m_current(nullptr)
     , m_true(nullptr)
@@ -268,10 +282,10 @@ void BehaviorAlternative::setPredicate(BehaviorPredicate* predicate)
 
 void BehaviorAlternative::tick(float dt, Blackboard& bb)
 {
-    m_elapsed += dt;
-    if (!m_current || m_elapsed > 0.5f)
+    m_remain -= dt;
+    if (!m_current || m_remain < 0)
     {
-        m_elapsed = 0;
+        m_remain = Math::intervalRandom(0.4f, 0.6f);
         BehaviorNode* node = m_predicate->eval(bb) ? m_true : m_false;
         if (node != m_current)
         {
@@ -291,7 +305,7 @@ BehaviorWander::BehaviorWander()
     , m_dx(0)
     , m_dy(0)
     , m_ropeSqrLength(5)
-    , m_elapsed(0)
+    , m_remain(0)
 {
 
 }
@@ -303,6 +317,8 @@ void BehaviorWander::setRopeSqrLength(int sqrLength)
 
 void BehaviorWander::tick(float dt, Blackboard& bb)
 {
+    CDEBUG(bb.getSelf()->debugStringAppend("W"));
+
     if (!m_initialized)
     {
         m_initialized = true;
@@ -310,13 +326,13 @@ void BehaviorWander::tick(float dt, Blackboard& bb)
         m_anchorY = bb.getSelf()->getY();
     }
 
-    m_elapsed += dt;
-    if (m_elapsed < 0.5f)
+    m_remain -= dt;
+    if (m_remain >= 0)
     {
         return;
     }
 
-    m_elapsed = 0;
+    m_remain = Math::intervalRandom(0.4f, 0.6f);
 
     // do we change what we where doing?
     if (Math::ceilRandom(100) < 20)
@@ -379,20 +395,22 @@ void BehaviorWander::tick(float dt, Blackboard& bb)
 //////////////////////////////////////////////////////////////////////
 
 BehaviorChase::BehaviorChase()
-    : m_elapsed(0)
+    : m_remain(0)
 {
 
 }
 
 void BehaviorChase::tick(float dt, Blackboard& bb)
 {
-    m_elapsed += dt;
-    if (m_elapsed < 0.5f)
+    CDEBUG(bb.getSelf()->debugStringAppend("C"));
+
+    m_remain -= dt;
+    if (m_remain >= 0)
     {
         return;
     }
 
-    m_elapsed = 0;
+    m_remain = Math::intervalRandom(0.3f, 0.4f);
 
     ObjectWeakPtr ref = bb.getReference(getReference());
     if (ref.expired())
@@ -419,15 +437,17 @@ void BehaviorChase::tick(float dt, Blackboard& bb)
 //////////////////////////////////////////////////////////////////////
 
 BehaviorAttack::BehaviorAttack()
-    : m_elapsed(1000)
+    : m_remain(0)
 {
 
 }
 
 void BehaviorAttack::tick(float dt, Blackboard& bb)
 {
-    m_elapsed += dt;
-    if (m_elapsed < 0.5f)
+    CDEBUG(bb.getSelf()->debugStringAppend("A"));
+
+    m_remain -= dt;
+    if (m_remain >= 0)
     {
         return;
     }
@@ -469,5 +489,5 @@ void BehaviorAttack::tick(float dt, Blackboard& bb)
     {
         bb.getSelf()->hit(Direction::UP);
     }
-    m_elapsed = 0;
+    m_remain = Math::intervalRandom(0.4f, 0.6f);
 }

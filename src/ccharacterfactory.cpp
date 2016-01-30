@@ -10,7 +10,7 @@ CharacterSharedPtr CharacterFactory::create(const CharacterTemplateSharedPtr& t)
 {
     CharacterSharedPtr c(new Character());
     c->setName(t->getName());
-    c->setMapHp((int)Math::intervalRandom(t->getMaxHp(), t->getMinHp()));
+    c->setMapHp((int)Math::intervalRandom(t->getMinHp(), t->getMaxHp()));
     c->heal();
     c->setColor(t->getColor());
     c->setChar(t->getChar());
@@ -20,7 +20,7 @@ CharacterSharedPtr CharacterFactory::create(const CharacterTemplateSharedPtr& t)
 
     auto findTarget = new BehaviorFindTarget();
     findTarget->setReference(targetRef);
-    findTarget->setVisionSqrRadius(25, 9);
+    findTarget->setVisionRadius(5, 3);
 
     auto attack = new BehaviorAttack();
     attack->setReference(targetRef);

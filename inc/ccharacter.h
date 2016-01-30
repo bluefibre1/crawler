@@ -82,6 +82,8 @@ public:
 
     virtual void showStats();
 
+    void debugStringAppend(const String& value);
+
 protected:
     char m_ch;
     Color m_color;
@@ -94,6 +96,8 @@ protected:
     int m_gold;
     int m_nextLevelXp;
     int m_level;
+    int m_lastTickFrameId;
+    String m_debugString;
     BehaviorNode* m_behavior;
     Blackboard* m_blackboard;
     FactionSharedPtr m_faction;

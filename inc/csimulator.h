@@ -32,12 +32,22 @@ public:
 
     bool listObjectsAt(int x, int y, int z, ObjectWeakPtrs* result);
 
-    bool findObjectsAround(int x, int y, int z, float sqrRadius, ObjectWeakPtrs* result);
+    bool findObjectsAround(int x, int y, int z, float radius, ObjectWeakPtrs* result);
 
 private:
-    int m_zoneSize;
+    void initCell();
+    int getCellIndex(int x, int y);
+
+    int m_cellSize;
+    int m_cellNumX;
+    int m_cellNumY;
+    int m_viewPortX;
+    int m_viewPortY;
+    int m_viewPortWidth;
+    int m_viewPortHeight;
+    typedef std::vector<ObjectSharedPtrs> ObjectCells;
+    ObjectCells m_cells;
     WorldSharedPtr m_world;
-    ObjectSharedPtrs m_objects;
     ObjectPtrs m_removed;
     ObjectPtrs m_activated;
 };

@@ -22,7 +22,7 @@ float Math::wrapRandom()
     return (float)(2.0*ratio - 1.0);
 }
 
-float Math::intervalRandom(float high, float low)
+float Math::intervalRandom(float low, float high)
 {
     int value = ::rand() % 0x7fff;
     double ratio = ((double)value)/((double)(0x7fff));
