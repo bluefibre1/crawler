@@ -16,3 +16,5 @@ public:
 private:
     TilePtrSurface m_surface;
 };
+
+typedef std::shared_ptr<Room> RoomSharedPtr;
