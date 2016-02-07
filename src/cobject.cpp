@@ -24,3 +24,13 @@ void Object::tick(float dt)
         Simulator::get().activate(this);
     }
 }
+
+bool Object::hasHint() const
+{
+    return false;
+}
+
+void Object::printHint(Window* w) const
+{
+
+}

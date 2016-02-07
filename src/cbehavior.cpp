@@ -428,7 +428,7 @@ void BehaviorChase::tick(float dt, Blackboard& bb)
     {
         bb.getSelf()->setDisplacement(dx / absDx, 0);
     }
-    else
+    else if (absDy != 0)
     {
         bb.getSelf()->setDisplacement(0, dy / absDy);
     }

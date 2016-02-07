@@ -1,6 +1,7 @@
 #include "cchest.h"
 #include "ccolors.h"
 #include "crenderer.h"
+#include "cwindow.h"
 
 Chest::Chest()
     : m_ch(']')
@@ -48,4 +49,15 @@ void Chest::removeAllItems()
 const ItemSharedPtrs& Chest::getItems() const
 {
     return m_items;
+}
+
+bool Chest::hasHint() const
+{
+    return !m_items.empty();
+}
+
+void Chest::printHint(Window* w) const
+{
+    w->print(Colors::WHITE(), "Found ");
+    w->print(Colors::GREEN(), "chest");
 }

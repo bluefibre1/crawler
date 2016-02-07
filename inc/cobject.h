@@ -1,9 +1,11 @@
 #pragma once
 
+#include "cstring.h"
 #include <memory>
 #include <vector>
 
 class Renderer;
+class Window;
 
 class Object
 {
@@ -42,6 +44,10 @@ public:
     virtual int getObjectType() const { return OBJECT_TYPE_UNKNOWN; }
 
     virtual bool isCollidable() const { return true; }
+
+    virtual bool hasHint() const;
+
+    virtual void printHint(Window* w) const;
 
 private:
     int m_x;

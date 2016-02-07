@@ -14,6 +14,7 @@ static const int INVENTORY_PAGE_SIZE = 5;
 Hero::Hero()
     : m_state(State::InGame)
     , m_statsPopup()
+    , m_hintPopup()
     , m_menuWindow()
     , m_inventoryPage(0)
 {
@@ -65,12 +66,49 @@ void Hero::tick(float dt)
         }
     }
 
+    showHint();
+
     Character::tick(dt);
 }
 
 void Hero::draw(Renderer* r)
 {
     Character::draw(r);
+}
+
+void Hero::showHint()
+{
+    ObjectWeakPtrs objs;
+    Simulator::get().findObjectsAround(getX(), getY(), getZ(), 5, &objs);
+
+    ObjectSharedPtr objectWithHint;
+    for (auto i = objs.begin(); i != objs.end(); ++i)
+    {
+        ObjectSharedPtr obj = (*i).lock();
+        if (obj && obj->hasHint())
+        {
+            objectWithHint = obj;
+            break;
+        }
+    }
+
+    if (!objectWithHint)
+    {
+        return;
+    }
+
+    WindowSharedPtr w(m_hintPopup.expired() ?
+                      WindowSharedPtr(new Window()) : m_hintPopup.lock());
+    m_hintPopup = w;
+
+    w->setHorizontalAlign(Window::HorizontalAlign::CENTER);
+    w->setVerticalAlign(Window::VerticalAlign::BOTTOM);
+    //w->setBorderWidth(1, 0);
+    w->clear();
+
+    objectWithHint->printHint(w.get());
+
+    WindowManager::get().popup(w, 5);
 }
 
 void Hero::showStats()

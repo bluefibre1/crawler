@@ -84,6 +84,10 @@ public:
 
     void debugStringAppend(const String& value);
 
+    virtual bool hasHint() const override;
+
+    virtual void printHint(Window* w) const override;
+
 protected:
     char m_ch;
     Color m_color;

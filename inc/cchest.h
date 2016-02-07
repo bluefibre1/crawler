@@ -25,6 +25,10 @@ public:
 
     virtual int getObjectType() const override { return OBJECT_TYPE_CHEST; }
 
+    virtual bool hasHint() const override;
+
+    virtual void printHint(Window* w) const override;
+
 private:
     char m_ch;
     Color m_color;

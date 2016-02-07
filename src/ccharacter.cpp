@@ -307,3 +307,15 @@ void Character::debugStringAppend(const String& value)
     }
     m_debugString += value;
 }
+
+bool Character::hasHint() const
+{
+    return !getHp() && !m_items.empty();
+}
+
+void Character::printHint(Window* w) const
+{
+    w->print(Colors::WHITE(), "Found ");
+    w->print(Colors::RED(), "dead ");
+    w->print(Colors::WHITE(), getName());
+}

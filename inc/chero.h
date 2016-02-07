@@ -33,6 +33,7 @@ private:
 
     State m_state;
 
+    WindowWeakPtr m_hintPopup;
     WindowWeakPtr m_statsPopup;
     WindowSharedPtr m_menuWindow;
     int m_inventoryPage;
@@ -42,6 +43,7 @@ private:
     void handleStateEquip(bool pressed, int key);
     void handleStateDrop(bool pressed, int key);
 
+    void showHint();
     void showStatus();
     void showInventory();
 };
