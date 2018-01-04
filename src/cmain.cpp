@@ -28,6 +28,8 @@ int main(int /*argc*/, char* /*argv*/[])
 
     Input input;
     Renderer r;
+    // r.showAsciiTable(8, 20);
+    // return 0;
 
     auto& simulator = Simulator::get();
     auto& windowManager = WindowManager::get();
@@ -58,7 +60,7 @@ int main(int /*argc*/, char* /*argv*/[])
         simulator.spawn(room);
     }
 
-    float creatureDensity = 100 / (float)(64*64);
+    float creatureDensity = 10 / (float)(64*64);
     int numCreature = (int)(worldArea * creatureDensity);
     for (int i = 0; i < numCreature; i++)
     {

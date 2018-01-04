@@ -10,7 +10,7 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
         mandatoryCharacters.push_back(CharacterTemplates::VILLAGER());
 
         CharacterTemplateSharedPtrs randomCharacters;
-        mandatoryCharacters.push_back(CharacterTemplates::VILLAGER());
+        randomCharacters.push_back(CharacterTemplates::VILLAGER());
 
         Strings surface;
         surface.push_back("##########");

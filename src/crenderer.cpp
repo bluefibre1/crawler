@@ -33,6 +33,7 @@ Renderer::Renderer()
     , m_back(nullptr)
     , m_empty()
 {
+    setlocale( LC_ALL, "en_US.UTF-8" );
     m_empty.m_ch = Tiles::EMPTY().getValue();
     m_empty.m_fg = Tiles::EMPTY().getForeground();
     m_empty.m_bg = Tiles::EMPTY().getBackground();
@@ -341,4 +342,18 @@ bool Renderer::raycast(int x, int y, int z)
 int Renderer::TOP()
 {
     return 0x7FFFFFFF;
+}
+
+void Renderer::showAsciiTable(int columns, int rows)
+{
+    wchar_t c = 30;
+    for (int l = 0; l < rows; l++)
+    {
+        for (int i = 0; i < columns; i++)
+        {
+            wprintf(L"%03i = '% 1lc'   ", c, c);
+            c++;
+        }
+        wprintf(L"\r\n");
+    }
 }

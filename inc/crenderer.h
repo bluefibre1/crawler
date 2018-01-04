@@ -26,6 +26,7 @@ public:
     void setOrigin(int x, int y, int z) { m_oX = x; m_oY = y; m_oZ = z; }
     bool isVisible(Object* object) const;
     static int TOP();
+    void showAsciiTable(int columns, int rows);
 
 private:
     int m_width;

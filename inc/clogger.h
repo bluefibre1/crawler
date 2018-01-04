@@ -36,9 +36,9 @@ private:
         Logger& inst = Logger::get();           \
         if (level <= inst.getLevel())           \
         {                                       \
-            std::stringstream ss;               \
-            ss << __VA_ARGS__;                  \
-            inst.write(ss.str());               \
+            std::stringstream _ss;              \
+            _ss << __VA_ARGS__;                 \
+            inst.write(_ss.str());              \
         }                                       \
     }                                           \
     while (0)
