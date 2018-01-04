@@ -12,7 +12,7 @@
 #include "cdebugger.h"
 
 Character::Character()
-    : m_ch('@')
+    : m_ch(CHAR_T('@'))
     , m_color(Colors::MAGENTA())
     , m_hp(100)
     , m_maxHp(150)
@@ -173,7 +173,7 @@ void Character::setColor(const Color& color)
     m_color = color;
 }
 
-void Character::setChar(char ch)
+void Character::setChar(Char ch)
 {
     m_ch = ch;
 }

@@ -56,7 +56,7 @@ void Weapon::draw(Renderer* r)
     float dx, dy;
     getDeltas(dx, dy);
 
-    char ch = (m_dir == Direction::LEFT || m_dir == Direction::RIGHT) ?
+    Char ch = (m_dir == Direction::LEFT || m_dir == Direction::RIGHT) ?
         m_horizontalChar : m_verticalChar;
 
     r->draw(

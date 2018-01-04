@@ -19,7 +19,7 @@ Hero::Hero()
     , m_inventoryPage(0)
 {
     m_color = Colors::MAGENTA();
-    m_ch = '0';
+    m_ch = CHAR_T('0');
 }
 
 void Hero::tick(float dt)

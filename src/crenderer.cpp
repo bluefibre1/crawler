@@ -10,7 +10,7 @@
 #include <limits.h>
 #include <assert.h>
 #include <stdlib.h>
-
+#include <wchar.h>
 #include <stdio.h>
 
 Renderer::Cell::Cell()
@@ -104,7 +104,7 @@ void Renderer::flip()
             {
                 if (lastH != h || lastW != w)
                 {
-                    out << "\033[" << h+1 << ";" << w+1 << "H";
+                    out << CHAR_T("\033[") << h+1 << CHAR_T(';') << w+1 << CHAR_T('H');
                     lastH = h;
                     lastW = w;
                 }
@@ -112,13 +112,13 @@ void Renderer::flip()
                 if (f->m_fg != lastFg)
                 {
                     lastFg = f->m_fg;
-                    out << "\033[38;5;" << f->m_fg.getValue() << "m";
+                    out << CHAR_T("\033[38;5;") << f->m_fg.getValue() << CHAR_T('m');
                 }
 
                 if (f->m_bg != lastBg)
                 {
                     lastBg = f->m_bg;
-                    out << "\033[48;5;" << f->m_bg.getValue() << "m";
+                    out << CHAR_T("\033[48;5;") << f->m_bg.getValue() << CHAR_T('m');
                 }
 
                 out << f->m_ch;
@@ -131,12 +131,12 @@ void Renderer::flip()
     m_back = m_front;
     m_front = tmp;
 
-    out << "\033[0m";
-
+    out << CHAR_T("\033[0m");
 
     const String& s = out.str();
     CDEBUG_LOW(Debugger::get().setDrawSize(s.size()));
-    fwrite(s.c_str(), s.size()*sizeof(Char), 1, stdout);
+    // fwrite(s.c_str(), s.size(), sizeof(Char), stdout);
+    fwprintf(stdout, s.c_str());
     fflush(stdout);
 }
 
@@ -346,14 +346,18 @@ int Renderer::TOP()
 
 void Renderer::showAsciiTable(int columns, int rows)
 {
+    std::wstringstream out;
     Char c = 30;
     for (int l = 0; l < rows; l++)
     {
         for (int i = 0; i < columns; i++)
         {
-            wprintf(L"%03i = '% 1lc'   ", c, c);
+            out << (int)c << CHAR_T("='") << c << CHAR_T("'   ");
             c++;
         }
-        wprintf(L"\r\n");
+        out << CHAR_T("\r\n");
     }
+    const String& s = out.str();
+    fwprintf(stdout, s.c_str());
+    fflush(stdout);
 }

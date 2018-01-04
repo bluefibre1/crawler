@@ -52,7 +52,7 @@ public:
 
     void setColor(const Color& color);
 
-    void setChar(char ch);
+    void setChar(Char ch);
 
     void addItem(const ItemSharedPtr& item);
 
@@ -89,7 +89,7 @@ public:
     virtual void printHint(Window* w) const override;
 
 protected:
-    char m_ch;
+    Char m_ch;
     Color m_color;
 
     void setNextLevelXp();

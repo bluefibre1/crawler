@@ -28,7 +28,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
     Input input;
     Renderer r;
-    // r.showAsciiTable(8, 20);
+    // r.showAsciiTable(10, 1000);
     // return 0;
 
     auto& simulator = Simulator::get();
