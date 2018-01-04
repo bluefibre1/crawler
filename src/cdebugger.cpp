@@ -131,7 +131,7 @@ void Debugger::draw(Renderer* r)
         return;
     }
 
-    std::stringstream s;
+    std::wstringstream s;
     s << "frame [f:" << m_frameId <<
         " o:"<< m_lastObjectTicked << "]" <<
         " draw[c:" << m_lastDrawCalls <<

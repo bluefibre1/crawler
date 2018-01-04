@@ -13,9 +13,9 @@ public:
 
     int getDamage() const;
 
-    void setVerticalChar(char c);
+    void setVerticalChar(Char c);
 
-    void setHorizontalChar(char c);
+    void setHorizontalChar(Char c);
 
     void setColor(const Color& color);
 
@@ -29,8 +29,8 @@ private:
 
     Direction m_dir;
     int m_damage;
-    char m_verticalChar;
-    char m_horizontalChar;
+    Char m_verticalChar;
+    Char m_horizontalChar;
     Color m_color;
     bool m_visible;
     Timer m_showTimer;

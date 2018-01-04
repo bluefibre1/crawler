@@ -25,12 +25,12 @@ int Weapon::getDamage() const
     return m_damage;
 }
 
-void Weapon::setVerticalChar(char c)
+void Weapon::setVerticalChar(Char c)
 {
     m_verticalChar = c;
 }
 
-void Weapon::setHorizontalChar(char c)
+void Weapon::setHorizontalChar(Char c)
 {
     m_horizontalChar = c;
 }

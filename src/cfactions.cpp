@@ -2,7 +2,7 @@
 
 FactionSharedPtr& Factions::DRAGON()
 {
-    static FactionSharedPtr f(new Faction("dragon"));
+    static FactionSharedPtr f(new Faction(CHAR_T("dragon")));
     f->setFriendlyness(DEFAULT(), -10);
     f->setFriendlyness(WILDERNESS(), -10);
     return f;
@@ -10,13 +10,13 @@ FactionSharedPtr& Factions::DRAGON()
 
 FactionSharedPtr& Factions::WILDERNESS()
 {
-    static FactionSharedPtr f(new Faction("wilderness"));
+    static FactionSharedPtr f(new Faction(CHAR_T("wilderness")));
     f->setFriendlyness(DEFAULT(), -10);
     return f;
 }
 
 FactionSharedPtr& Factions::DEFAULT()
 {
-    static FactionSharedPtr f(new Faction("default"));
+    static FactionSharedPtr f(new Faction(CHAR_T("default")));
     return f;
 }

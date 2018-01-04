@@ -25,15 +25,15 @@ ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
     Weapon* w = new Weapon();
     w->setDamage((int)Math::intervalRandom(t->getMinDamage(), t->getMaxDamage()));
 
-    const char* qualifier[] = {
-        "",
-        "Rusted ",
-        "Brass ",
-        "Iron ",
-        "Glass ",
-        "Diamond ",
-        "Ebonite ",
-        "Ultimate "
+    const Char* qualifier[] = {
+        CHAR_T(""),
+        CHAR_T("Rusted "),
+        CHAR_T("Brass "),
+        CHAR_T("Iron "),
+        CHAR_T("Glass "),
+        CHAR_T("Diamond "),
+        CHAR_T("Ebonite "),
+        CHAR_T("Ultimate ")
     };
 
     int numQualifier = sizeof(qualifier) / sizeof(const char*);
@@ -43,7 +43,7 @@ ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
         idx = numQualifier;
     }
 
-    std::string fullName = qualifier[idx];
+    String fullName = qualifier[idx];
     fullName += t->getName();
     w->setName(fullName);
 

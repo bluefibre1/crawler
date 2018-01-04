@@ -15,7 +15,7 @@ void Item::setName(const String& name)
     m_name = name;
 }
 
-const std::string& Item::getName() const
+const String& Item::getName() const
 {
     return m_name;
 }

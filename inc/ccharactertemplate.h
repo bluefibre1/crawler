@@ -12,7 +12,7 @@ public:
 
     CharacterTemplate(
         int probabylityWeight,
-        const std::string& name,
+        const String& name,
         int minHp,
         int maxHp,
         Color color,
@@ -22,7 +22,7 @@ public:
 
     int getProbabilityWeight() const { return m_probabilityWeight; }
 
-    const std::string& getName() const { return m_name; }
+    const String& getName() const { return m_name; }
 
     int getMinHp() const { return m_minHp; }
 
@@ -38,7 +38,7 @@ public:
 
 private:
     int m_probabilityWeight;
-    std::string m_name;
+    String m_name;
     int m_minHp;
     int m_maxHp;
     Color m_color;

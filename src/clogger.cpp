@@ -42,8 +42,8 @@ void Logger::write(const String& text)
 
     if (m_file)
     {
-        fputs(text.c_str(), m_file);
-        fputc('\n', m_file);
+        fputws(text.c_str(), m_file);
+        fputwc('\n', m_file);
         fflush(m_file);
     }
 }

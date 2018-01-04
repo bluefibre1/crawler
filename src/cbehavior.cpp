@@ -95,13 +95,13 @@ void BehaviorFindTarget::tick(float dt, Blackboard& bb)
            if (!ref.expired())
            {
                ObjectSharedPtr target = ref.lock();
-               std::stringstream s;
-               s << ":" << ((Character*)target.get())->getName();
+               std::wstringstream s;
+               s << CHAR_T(":") << ((Character*)target.get())->getName();
                bb.getSelf()->debugStringAppend(s.str());
            }
            else
            {
-               bb.getSelf()->debugStringAppend(":");
+               bb.getSelf()->debugStringAppend(CHAR_T(":"));
            }
         );
 
@@ -317,7 +317,7 @@ void BehaviorWander::setRopeSqrLength(int sqrLength)
 
 void BehaviorWander::tick(float dt, Blackboard& bb)
 {
-    CDEBUG_HIGH(bb.getSelf()->debugStringAppend("w"));
+    CDEBUG_HIGH(bb.getSelf()->debugStringAppend(CHAR_T("w")));
 
     if (!m_initialized)
     {
@@ -402,7 +402,7 @@ BehaviorChase::BehaviorChase()
 
 void BehaviorChase::tick(float dt, Blackboard& bb)
 {
-    CDEBUG_HIGH(bb.getSelf()->debugStringAppend("c"));
+    CDEBUG_HIGH(bb.getSelf()->debugStringAppend(CHAR_T("c")));
 
     m_remain -= dt;
     if (m_remain >= 0)
@@ -444,7 +444,7 @@ BehaviorAttack::BehaviorAttack()
 
 void BehaviorAttack::tick(float dt, Blackboard& bb)
 {
-    CDEBUG_HIGH(bb.getSelf()->debugStringAppend("a"));
+    CDEBUG_HIGH(bb.getSelf()->debugStringAppend(CHAR_T("a")));
 
     m_remain -= dt;
     if (m_remain >= 0)

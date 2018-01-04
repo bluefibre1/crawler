@@ -118,8 +118,6 @@ void Window::tick(float /*dt*/)
 
 void Window::internalDraw(Renderer* r)
 {
-    using namespace std;
-
     if (r)
     {
         switch (m_halign)
@@ -170,9 +168,9 @@ void Window::internalDraw(Renderer* r)
             leftBorder(r, x, y);
         }
 
-        const char* ch = p.m_text.c_str();
+        const Char* ch = p.m_text.c_str();
 
-        string word;
+        String word;
         while (*ch)
         {
             word.clear();

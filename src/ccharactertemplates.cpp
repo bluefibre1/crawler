@@ -9,7 +9,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::DEMON()
     items.push_back(ItemTemplates::FIRE());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(10, "Demon", 10, 20, Colors::RED(), 'D', Factions::DRAGON(), items));
+        new CharacterTemplate(10, CHAR_T("Demon"), 10, 20, Colors::RED(), CHAR_T('D'), Factions::DRAGON(), items));
     return c;
 }
 
@@ -19,7 +19,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::BAT()
     items.push_back(ItemTemplates::CLAW());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(50, "Bat", 5, 5, Colors::BLACK(), 'b', Factions::WILDERNESS(), items));
+        new CharacterTemplate(50, CHAR_T("Bat"), 5, 5, Colors::BLACK(), CHAR_T('b'), Factions::WILDERNESS(), items));
     return c;
 }
 
@@ -30,7 +30,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::VILLAGER()
     items.push_back(ItemTemplates::PUNCH());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(100, "Villager", 15, 25, Colors::LIGHT_BLUE(), 'V', Factions::DEFAULT(), items));
+        new CharacterTemplate(100, CHAR_T("Villager"), 15, 25, Colors::LIGHT_BLUE(), CHAR_T('V'), Factions::DEFAULT(), items));
     return c;
 }
 
@@ -40,7 +40,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::KID()
     items.push_back(ItemTemplates::SNOWBALL());
 
     static CharacterTemplateSharedPtr c(
-        new CharacterTemplate(100, "Kid", 1, 2, Colors::LIGHT_BLUE(), 'v', Factions::WILDERNESS(), items));
+        new CharacterTemplate(100, CHAR_T("Kid"), 1, 2, Colors::LIGHT_BLUE(), CHAR_T('v'), Factions::WILDERNESS(), items));
     return c;
 }
 

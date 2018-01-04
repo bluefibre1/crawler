@@ -2,6 +2,7 @@
 
 #include "ctile.h"
 #include "cobject.h"
+#include "cstring.h"
 
 #include <string>
 
@@ -15,10 +16,10 @@ public:
     void flip();
     void draw(int x, int y, int z, const Tile* tile);
     void drawScreen(int x, int y, int z, const Tile* tile);
-    void draw(int x, int y, int z, Color fg, Color bg, char ch);
-    void drawScreen(int x, int y, int z, Color fg, Color bg, char ch);
-    void draw(int x, int y, int z, Color fg, Color bg, const std::string& text);
-    void drawScreen(int x, int y, int z, Color fg, Color bg, const std::string& text);
+    void draw(int x, int y, int z, Color fg, Color bg, Char ch);
+    void drawScreen(int x, int y, int z, Color fg, Color bg, Char ch);
+    void draw(int x, int y, int z, Color fg, Color bg, const String& text);
+    void drawScreen(int x, int y, int z, Color fg, Color bg, const String& text);
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
     int getOriginX() const { return m_oX; }
@@ -38,7 +39,7 @@ private:
     struct Cell
     {
         Cell();
-        char m_ch;
+        Char m_ch;
         Color m_fg;
         Color m_bg;
         int m_z;

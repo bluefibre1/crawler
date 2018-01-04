@@ -79,7 +79,7 @@ void Renderer::clear()
 
 void Renderer::flip()
 {
-    std::stringstream out;
+    std::wstringstream out;
     int lastH = -1;
     int lastW = -1;
     Color lastFg = Colors::INVALID();
@@ -136,7 +136,7 @@ void Renderer::flip()
 
     const String& s = out.str();
     CDEBUG_LOW(Debugger::get().setDrawSize(s.size()));
-    fwrite(s.c_str(), s.size(), 1, stdout);
+    fwrite(s.c_str(), s.size()*sizeof(Char), 1, stdout);
     fflush(stdout);
 }
 
@@ -170,12 +170,12 @@ void Renderer::drawScreen(int x, int y, int z, const Tile* tile)
     }
 }
 
-void Renderer::draw(int x, int y, int z, Color fg, Color bg, char ch)
+void Renderer::draw(int x, int y, int z, Color fg, Color bg, Char ch)
 {
     drawScreen(x - m_oX, y - m_oY, z, fg, bg, ch);
 }
 
-void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, char ch)
+void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, Char ch)
 {
     CDEBUG_LOW(Debugger::get().incDrawCall());
     if (x >= 0 && y >= 0 && x < m_width && y < m_height)
@@ -200,12 +200,12 @@ void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, char ch)
     }
 }
 
-void Renderer::draw(int x, int y, int z, Color fg, Color bg, const std::string& text)
+void Renderer::draw(int x, int y, int z, Color fg, Color bg, const String& text)
 {
     drawScreen(x - m_oX, y - m_oY, z, fg, bg, text);
 }
 
-void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, const std::string& text)
+void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, const String& text)
 {
     CDEBUG_LOW(Debugger::get().incDrawCall());
     int n = text.size();
@@ -346,7 +346,7 @@ int Renderer::TOP()
 
 void Renderer::showAsciiTable(int columns, int rows)
 {
-    wchar_t c = 30;
+    Char c = 30;
     for (int l = 0; l < rows; l++)
     {
         for (int i = 0; i < columns; i++)

@@ -58,6 +58,6 @@ bool Chest::hasHint() const
 
 void Chest::printHint(Window* w) const
 {
-    w->print(Colors::WHITE(), "Found ");
-    w->print(Colors::GREEN(), "chest");
+    w->print(Colors::WHITE(), CHAR_T("Found "));
+    w->print(Colors::GREEN(), CHAR_T("chest"));
 }

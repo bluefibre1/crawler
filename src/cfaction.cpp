@@ -1,7 +1,7 @@
 #include "cfaction.h"
 
 
-Faction::Faction(const std::string& name)
+Faction::Faction(const String& name)
     : m_name(name)
     , m_friendlynesses()
 {

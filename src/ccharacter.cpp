@@ -57,7 +57,7 @@ void Character::draw(Renderer* r)
         }
         CDEBUG_MEDIUM(if (Debugger::get().getFrameId() == m_lastTickFrameId)
                {
-                   debugStringAppend("t");
+                   debugStringAppend(CHAR_T("t"));
                }
                r->draw(getX(), getY()-1, Renderer::TOP(), Colors::YELLOW(), Colors::BLUE(), m_debugString);
             );
@@ -285,16 +285,16 @@ void Character::showStats()
 
     w->clear();
 
-    w->print(Colors::ORANGE(), "NAME:");
+    w->print(Colors::ORANGE(), CHAR_T("NAME:"));
     w->print(Colors::WHITE(), getName());
 
-    w->print(Colors::ORANGE(), "\n");
+    w->print(Colors::ORANGE(), CHAR_T("\n"));
 
     const int hpTotalBar = w->getWidth()-2;
     int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
 
-    w->print(Colors::GREEN(), String(hpBars, '='));
-    w->print(Colors::RED(), String(hpTotalBar-hpBars, 'x'));
+    w->print(Colors::GREEN(), String(hpBars, CHAR_T('=')));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, CHAR_T('x')));
 
     WindowManager::get().popup(w, 3);
 }
@@ -303,7 +303,7 @@ void Character::debugStringAppend(const String& value)
 {
     if (!m_debugString.empty())
     {
-        m_debugString += '|';
+        m_debugString += CHAR_T('|');
     }
     m_debugString += value;
 }
@@ -315,7 +315,7 @@ bool Character::hasHint() const
 
 void Character::printHint(Window* w) const
 {
-    w->print(Colors::WHITE(), "Found ");
-    w->print(Colors::RED(), "dead ");
+    w->print(Colors::WHITE(), CHAR_T("Found "));
+    w->print(Colors::RED(), CHAR_T("dead "));
     w->print(Colors::WHITE(), getName());
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include "cstring.h"
 #include <map>
 
 class Faction;
@@ -9,14 +9,14 @@ typedef std::shared_ptr<Faction> FactionSharedPtr;
 class Faction
 {
 public:
-    Faction(const std::string& name);
+    Faction(const String& name);
 
     void setFriendlyness(const FactionSharedPtr& faction, float value);
 
     bool isEnemy(const FactionSharedPtr& faction) const;
 
 private:
-    std::string m_name;
+    String m_name;
     typedef std::map<Faction*, float> Friendlynesses;
     Friendlynesses m_friendlynesses;
 };

@@ -3,12 +3,12 @@
 
 WeaponTemplate::WeaponTemplate(
     int probabilityWeight,
-    const std::string& name,
+    const String& name,
     int minDamage,
     int maxDamage,
     const Color& color,
-    char vch,
-    char hch)
+    Char vch,
+    Char hch)
     : ItemTemplate(probabilityWeight, name)
     , m_minDamage(minDamage)
     , m_maxDamage(maxDamage)

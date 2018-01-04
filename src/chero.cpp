@@ -120,19 +120,19 @@ void Hero::showStats()
     w->setHorizontalAlign(Window::HorizontalAlign::LEFT);
     w->setVerticalAlign(Window::VerticalAlign::TOP);
 
-    w->setTitle("Battle window");
+    w->setTitle(CHAR_T("Battle window"));
     w->clear();
 
-    w->print(Colors::ORANGE(), "NAME:");
+    w->print(Colors::ORANGE(), CHAR_T("NAME:"));
     w->print(Colors::WHITE(), getName());
 
-    w->print(Colors::ORANGE(), "\n");
+    w->print(Colors::ORANGE(), CHAR_T("\n"));
 
     const int hpTotalBar = w->getWidth()-2;
     int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
 
-    w->print(Colors::GREEN(), String(hpBars, '='));
-    w->print(Colors::RED(), String(hpTotalBar-hpBars, 'x'));
+    w->print(Colors::GREEN(), String(hpBars, CHAR_T('=')));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, CHAR_T('x')));
 
     WindowManager::get().popup(w, 5);
 }
@@ -175,7 +175,7 @@ void Hero::takeAll()
             WindowSharedPtr w(new Window());
             w->setHorizontalAlign(Window::HorizontalAlign::CENTER);
             w->setVerticalAlign(Window::VerticalAlign::BOTTOM);
-            w->setTitle("Added To Inventory");
+            w->setTitle(CHAR_T("Added To Inventory"));
             w->setMaxWidth(50);
 
             bool first = true;
@@ -428,37 +428,37 @@ void Hero::showStatus()
 
     Window* w = m_menuWindow.get();
 
-    w->setTitle("Status");
+    w->setTitle(CHAR_T("Status"));
     w->clear();
 
-    w->print(Colors::ORANGE(), "NAME:");
+    w->print(Colors::ORANGE(), CHAR_T("NAME:"));
     w->print(Colors::WHITE(), getName());
 
-    w->print(Colors::ORANGE(), " HP:");
-    w->print(Colors::WHITE(), std::to_string(getHp()));
+    w->print(Colors::ORANGE(), CHAR_T(" HP:"));
+    w->print(Colors::WHITE(), std::to_wstring(getHp()));
 
-    w->print(Colors::ORANGE(), " GOLD:");
-    w->print(Colors::WHITE(), std::to_string(getGold()));
+    w->print(Colors::ORANGE(), CHAR_T(" GOLD:"));
+    w->print(Colors::WHITE(), std::to_wstring(getGold()));
 
-    w->print(Colors::ORANGE(), "\n");
+    w->print(Colors::ORANGE(), CHAR_T("\n"));
 
-    w->print(Colors::ORANGE(), "LEVEL:");
-    w->print(Colors::WHITE(), std::to_string(getLevel()));
+    w->print(Colors::ORANGE(), CHAR_T("LEVEL:"));
+    w->print(Colors::WHITE(), std::to_wstring(getLevel()));
 
-    w->print(Colors::ORANGE(), " XP:");
-    w->print(Colors::WHITE(), std::to_string(getXp()));
+    w->print(Colors::ORANGE(), CHAR_T(" XP:"));
+    w->print(Colors::WHITE(), std::to_wstring(getXp()));
 
-    w->print(Colors::ORANGE(), " NEXT:");
-    w->print(Colors::WHITE(), std::to_string(getNextLevelXp()));
+    w->print(Colors::ORANGE(), CHAR_T(" NEXT:"));
+    w->print(Colors::WHITE(), std::to_wstring(getNextLevelXp()));
 
-    w->print(Colors::ORANGE(), "\n");
-    w->print(Colors::ORANGE(), "\n");
+    w->print(Colors::ORANGE(), CHAR_T("\n"));
+    w->print(Colors::ORANGE(), CHAR_T("\n"));
 
-    w->print(Colors::ORANGE(), "e: ");
-    w->print(Colors::ORANGE(), "equip");
+    w->print(Colors::ORANGE(), CHAR_T("e: "));
+    w->print(Colors::ORANGE(), CHAR_T("equip"));
 
-    w->print(Colors::ORANGE(), " d: ");
-    w->print(Colors::ORANGE(), "drop");
+    w->print(Colors::ORANGE(), CHAR_T(" d: "));
+    w->print(Colors::ORANGE(), CHAR_T("drop"));
 
     WindowManager::get().popup(m_menuWindow, 0.1);
 }
@@ -478,11 +478,11 @@ void Hero::showInventory()
 
     if (m_state == State::Drop)
     {
-        w->setTitle("Inventory Drop");
+        w->setTitle(CHAR_T("Inventory Drop"));
     }
     else
     {
-        w->setTitle("Inventory Equip");
+        w->setTitle(CHAR_T("Inventory Equip"));
     }
     w->clear();
 
@@ -497,25 +497,25 @@ void Hero::showInventory()
         }
 
         ItemSharedPtr item = m_items[idx];
-        w->print(Colors::ORANGE(), std::to_string(i+1));
-        w->print(Colors::ORANGE(), ": ");
+        w->print(Colors::ORANGE(), std::to_wstring(i+1));
+        w->print(Colors::ORANGE(), CHAR_T(": "));
 
         if (isEquipped(item))
         {
-            w->print(Colors::YELLOW(), "<");
+            w->print(Colors::YELLOW(), CHAR_T("<"));
         }
 
         w->print(Colors::WHITE(), item->getName());
 
         if (isEquipped(item))
         {
-            w->print(Colors::YELLOW(), ">");
+            w->print(Colors::YELLOW(), CHAR_T(">"));
         }
 
         if (item->getType() == Item::Type::WEAPON)
         {
-            w->print(Colors::ORANGE(), " D:");
-            w->print(Colors::RED(), std::to_string(((Weapon*)item.get())->getDamage()));
+            w->print(Colors::ORANGE(), CHAR_T(" D:"));
+            w->print(Colors::RED(), std::to_wstring(((Weapon*)item.get())->getDamage()));
         }
 
         w->printEndLine();
@@ -523,22 +523,22 @@ void Hero::showInventory()
 
     w->printEndLine();
 
-    w->print(Colors::ORANGE(), "S: ");
-    w->print(Colors::ORANGE(), "status");
+    w->print(Colors::ORANGE(), CHAR_T("S: "));
+    w->print(Colors::ORANGE(), CHAR_T("status"));
 
     if (m_state == State::Equip)
     {
-        w->print(Colors::ORANGE(), " D: ");
-        w->print(Colors::ORANGE(), "drop");
+        w->print(Colors::ORANGE(), CHAR_T(" D: "));
+        w->print(Colors::ORANGE(), CHAR_T("drop"));
     }
     else
     {
-        w->print(Colors::ORANGE(), " E: ");
-        w->print(Colors::ORANGE(), "equip");
+        w->print(Colors::ORANGE(), CHAR_T(" E: "));
+        w->print(Colors::ORANGE(), CHAR_T("equip"));
     }
 
-    w->print(Colors::ORANGE(), " N: ");
-    w->print(Colors::ORANGE(), "next");
+    w->print(Colors::ORANGE(), CHAR_T(" N: "));
+    w->print(Colors::ORANGE(), CHAR_T("next"));
 
     WindowManager::get().popup(m_menuWindow, 0.1);
 }

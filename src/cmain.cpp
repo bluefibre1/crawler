@@ -24,7 +24,7 @@ int main(int /*argc*/, char* /*argv*/[])
     srand(time(nullptr));
 
     Logger::get().setLevel(LogLevel::DEBUG);
-    CLOG_DEBUG("starting crawler");
+    CLOG_DEBUG(CHAR_T("starting crawler"));
 
     Input input;
     Renderer r;
@@ -42,7 +42,7 @@ int main(int /*argc*/, char* /*argv*/[])
     HeroSharedPtr hero(new Hero());
     hero->setMapHp(100);
     hero->heal();
-    hero->setName("Jacob");
+    hero->setName(CHAR_T("Jacob"));
     hero->equip(ItemFactory::create(ItemTemplates::PUNCH()));
     simulator.spawn(hero);
 
