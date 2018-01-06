@@ -2,8 +2,8 @@
 #include "crenderer.h"
 
 Room::Room()
-    : m_surface()
-    , m_name()
+    : m_name()
+    , m_surface()
 {
 
 }

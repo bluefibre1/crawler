@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ccolor.h"
+#include "cstring.h"
 
 #include <vector>
 
@@ -8,7 +9,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(const Color& fg, const Color& bg, char value);
+    Tile(const Color& fg, const Color& bg, Char value);
 
     void setForeground(Color color);
 
@@ -18,14 +19,14 @@ public:
 
     const Color& getBackground() const;
 
-    void setValue(char ch);
+    void setValue(Char ch);
 
-    char getValue() const;
+    Char getValue() const;
 
 private:
     Color m_fg;
     Color m_bg;
-    char m_value;
+    Char m_value;
 };
 
 typedef std::vector<const Tile*> TilePtrs;

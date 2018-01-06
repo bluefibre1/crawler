@@ -30,7 +30,6 @@ public:
 private:
     int m_minDamage;
     int m_maxDamage;
-    float m_maxVelocity;
     Color m_color;
     Char m_vch;
     Char m_hch;

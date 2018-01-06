@@ -260,13 +260,13 @@ void Character::hit(Direction dir)
     }
 }
 
-void Character::onReceiveHit(Object* from, int damage)
+void Character::onReceiveHit(Object* /* from */, int damage)
 {
     int actualDmg = damage > m_hp ? m_hp : damage;
     m_hp -= actualDmg;
 }
 
-void Character::onGiveHit(Object* to, int damage)
+void Character::onGiveHit(Object* to, int /* damage */)
 {
     if (to->getObjectType() & OBJECT_TYPE_HERO)
     {

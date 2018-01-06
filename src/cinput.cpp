@@ -26,7 +26,7 @@ Input::Input()
     newTermios.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(0, TCSANOW, &newTermios);
 
-    printf("\e[?25l");
+    printf("\x1B[?25l");
     fflush(stdout);
 }
 
@@ -34,7 +34,7 @@ void Input::reset()
 {
     tcsetattr(0, TCSANOW, &m_origTermios);
     printf("\033[0m");
-    printf("\e[?25h");
+    printf("\x1B[?25h");
     fflush(stdout) ;
 }
 

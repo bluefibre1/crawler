@@ -4,11 +4,11 @@
 Tile::Tile()
     : m_fg(Colors::INVALID())
     , m_bg(Colors::INVALID())
-    , m_value('x')
+    , m_value(CHAR_T('x'))
 {
 }
 
-Tile::Tile(const Color& fg, const Color& bg, char value)
+Tile::Tile(const Color& fg, const Color& bg, Char value)
     : m_fg(fg)
     , m_bg(bg)
     , m_value(value)
@@ -35,12 +35,12 @@ const Color& Tile::getBackground() const
     return m_bg;
 }
 
-void Tile::setValue(char ch)
+void Tile::setValue(Char ch)
 {
     m_value = ch;
 }
 
-char Tile::getValue() const
+Char Tile::getValue() const
 {
     return m_value;
 }

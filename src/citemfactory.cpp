@@ -54,7 +54,7 @@ ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
     return ItemSharedPtr(w);
 }
 
-ItemSharedPtr ItemFactory::createPotion(const PotionTemplate* t)
+ItemSharedPtr ItemFactory::createPotion(const PotionTemplate* /* t */)
 {
     return ItemSharedPtr();
 }

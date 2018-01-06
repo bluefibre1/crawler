@@ -40,6 +40,7 @@ void Simulator::add(const ObjectSharedPtr& object)
 {
     int idx = getCellIndex(object->getX(), object->getY());
     assert(idx < (int)m_cells.size());
+    assert(idx >= 0);
     ObjectSharedPtrs& objs = m_cells[idx];
     if (objs.size() + 1 >= objs.capacity())
     {
@@ -86,7 +87,7 @@ void Simulator::tick(float dt)
         for (int cellX = 0; cellX < cellCols; cellX++)
         {
             int idx = cellIndex + cellX + cellY * m_cellNumX;
-            if (idx < (int)m_cells.size())
+            if (idx >= 0 && idx < (int)m_cells.size())
             {
                 ObjectSharedPtrs& objs = m_cells[idx];
                 for (auto i = objs.begin(); i != objs.end(); ++i)
@@ -177,7 +178,7 @@ void Simulator::draw(Renderer* r)
         for (int cellX = 0; cellX < cellCols; cellX++)
         {
             int idx = cellIndex + cellX + cellY * m_cellNumX;
-            if (idx < (int)m_cells.size())
+            if (idx >= 0 && idx < (int)m_cells.size())
             {
                 ObjectSharedPtrs& objs = m_cells[idx];
                 for (auto i = objs.begin(); i != objs.end(); ++i)
@@ -236,6 +237,7 @@ bool Simulator::listObjectsAt(int x, int y, int /*z*/, ObjectWeakPtrs* result)
 
     int cellIndex = getCellIndex(x, y);
     assert(cellIndex < (int)m_cells.size());
+    assert(cellIndex >= 0);
     ObjectSharedPtrs& cell = m_cells[cellIndex];
 
     std::for_each(
@@ -261,24 +263,26 @@ bool Simulator::findObjectsAround(int x, int y, int /*z*/, float radius, ObjectW
     int sqrRadius = iradius * iradius;
     int cellIndex = getCellIndex(x - iradius, y - iradius);
     int cells     = iradius / m_cellSize + 1;
+    int cellCount = (int)m_cells.size();
 
     for (int cellY = 0; cellY < cells; cellY++)
     {
         for (int cellX = 0; cellX < cells; cellX++)
         {
             int idx = cellIndex + cellX + cellY * m_cellNumX;
-            assert(idx < (int)m_cells.size());
-
-            ObjectSharedPtrs& cell = m_cells[idx];
-            std::for_each(
-                cell.begin(), cell.end(),
-                [result, x, y, sqrRadius] (const ObjectSharedPtr& obj)
-                {
-                    if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
+            if (idx >= 0 && idx < cellCount)
+            {
+                ObjectSharedPtrs& cells = m_cells[idx];
+                std::for_each(
+                    cells.begin(), cells.end(),
+                    [result, x, y, sqrRadius] (const ObjectSharedPtr& obj)
                     {
-                        result->push_back(obj);
-                    }
-                });
+                        if (Math::sqrDistance(x, y, obj->getX(), obj->getY()) <= sqrRadius)
+                        {
+                            result->push_back(obj);
+                        }
+                    });
+            }
         }
     }
 

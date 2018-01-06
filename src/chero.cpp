@@ -13,8 +13,8 @@ static const int INVENTORY_PAGE_SIZE = 5;
 
 Hero::Hero()
     : m_state(State::InGame)
-    , m_statsPopup()
     , m_hintPopup()
+    , m_statsPopup()
     , m_menuWindow()
     , m_inventoryPage(0)
 {

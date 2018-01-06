@@ -4,8 +4,6 @@
 #include "cobject.h"
 #include "cstring.h"
 
-#include <string>
-
 class Renderer
 {
 public:

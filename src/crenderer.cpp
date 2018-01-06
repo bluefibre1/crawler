@@ -258,7 +258,7 @@ void Renderer::size(int& w, int& h)
     }
 }
 
-bool Renderer::raycast(int x, int y, int z)
+bool Renderer::raycast(int /* x */, int /* y */, int /* z */)
 {
     /*
       int x = m_width / 2;
