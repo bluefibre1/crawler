@@ -11,7 +11,6 @@ ChestSharedPtr ChestFactory::create()
     ItemTemplateSharedPtrs items;
     items.push_back(ItemTemplates::SPELL());
     items.push_back(ItemTemplates::SWORD());
-    items.push_back(ItemTemplates::SNOWBALL());
 
     int n = Math::ceilRandom(3) + 1;
     for (int i = 0; i < n; i++)

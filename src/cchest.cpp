@@ -4,8 +4,8 @@
 #include "cwindow.h"
 
 Chest::Chest()
-    : m_ch(']')
-    , m_color(Colors::BROWN())
+    : m_ch('?')
+    , m_color(Colors::YELLOW())
     , m_items()
 {
 
@@ -15,7 +15,7 @@ void Chest::draw(Renderer* r)
 {
     if (r->isVisible(this))
     {
-        r->draw(getX(), getY(), getZ(), m_color, Colors::INVALID(), m_ch);
+        r->draw(getX(), getY(), getZ(), m_color, Colors::BROWN(), m_ch);
     }
 }
 
@@ -59,5 +59,5 @@ bool Chest::hasHint() const
 void Chest::printHint(Window* w) const
 {
     w->print(Colors::WHITE(), CHAR_T("Found "));
-    w->print(Colors::GREEN(), CHAR_T("chest"));
+    w->print(Colors::GREEN(), CHAR_T("chest!"));
 }

@@ -25,7 +25,7 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
             surface,
             mandatoryCharacters,
             randomCharacters,
-            0,
+            1,
             4));
     }
 

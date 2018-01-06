@@ -28,8 +28,8 @@ int main(int /*argc*/, char* /*argv*/[])
 
     Input input;
     Renderer r;
-    // r.showAsciiTable(10, 1000);
-    // return 0;
+     // r.showAsciiTable(12, 1000);
+     // return 0;
 
     auto& simulator = Simulator::get();
     auto& windowManager = WindowManager::get();
@@ -42,7 +42,7 @@ int main(int /*argc*/, char* /*argv*/[])
     HeroSharedPtr hero(new Hero());
     hero->setMapHp(100);
     hero->heal();
-    hero->setName(CHAR_T("Jacob"));
+    hero->setName(CHAR_T("Hero"));
     hero->equip(ItemFactory::create(ItemTemplates::PUNCH()));
     simulator.spawn(hero);
 
@@ -60,7 +60,7 @@ int main(int /*argc*/, char* /*argv*/[])
         simulator.spawn(room);
     }
 
-    float creatureDensity = 10 / (float)(64*64);
+    float creatureDensity = 50 / (float)(64*64);
     int numCreature = (int)(worldArea * creatureDensity);
     for (int i = 0; i < numCreature; i++)
     {
@@ -69,7 +69,7 @@ int main(int /*argc*/, char* /*argv*/[])
         simulator.spawn(creature);
     }
 
-    float chestDensity = 2 / (float)(64*64);
+    float chestDensity = 7 / (float)(64*64);
     int numChest = (int)(worldArea * chestDensity);
     for (int i = 0; i < numChest; i++)
     {

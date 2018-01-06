@@ -19,7 +19,7 @@ Hero::Hero()
     , m_inventoryPage(0)
 {
     m_color = Colors::MAGENTA();
-    m_ch = CHAR_T('0');
+    m_ch = CHAR_T('&');
 }
 
 void Hero::tick(float dt)
@@ -59,6 +59,10 @@ void Hero::tick(float dt)
         {
         case 'Q':
             Input::setQuit();
+            break;
+
+        case 'R':
+            heal();
             break;
 
         case '`':

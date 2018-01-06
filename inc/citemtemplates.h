@@ -12,5 +12,6 @@ public:
     static const ItemTemplateSharedPtr& FIRE();
     static const ItemTemplateSharedPtr& SPELL();
     static const ItemTemplateSharedPtr& SNOWBALL();
+    static const ItemTemplateSharedPtr& HOOK();
 
 };

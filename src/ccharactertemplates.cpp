@@ -6,7 +6,8 @@
 const CharacterTemplateSharedPtr& CharacterTemplates::DEMON()
 {
     ItemTemplateSharedPtrs items;
-    items.push_back(ItemTemplates::FIRE());
+    items.push_back(ItemTemplates::HOOK());
+    items.push_back(ItemTemplates::SPELL());
 
     static CharacterTemplateSharedPtr c(
         new CharacterTemplate(10, CHAR_T("Demon"), 10, 20, Colors::RED(), CHAR_T('D'), Factions::DRAGON(), items));
@@ -27,7 +28,7 @@ const CharacterTemplateSharedPtr& CharacterTemplates::VILLAGER()
 {
     ItemTemplateSharedPtrs items;
     items.push_back(ItemTemplates::SNOWBALL());
-    items.push_back(ItemTemplates::PUNCH());
+    items.push_back(ItemTemplates::SWORD());
 
     static CharacterTemplateSharedPtr c(
         new CharacterTemplate(100, CHAR_T("Villager"), 15, 25, Colors::LIGHT_BLUE(), CHAR_T('V'), Factions::DEFAULT(), items));

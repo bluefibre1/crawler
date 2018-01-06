@@ -4,6 +4,7 @@
 #include "cweapontemplate.h"
 #include "cweapon.h"
 #include "cmath.h"
+#include "ccharacter.h"
 
 ItemSharedPtr ItemFactory::create(const ItemTemplateSharedPtr& t)
 {
@@ -33,11 +34,12 @@ ItemSharedPtr ItemFactory::createWeapon(const WeaponTemplate* t)
         CHAR_T("Glass "),
         CHAR_T("Diamond "),
         CHAR_T("Ebonite "),
-        CHAR_T("Ultimate ")
+        CHAR_T("Ultimate "),
+        CHAR_T("Reaping ")
     };
 
     int numQualifier = sizeof(qualifier) / sizeof(const char*);
-    int idx = numQualifier * w->getDamage() / 100;
+    int idx = Math::minimum(numQualifier * w->getDamage() / 100, numQualifier-1);
     if (idx > numQualifier)
     {
         idx = numQualifier;

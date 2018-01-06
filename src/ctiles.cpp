@@ -11,9 +11,9 @@ const Tile& Tiles::MOUNTAIN() { static Tile t(Colors::GREY(), Colors::LIGHT_GREY
 const Tile& Tiles::CLOUDS() { static Tile t(Colors::LIGHT_BLUE(), Colors::WHITE(), 'o'); return t; }
 const Tile& Tiles::ICE_MOUNTAIN() { static Tile t(Colors::WHITE(), Colors::ICY_BLUE(), 'A'); return t; }
 
-const Tile& Tiles::WALL() { static Tile t(Colors::GREY(), Colors::BLACK(), '#'); return t; }
-const Tile& Tiles::GROUND() { static Tile t(Colors::WHITE(), Colors::BLACK(), '.'); return t; }
-const Tile& Tiles::TABLE() { static Tile t(Colors::BROWN(), Colors::BLACK(), '-'); return t; }
+const Tile& Tiles::WALL() { static Tile t(Colors::GREY(), Colors::WHITE(), CHAR_T('#')); return t; }
+const Tile& Tiles::GROUND() { static Tile t(Colors::WHITE(), Colors::BLACK(), CHAR_T('.')); return t; }
+const Tile& Tiles::TABLE() { static Tile t(Colors::BROWN(), Colors::BLACK(), CHAR_T('-')); return t; }
 
 
 void Tiles::convert(const Strings& tiles, TilePtrSurface* surface)
