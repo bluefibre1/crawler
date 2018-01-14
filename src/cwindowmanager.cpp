@@ -63,7 +63,7 @@ void WindowManager::tick(float dt)
     }
 }
 
-void WindowManager::draw(Renderer* r)
+void WindowManager::draw(Camera* c, Renderer* r)
 {
     const int numAlign = (int)Window::VerticalAlign::MAX +
         (int)Window::HorizontalAlign::MAX * (int)Window::VerticalAlign::MAX;
@@ -89,6 +89,6 @@ void WindowManager::draw(Renderer* r)
 
         w->setPosition(xOffset, yOffset, 0);
         yOffset += w->getHeight() + 1;
-        w->draw(r);
+        w->draw(c, r);
     }
 }

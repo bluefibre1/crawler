@@ -12,7 +12,7 @@ const ItemTemplateSharedPtr& ItemTemplates::SWORD()
 const ItemTemplateSharedPtr& ItemTemplates::PUNCH()
 {
     static ItemTemplateSharedPtr w(
-        new WeaponTemplate(100, CHAR_T("Punch"), 7, 10, Colors::SANDYELLOW(), CHAR_T('.'), CHAR_T('.')));
+        new WeaponTemplate(100, CHAR_T("Punch"), 7, 10, Colors::SAND_YELLOW(), CHAR_T('.'), CHAR_T('.')));
     return w;
 }
 

@@ -11,7 +11,7 @@ Chest::Chest()
 
 }
 
-void Chest::draw(Renderer* r)
+void Chest::draw(Camera* /*c*/, Renderer* r)
 {
     if (r->isVisible(this))
     {

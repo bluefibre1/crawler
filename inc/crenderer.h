@@ -34,17 +34,17 @@ private:
     int m_oY;
     int m_oZ;
 
-    struct Cell
+    struct RendererCell
     {
-        Cell();
+        RendererCell();
         Char m_ch;
         Color m_fg;
         Color m_bg;
         int m_z;
     };
-    Cell* m_front;
-    Cell* m_back;
-    Cell m_empty;
+    RendererCell* m_front;
+    RendererCell* m_back;
+    RendererCell m_empty;
 
     void size(int& w, int& h);
     bool raycast(int x, int y, int z);

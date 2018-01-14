@@ -2,239 +2,137 @@
 
 #include "ctiles.h"
 #include "crenderer.h"
-#include "cmath.h"
+#include "ccamera.h"
 
-#include <stdio.h>
 #include <assert.h>
-#include <math.h>
-#include <limits.h>
 
 World::World()
-    : m_width(0)
+    : m_rooms()
+    , m_cells()
+    , m_width(0)
     , m_height(0)
-    , m_tiles(nullptr)
-    , m_heights(nullptr)
 {
-
 }
 
-World::~World()
+void World::addOnTop(int x, int y, const RoomSharedPtr& room)
 {
-    delete [] m_tiles;
-    delete [] m_heights;
-}
-
-int World::getHeightAt(int x, int y)
-{
-    int i = x + y * m_width;
-    return m_heights[i];
-}
-
-void World::generate(int size)
-{
-    assert(Math::isPowerOf2(size));
-
-    m_width = size+1;
-    m_height = size+1;
-
-    int n = m_width * m_height;
-    delete [] m_tiles;
-    m_tiles = new const Tile*[n];
-
-    generateHeights(size, 0.7f, 2000.0f);
-
-    const Tile* templates[] =
-        {
-            &Tiles::WATER(),
-            &Tiles::WATER(),
-            &Tiles::WATER(),
-            &Tiles::SAND(),
-            &Tiles::GRASS(),
-            &Tiles::GRASS(),
-            &Tiles::GRASS(),
-            &Tiles::GRASS(),
-            &Tiles::GRASS(),
-            &Tiles::MOUNTAIN(),
-            &Tiles::MOUNTAIN(),
-            &Tiles::MOUNTAIN(),
-            &Tiles::MOUNTAIN(),
-            &Tiles::CLOUDS(),
-            &Tiles::ICE_MOUNTAIN(),
-            &Tiles::ICE_MOUNTAIN(),
-        };
-
-    int numTemplates = sizeof(templates) / sizeof(Tile*);
-
-    int maxHeight = INT_MIN;
-    int minHeight = INT_MAX;
-    for (int i = 0; i < n; i++)
+    m_rooms.push_back(room);
+    if (m_cells.empty())
     {
-        int h = m_heights[i];
-        if (h > maxHeight)
+        m_width = room->getWidth();
+        m_height = room->getHeight();
+        int n = m_width * m_height;
+        assert(n > 0);
+        m_cells.resize(n);
+        for (int i = 0; i < n; ++i)
         {
-            maxHeight = h;
+            m_cells[i] = &room->getCells()[i];
         }
-
-        if (h < minHeight)
-        {
-            minHeight = h;
-        }
-        //printf("%d ", h);
     }
-
-    int deltaHeight = maxHeight - minHeight;
-
-    //printf("%d\n", deltaHeight);
-    //exit(0);
-
-    for (int i = 0; i < n; i++)
+    else
     {
+        assert(x + room->getWidth() < m_width);
+        assert(y + room->getHeight() < m_height);
 
-        int templateIndex = deltaHeight != 0 ? (m_heights[i] - minHeight) * (numTemplates) / deltaHeight : 0;
-        if (templateIndex >= numTemplates)
+        for (int oy = 0; oy < room->getHeight(); ++oy)
         {
-            templateIndex = numTemplates-1;
-        }
+            for (int ox = 0; ox < room->getWidth(); ++ox)
+            {
+                int ri = ox + oy * room->getWidth();
+                int wi = x + ox + (y + oy) * m_width;
+                assert(wi < (int)m_cells.size());
 
-        m_tiles[i] = templates[templateIndex];
+                auto bottom = &room->getCells()[ri];
+                auto top = bottom->getTop();
+
+                auto ground = m_cells[wi];
+                bottom->setUnder(ground);
+                m_cells[wi] = top;
+                int z = ground->getZ() + ground->getSmook();
+
+                auto i = bottom;
+                do
+                {
+                    i->setZ(i->getZ() + z);
+                    i = i->getOver();
+                }
+                while (i);
+            }
+        }
     }
 }
 
-void World::draw(Renderer* r)
+int World::getHeightAt(int x, int y, int z) const
+{
+    assert(x >= 0 && x < getWidth());
+    assert(y >= 0 && y < getHeight());
+    int i = x + y * getWidth();
+    WorldCell* c = m_cells[i];
+    while (z < c->getZ() && c->getUnder())
+    {
+        c = c->getUnder();
+    }
+    return c->getZ() + c->getSmook();
+}
+
+Object* World::getRoom(int x, int y, int z) const
+{
+    assert(x >= 0 && x < getWidth());
+    assert(y >= 0 && y < getHeight());
+    int i = x + y * getWidth();
+    WorldCell* c = m_cells[i];
+    while (z < c->getZ() && c->getUnder())
+    {
+        c = c->getUnder();
+    }
+    return c->getRoom();
+}
+
+void World::draw(Camera* c, Renderer* r)
 {
     int ox = r->getOriginX();
     int oy = r->getOriginY();
     int w = r->getWidth() + ox;
     int h = r->getHeight() + oy;
 
+    Object* subjectRoom = c->getSubject() ? c->getSubject()->getRoom() : nullptr;
+    int subjectZ = 0;
+
     for (int y = oy; y < h; y++)
     {
-        if (y < 0 || y >= m_height)
+        if (y < 0 || y >= getHeight())
         {
             continue;
         }
 
         for (int x = ox; x < w; x++)
         {
-            if (x < 0 || x >= m_width)
+            if (x < 0 || x >= getWidth())
             {
                 continue;
             }
-            int idx = x + y * m_width;
-            r->draw(x, y, 0, m_tiles[idx]);
-        }
-    }
-}
-
-void World::generateHeights(int size, float roughness, float height)
-{
-    float ratio = (float)pow(2.0, -roughness);
-    float scale = height * ratio;
-    int verticeSize = size + 1;
-    int stride = size / 2;
-    int n = verticeSize * verticeSize;
-    delete [] m_heights;
-    m_heights = new int[n];
-
-    // Init four corners.
-    m_heights[0] = 0;
-    m_heights[size] = 0;
-    m_heights[size * verticeSize] = 0;
-    m_heights[size * verticeSize+size] = 0;
-
-    while (stride > 0)
-    {
-        for (int i = stride; i < size;  i += stride)
-        {
-            for (int j = stride; j < size; j += stride)
+            int idx = x + y * getWidth();
+            const WorldCell* c = m_cells[idx];
+            while (!c->getTile())
             {
-                assert(i * verticeSize + j < n);
-                m_heights[i * verticeSize + j] = (int)(scale * Math::wrapRandom() * 0.5f +
-                                                       averageSquare(i, j, stride, verticeSize, m_heights));
-                j += stride;
+                c = c->getUnder();
             }
-            i += stride;
-        }
 
-        int oddLine = 0;
-        for (int i = 0; i < size; i += stride)
-        {
-            oddLine = (oddLine == 0);
-            for (int j = 0; j < size; j += stride)
+            if (c->getTile())
             {
-                if ((oddLine) && j == 0)
+                if (c->getRoom() == subjectRoom)
                 {
-                    j += stride;
+                    while (subjectZ < c->getZ() &&
+                           c->getUnder() &&
+                           c->getUnder()->getRoom() == subjectRoom)
+                    {
+                        c = c->getUnder();
+                    }
                 }
 
-                int index = i * verticeSize + j;
-                assert(index < n);
-                m_heights[index] = (int)(scale * Math::wrapRandom() * 0.5f +
-                                         averageDiamond(i, j, stride, verticeSize, m_heights));
-
-                if (i==0)
-                {
-                    assert(size*verticeSize < n);
-                    m_heights[(size*verticeSize) + j] = m_heights[index];
-                }
-                if (j==0)
-                {
-                    assert((i*verticeSize)+size < n);
-                    m_heights[(i*verticeSize) + size] = m_heights[index];
-                }
-
-                j+=stride;
+                r->draw(x, y, c->getZ(), c->getTile());
             }
         }
-
-        scale *= ratio;
-        stride >>= 1;
     }
 }
 
-float World::averageSquare(int x, int y, int stride, int size, int* array)
-{
-    return ((float) (array[((x-stride)*size) + y-stride] +
-                     array[((x-stride)*size) + y+stride] +
-                     array[((x+stride)*size) + y-stride] +
-                     array[((x+stride)*size) + y+stride]) * 0.25f);
-}
-
-float World::averageDiamond(int x, int y, int stride, int size, int* array)
-{
-    if (x == 0)
-    {
-        return ((float) (array[(x*size) + y-stride] +
-                         array[(x*size) + y+stride] +
-                         array[((size-1-stride)*size) + y] +
-                         array[((x+stride)*size) + y]) * 0.25f);
-    }
-    else if (x == size-1)
-    {
-        return ((float) (array[(x*size) + y-stride] +
-                         array[(x*size) + y+stride] +
-                         array[((x-stride)*size) + y] +
-                         array[((0+stride)*size) + y]) * 0.25f);
-    }
-    else if (y == 0)
-    {
-        return ((float) (array[((x-stride)*size) + y] +
-                         array[((x+stride)*size) + y] +
-                         array[(x*size) + y+stride] +
-                         array[(x*size) + size-1-stride]) * 0.25f);
-    }
-    else if (y == size-1)
-    {
-        return ((float) (array[((x-stride)*size) + y] +
-                         array[((x+stride)*size) + y] +
-                         array[(x*size) + y-stride] +
-                         array[(x*size) + 0+stride]) * 0.25f);
-    }
-    else
-    {
-        return ((float) (array[((x-stride)*size) + y] +
-                         array[((x+stride)*size) + y] +
-                         array[(x*size) + y-stride] +
-                         array[(x*size) + y+stride]) * 0.25f);
-    }
-}

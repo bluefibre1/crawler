@@ -9,6 +9,7 @@ public:
 
     static RoomSharedPtr create(const RoomTemplateSharedPtr& t);
 
-private:
-    static void createSurface(const Strings& surface, TilePtrSurface& out);
+    static RoomSharedPtr createLandscape(const String& name, int size
+        );
+
 };

@@ -75,9 +75,9 @@ void Hero::tick(float dt)
     Character::tick(dt);
 }
 
-void Hero::draw(Renderer* r)
+void Hero::draw(Camera* c, Renderer* r)
 {
-    Character::draw(r);
+    Character::draw(c, r);
 }
 
 void Hero::showHint()
@@ -136,7 +136,7 @@ void Hero::showStats()
     int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
 
     w->print(Colors::GREEN(), String(hpBars, CHAR_T('=')));
-    w->print(Colors::RED(), String(hpTotalBar-hpBars, CHAR_T('x')));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, CHAR_T('-')));
 
     WindowManager::get().popup(w, 5);
 }
@@ -205,25 +205,33 @@ void Hero::onReceiveHit(Object* from, int damage)
 {
     Character::onReceiveHit(from, damage);
     showStats();
+    if (from->getObjectType() & OBJECT_TYPE_CHARACTER)
+    {
+        Character* attacker = (Character*)from;
+        attacker->showStats();
+    }
 }
 
 void Hero::onGiveHit(Object* to, int damage)
 {
     Character::onGiveHit(to, damage);
     showStats();
-    if (to->getObjectType() & OBJECT_TYPE_CHARACTER && damage)
+    if (to->getObjectType() & OBJECT_TYPE_CHARACTER)
     {
         Character* target = (Character*)to;
-
-        int levelDiff = target->getLevel() - getLevel();
-        float factor = levelDiff >= 0 ? levelDiff+1 : -1.0f/levelDiff;
-        int dxp = damage * factor;
-
-        addXp(dxp);
-
-        if (target->getHp() <= 0)
+        target->showStats();
+        if (damage)
         {
-            addXp(target->getLevel() * 10 * factor);
+            int levelDiff = target->getLevel() - getLevel();
+            float factor = levelDiff >= 0 ? levelDiff+1 : -1.0f/levelDiff;
+            int dxp = damage * factor;
+
+            addXp(dxp);
+
+            if (target->getHp() <= 0)
+            {
+                addXp(target->getLevel() * 10 * factor);
+            }
         }
     }
 }

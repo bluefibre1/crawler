@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+class Camera;
 class Renderer;
 class Window;
 
@@ -13,7 +14,7 @@ public:
     Object();
     virtual ~Object();
 
-    virtual void draw(Renderer* /*r*/) {};
+    virtual void draw(Camera* /*c*/, Renderer* /*r*/) {};
 
     virtual void tick(float dt);
 
@@ -49,7 +50,11 @@ public:
 
     virtual void printHint(Window* w) const;
 
+    void setRoom(Object* room) { m_room = room; }
+    Object* getRoom() const { return m_room; }
+
 private:
+    Object* m_room;
     int m_x;
     int m_y;
     int m_z;

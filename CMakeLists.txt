@@ -15,12 +15,15 @@ set(SOURCES
 	src/cmain.cpp
 	src/cmath.cpp
 	src/cobject.cpp
+    src/ccamera.cpp
 	src/crenderer.cpp
 	src/csimulator.cpp
 	src/ctile.cpp
 	src/ctiles.cpp
 	src/ctimer.cpp
 	src/cworld.cpp
+	src/cworldcell.cpp
+	src/cworldfactory.cpp
     src/cbehavior.cpp
     src/ccharacterfactory.cpp
     src/ccharactertemplate.cpp

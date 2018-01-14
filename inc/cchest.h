@@ -9,7 +9,7 @@ class Chest : public Object
 public:
     Chest();
 
-    virtual void draw(Renderer* r) override;
+    virtual void draw(Camera* c, Renderer* r) override;
 
     void addItem(const ItemSharedPtr& item);
 

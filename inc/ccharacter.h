@@ -16,7 +16,7 @@ public:
     Character();
     ~Character();
 
-    virtual void draw(Renderer* r) override;
+    virtual void draw(Camera* c, Renderer* r) override;
 
     virtual void tick(float dt) override;
 

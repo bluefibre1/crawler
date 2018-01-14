@@ -45,7 +45,7 @@ public:
     void print(Color color, const String& text);
     void printEndLine();
 
-    virtual void draw(Renderer* r) override;
+    virtual void draw(Camera* c, Renderer* r) override;
 
     virtual void tick(float dt) override;
 

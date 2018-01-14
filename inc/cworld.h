@@ -1,35 +1,34 @@
 #pragma once
 
 #include "cobject.h"
-#include "ctile.h"
+#include "cworldcell.h"
+#include "croom.h"
 
 #include <vector>
+
 
 class World : public Object
 {
 public:
     World();
-    virtual ~World();
 
-    void generate(int size);
+    void addOnTop(int x, int y, const RoomSharedPtr& room);
 
-    int getHeightAt(int x, int y);
+    int getHeightAt(int x, int y, int z) const;
+
+    Object* getRoom(int x, int y, int z) const;
 
     int getWidth() const { return m_width; }
 
     int getHeight() const { return m_height; }
 
-    virtual void draw(Renderer* r) override;
+    virtual void draw(Camera* c, Renderer* r) override;
 
 private:
-    void generateHeights(int size, float roughness, float height);
-    float averageSquare(int x, int y, int stride, int size, int* array);
-    float averageDiamond(int x, int y, int stride, int size, int* array);
-
+    RoomSharedPtrs m_rooms;
+    WorldCells m_cells;
     int m_width;
     int m_height;
-    const Tile** m_tiles;
-    int* m_heights;
 };
 
 typedef std::shared_ptr<World> WorldSharedPtr;

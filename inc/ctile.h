@@ -9,7 +9,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(const Color& fg, const Color& bg, Char value);
+    Tile(const Color& fg, const Color& bg, Char value, int height);
 
     void setForeground(Color color);
 
@@ -23,11 +23,13 @@ public:
 
     Char getValue() const;
 
+    int getHeight() const { return m_height; }
+
 private:
     Color m_fg;
     Color m_bg;
     Char m_value;
+    int m_height;
 };
 
 typedef std::vector<const Tile*> TilePtrs;
-typedef std::vector<TilePtrs> TilePtrSurface;

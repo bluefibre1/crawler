@@ -124,7 +124,7 @@ void Debugger::tick(float dt)
     }
 }
 
-void Debugger::draw(Renderer* r)
+void Debugger::draw(Camera* /*c*/, Renderer* r)
 {
     if (m_debugLevel == DebugLevel::OFF)
     {

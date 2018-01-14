@@ -5,13 +5,15 @@ Tile::Tile()
     : m_fg(Colors::INVALID())
     , m_bg(Colors::INVALID())
     , m_value(CHAR_T('x'))
+    , m_height(0)
 {
 }
 
-Tile::Tile(const Color& fg, const Color& bg, Char value)
+Tile::Tile(const Color& fg, const Color& bg, Char value, int height)
     : m_fg(fg)
     , m_bg(bg)
     , m_value(value)
+    , m_height(height)
 {
 }
 

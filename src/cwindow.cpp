@@ -103,7 +103,7 @@ void Window::setBorderWidth(int h, int v)
     m_vborder = v;
 }
 
-void Window::draw(Renderer* r)
+void Window::draw(Camera* /*c*/, Renderer* r)
 {
     m_width = 0;
     m_height = 0;

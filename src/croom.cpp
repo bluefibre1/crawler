@@ -1,37 +1,30 @@
 #include "croom.h"
 #include "crenderer.h"
+#include "cworldcell.h"
 
 Room::Room()
     : m_name()
-    , m_surface()
+    , m_cells(nullptr)
+    , m_width(0)
+    , m_height(0)
 {
 
 }
 
-void Room::setTilePtrSurface(const TilePtrSurface& surface)
+Room::~Room()
 {
-    m_surface = surface;
+    delete [] m_cells;
+}
+
+void Room::setCells(int width, int height, WorldCell* cells)
+{
+    delete [] m_cells;
+    m_cells = cells;
+    m_width = width;
+    m_height = height;
 }
 
 void Room::setName(const String& name)
 {
     m_name = name;
-}
-
-void Room::draw(Renderer* r)
-{
-    if (r->isVisible(this))
-    {
-        int rows = m_surface.size();
-        for (int i = 0; i < rows; ++i)
-        {
-            const TilePtrs& row = m_surface[i];
-            int cols = row.size();
-            for (int j = 0; j < cols; ++j)
-            {
-                const Tile* t = row[j];
-                r->draw(getX()+j, getY()+i, getZ(), t);
-            }
-        }
-    }
 }

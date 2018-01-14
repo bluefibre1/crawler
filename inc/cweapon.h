@@ -19,7 +19,7 @@ public:
 
     void setColor(const Color& color);
 
-    virtual void draw(Renderer* r) override;
+    virtual void draw(Camera* c, Renderer* r) override;
 
     virtual void use(Direction dir) override;
 

@@ -3,6 +3,7 @@
 #include "ctiles.h"
 #include "ccolors.h"
 #include "cdebugger.h"
+#include "cmath.h"
 
 #include <termcap.h>
 #include <cstddef>
@@ -13,7 +14,7 @@
 #include <wchar.h>
 #include <stdio.h>
 
-Renderer::Cell::Cell()
+Renderer::RendererCell::RendererCell()
     : m_ch(' ')
     , m_fg(Colors::BLACK())
     , m_bg(Colors::BLACK())
@@ -37,6 +38,7 @@ Renderer::Renderer()
     m_empty.m_ch = Tiles::EMPTY().getValue();
     m_empty.m_fg = Tiles::EMPTY().getForeground();
     m_empty.m_bg = Tiles::EMPTY().getBackground();
+    m_empty.m_z = INT_MIN;
 
     clear();
 }
@@ -60,13 +62,13 @@ void Renderer::clear()
         delete [] m_back;
         delete [] m_front;
 
-        m_back = new Cell[n];
+        m_back = new RendererCell[n];
         for (int i = 0; i < n; i++)
         {
             m_back[i].m_ch = 0;
         }
 
-        m_front = new Cell[n];
+        m_front = new RendererCell[n];
     }
     else
     {
@@ -91,13 +93,13 @@ void Renderer::flip()
         {
             int i = w + h * m_width;
             assert(i < n);
-            const Cell* f = &m_front[i];
+            const RendererCell* f = &m_front[i];
             if (raycast(w, h, f->m_z))
             {
                 f = &m_empty;
             }
 
-            const Cell* b = &m_back[i];
+            const RendererCell* b = &m_back[i];
             if (f->m_ch != b->m_ch ||
                 f->m_fg != b->m_fg ||
                 f->m_bg != b->m_bg)
@@ -127,7 +129,7 @@ void Renderer::flip()
         }
     }
 
-    Cell* tmp = m_back;
+    RendererCell* tmp = m_back;
     m_back = m_front;
     m_front = tmp;
 
@@ -151,7 +153,7 @@ void Renderer::drawScreen(int x, int y, int z, const Tile* tile)
     if (x >= 0 && y >= 0 && x < m_width && y < m_height)
     {
         int i = x + y * m_width;
-        Cell& c = m_front[i];
+        RendererCell& c = m_front[i];
         if (z >= c.m_z)
         {
             c.m_ch = tile->getValue();
@@ -181,7 +183,7 @@ void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, Char ch)
     if (x >= 0 && y >= 0 && x < m_width && y < m_height)
     {
         int i = x + y * m_width;
-        Cell& c = m_front[i];
+        RendererCell& c = m_front[i];
         if (z >= c.m_z)
         {
             c.m_ch = ch;
@@ -217,7 +219,7 @@ void Renderer::drawScreen(int x, int y, int z, Color fg, Color bg, const String&
     for (int i = 0; i < n; i++)
     {
         int idx = (x + i) + y * m_width;
-        Cell& c = m_front[idx];
+        RendererCell& c = m_front[idx];
 
         c.m_ch = text[i];
 
@@ -248,8 +250,8 @@ void Renderer::size(int& w, int& h)
 
     if (tgetent(TERMINAL_CAP_BUFFER, termtype) >= 0)
     {
-        h = tgetnum((char*)"li");
-        w = tgetnum((char*)"co");
+        h = Math::minimum(40, tgetnum((char*)"li"));
+        w = Math::minimum(120, tgetnum((char*)"co"));
     }
     else
     {

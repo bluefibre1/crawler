@@ -6,7 +6,7 @@
 #include <float.h>
 #include <assert.h>
 
-static const int MAX_STEP = 2;
+static const int MAX_STEP = 1;
 
 Simulator::Simulator()
     : m_cellSize(30)
@@ -55,7 +55,7 @@ void Simulator::spawn(const ObjectSharedPtr& object)
     {
         int x = Math::ceilRandom(m_world->getWidth());
         int y = Math::ceilRandom(m_world->getHeight());
-        int z = INT_MAX;
+        int z = m_world->getHeightAt(x, y, INT_MAX);
         if (!isColliding(object.get(), x, y, z))
         {
             object->setPosition(x,y,z);
@@ -133,6 +133,7 @@ void Simulator::tick(float dt)
             }
 
             collidee->setPosition(newX, newY, newZ);
+            collidee->setRoom(m_world->getRoom(newX, newY, newZ));
         }
 
         collidee->stop();
@@ -161,14 +162,14 @@ void Simulator::tick(float dt)
     }
 }
 
-void Simulator::draw(Renderer* r)
+void Simulator::draw(Camera* c, Renderer* r)
 {
     m_viewPortX = r->getOriginX();
     m_viewPortY = r->getOriginY();
     m_viewPortWidth = r->getWidth();
     m_viewPortHeight = r->getHeight();
 
-    m_world->draw(r);
+    m_world->draw(c, r);
     int cellIndex = getCellIndex(m_viewPortX, m_viewPortY);
     int cellCols  = m_viewPortWidth / m_cellSize + 2;
     int cellRows  = m_viewPortHeight / m_cellSize + 2;
@@ -183,7 +184,7 @@ void Simulator::draw(Renderer* r)
                 ObjectSharedPtrs& objs = m_cells[idx];
                 for (auto i = objs.begin(); i != objs.end(); ++i)
                 {
-                    (*i)->draw(r);
+                    (*i)->draw(c, r);
                 }
             }
         }
@@ -192,36 +193,36 @@ void Simulator::draw(Renderer* r)
 
 bool Simulator::isColliding(Object* collidee, int x, int y, int& z)
 {
-    bool colliding(false);
+    bool colliding = false;
 
-    int worldZ = 0; //m_world->getHeightAt(x, y);
-    if (worldZ - z > MAX_STEP)
+    int worldZ = m_world->getHeightAt(x, y, z);
+    colliding = Math::abs(worldZ - z) > MAX_STEP;
+    z = worldZ;
+
+    if (!colliding)
     {
-        colliding = true;
-    }
+        int cellIndex = getCellIndex(x, y);
+        assert(cellIndex < (int)m_cells.size());
+        assert(cellIndex >= 0);
+        ObjectSharedPtrs& cell = m_cells[cellIndex];
 
-    z = worldZ+1;
-
-    int cellIndex = getCellIndex(x, y);
-    assert(cellIndex < (int)m_cells.size());
-    ObjectSharedPtrs& cell = m_cells[cellIndex];
-
-    for (auto j = cell.begin(); !colliding && j != cell.end(); ++j)
-    {
-        Object* collider = (*j).get();
-
-        if (collidee == collider)
+        for (auto j = cell.begin(); j != cell.end(); ++j)
         {
-            continue;
-        }
+            Object* collider = (*j).get();
 
-        if (collider->isCollidable() &&
-            collider->getX() == x &&
-            collider->getY() == y &&
-            Math::abs(collider->getZ() - z) < MAX_STEP)
-        {
-            colliding = true;
-            break;
+            if (collidee == collider)
+            {
+                continue;
+            }
+
+            if (collider->isCollidable() &&
+                collider->getX() == x &&
+                collider->getY() == y &&
+                Math::abs(collider->getZ() - z) < MAX_STEP)
+            {
+                colliding = true;
+                break;
+            }
         }
     }
 

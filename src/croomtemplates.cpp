@@ -12,17 +12,28 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
         CharacterTemplateSharedPtrs randomCharacters;
         randomCharacters.push_back(CharacterTemplates::VILLAGER());
 
-        Strings surface;
-        surface.push_back(CHAR_T("##########"));
-        surface.push_back(CHAR_T("#........#"));
-        surface.push_back(CHAR_T("#...--...#"));
-        surface.push_back(CHAR_T("#........#"));
-        surface.push_back(CHAR_T("####..####"));
+        RoomLayerTemplate rc;
+        rc.push_back(CHAR_T("##########"));
+        rc.push_back(CHAR_T("#........#"));
+        rc.push_back(CHAR_T("#...--...#"));
+        rc.push_back(CHAR_T("#........#"));
+        rc.push_back(CHAR_T("####||####"));
+
+        RoomLayerTemplate roof;
+        roof.push_back(CHAR_T("##########"));
+        roof.push_back(CHAR_T("##########"));
+        roof.push_back(CHAR_T("##########"));
+        roof.push_back(CHAR_T("##########"));
+        roof.push_back(CHAR_T("####  ####"));
+
+        RoomLayerTemplates layers;
+        layers.push_back(rc);
+        layers.push_back(roof);
 
         r = RoomTemplateSharedPtr(new RoomTemplate(
             100,
             CHAR_T("Inn"),
-            surface,
+            layers,
             mandatoryCharacters,
             randomCharacters,
             1,

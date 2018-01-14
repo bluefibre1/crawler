@@ -38,7 +38,7 @@ Character::~Character()
     setBlackboard(nullptr);
 }
 
-void Character::draw(Renderer* r)
+void Character::draw(Camera* c, Renderer* r)
 {
     if (r->isVisible(this))
     {
@@ -48,7 +48,7 @@ void Character::draw(Renderer* r)
             for (auto i = m_items.begin(); i != m_items.end(); i++)
             {
                 const ItemSharedPtr& item = *i;
-                item->draw(r);
+                item->draw(c, r);
             }
         }
         else
@@ -58,6 +58,10 @@ void Character::draw(Renderer* r)
         CDEBUG_MEDIUM(if (Debugger::get().getFrameId() == m_lastTickFrameId)
                {
                    debugStringAppend(CHAR_T("t"));
+                   String zInfo;
+                   zInfo += 'z';
+                   zInfo += std::to_wstring(getZ());
+                   debugStringAppend(zInfo);
                }
                r->draw(getX(), getY()-1, Renderer::TOP(), Colors::YELLOW(), Colors::BLUE(), m_debugString);
             );
@@ -266,12 +270,8 @@ void Character::onReceiveHit(Object* /* from */, int damage)
     m_hp -= actualDmg;
 }
 
-void Character::onGiveHit(Object* to, int /* damage */)
+void Character::onGiveHit(Object* /* to */, int /* damage */)
 {
-    if (to->getObjectType() & OBJECT_TYPE_HERO)
-    {
-        showStats();
-    }
 }
 
 void Character::showStats()
@@ -294,7 +294,7 @@ void Character::showStats()
     int hpBars = (int)((float)hpTotalBar * getHp() / getMaxHp());
 
     w->print(Colors::GREEN(), String(hpBars, CHAR_T('=')));
-    w->print(Colors::RED(), String(hpTotalBar-hpBars, CHAR_T('x')));
+    w->print(Colors::RED(), String(hpTotalBar-hpBars, CHAR_T('-')));
 
     WindowManager::get().popup(w, 3);
 }

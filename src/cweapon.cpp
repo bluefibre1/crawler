@@ -40,7 +40,7 @@ void Weapon::setColor(const Color& color)
     m_color = color;
 }
 
-void Weapon::draw(Renderer* r)
+void Weapon::draw(Camera* /*c*/, Renderer* r)
 {
     if (!m_visible || !getOwner())
     {

@@ -6,6 +6,7 @@
 
 class Renderer;
 class Character;
+class Camera;
 
 class Simulator
 {
@@ -26,7 +27,7 @@ public:
 
     void tick(float dt);
 
-    void draw(Renderer* r);
+    void draw(Camera* c, Renderer* r);
 
     bool isColliding(Object* collidee, int x, int y, int& z);
 

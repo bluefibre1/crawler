@@ -13,7 +13,7 @@ public:
     static const Color& GREEN();
     static const Color& DARK_GREEN();
     static const Color& YELLOW();
-    static const Color& SANDYELLOW();
+    static const Color& SAND_YELLOW();
     static const Color& LIGHT_BLUE();
     static const Color& BLUE();
     static const Color& DARK_BLUE();

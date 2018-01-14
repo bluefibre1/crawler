@@ -10,7 +10,7 @@ public:
 
     virtual void tick(float dt) override;
 
-    virtual void draw(Renderer* r) override;
+    virtual void draw(Camera* c, Renderer* r) override;
 
     virtual void showStats() override;
 

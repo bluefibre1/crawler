@@ -5,6 +5,7 @@
 
 #include <vector>
 
+class Camera;
 class Renderer;
 
 class WindowManager
@@ -17,7 +18,7 @@ public:
 
     void tick(float dt);
 
-    void draw(Renderer* r);
+    void draw(Camera* c, Renderer* r);
 
 private:
     struct Popup

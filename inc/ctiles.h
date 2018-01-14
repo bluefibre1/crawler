@@ -18,7 +18,6 @@ public:
     static const Tile& WALL();
     static const Tile& GROUND();
     static const Tile& TABLE();
-
-    static void convert(const Strings& tiles, TilePtrSurface* surface);
+    static const Tile& DOOR();
 
 };

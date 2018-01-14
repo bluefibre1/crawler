@@ -3,7 +3,8 @@
 #include "cdebugger.h"
 
 Object::Object()
-    : m_x(0)
+    : m_room(nullptr)
+    , m_x(0)
     , m_y(0)
     , m_z(0)
     , m_dispX(0)

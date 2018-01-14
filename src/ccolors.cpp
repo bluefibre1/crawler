@@ -6,7 +6,7 @@ const Color& Colors::LIGHT_GREEN() { static Color c(154); return c; }
 const Color& Colors::GREEN() { static Color c(10); return c; }
 const Color& Colors::DARK_GREEN() { static Color c(2); return c; }
 const Color& Colors::YELLOW() { static Color c(226); return c; }
-const Color& Colors::SANDYELLOW() { static Color c(228); return c; }
+const Color& Colors::SAND_YELLOW() { static Color c(228); return c; }
 const Color& Colors::DARK_BLUE() { static Color c(20); return c; }
 const Color& Colors::BLUE() { static Color c(21); return c; }
 const Color& Colors::COOL_BLUE() { static Color c(43); return c; }

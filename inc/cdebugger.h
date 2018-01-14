@@ -1,5 +1,6 @@
 #pragma once
 
+class Camera;
 class Renderer;
 
 enum class DebugLevel : int
@@ -28,7 +29,7 @@ public:
     void setDrawSize(int size);
 
     void tick(float dt);
-    void draw(Renderer* r);
+    void draw(Camera* c, Renderer* r);
 
 private:
     Debugger();

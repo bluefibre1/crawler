@@ -1,5 +1,5 @@
 #include "crenderer.h"
-#include "cworld.h"
+#include "cworldfactory.h"
 #include "chero.h"
 #include "cinput.h"
 #include "ctimer.h"
@@ -16,6 +16,7 @@
 #include "cdebugger.h"
 #include "croomfactory.h"
 #include "croomtemplates.h"
+#include "ccamera.h"
 
 #include <unistd.h>
 
@@ -27,6 +28,7 @@ int main(int /*argc*/, char* /*argv*/[])
     CLOG_DEBUG(CHAR_T("starting crawler"));
 
     Input input;
+    Camera c;
     Renderer r;
      // r.showAsciiTable(12, 1000);
      // return 0;
@@ -34,9 +36,9 @@ int main(int /*argc*/, char* /*argv*/[])
     auto& simulator = Simulator::get();
     auto& windowManager = WindowManager::get();
 
-    WorldSharedPtr world(new World());
     // Possibility: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096...
-    world->generate(128);
+    WorldCreateParams worldParams(CHAR_T("IceLand"), 64);
+    WorldSharedPtr world = WorldFactory::create(worldParams);
     simulator.setWorld(world);
 
     HeroSharedPtr hero(new Hero());
@@ -45,6 +47,7 @@ int main(int /*argc*/, char* /*argv*/[])
     hero->setName(CHAR_T("Hero"));
     hero->equip(ItemFactory::create(ItemTemplates::PUNCH()));
     simulator.spawn(hero);
+    c.setSubject(hero);
 
     CharacterTemplateSharedPtrs creatureTemplates;
     creatureTemplates.push_back(CharacterTemplates::DEMON());
@@ -54,13 +57,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
     int worldArea = world->getWidth() * world->getHeight();
 
-    for (int i = 0; i < 10; i++)
-    {
-        ObjectSharedPtr room = RoomFactory::create(RoomTemplates::INN());
-        simulator.spawn(room);
-    }
-
-    float creatureDensity = 50 / (float)(64*64);
+    float creatureDensity = 0 / (float)(64*64);
     int numCreature = (int)(worldArea * creatureDensity);
     for (int i = 0; i < numCreature; i++)
     {
@@ -91,32 +88,10 @@ int main(int /*argc*/, char* /*argv*/[])
         simulator.tick(dt);
         windowManager.tick(dt);
 
-        // control camera around hero
-        int centerX = hero->getX() - r.getWidth() / 2;
-        int centerY = hero->getY() - r.getHeight() / 2;
-        /*
-          int ox = r.getOriginX();
-          int oy = r.getOriginY();
-          int errX = (int)fabs((float)centerX - ox) - r.getWidth() / 6;
-          int errY = (int)fabs((float)centerY - oy) - r.getHeight() / 6;
-          if (errX > 0)
-          {
-          ox += (centerX > ox) ? errX : -errX;
-          }
-
-          if (errY > 0)
-          {
-          oy += (centerY > oy) ? errY : -errY;
-          }
-
-          r.setOrigin(ox, oy);
-        */
-        r.setOrigin(centerX, centerY, hero->getZ());
-
-        r.clear();
-        simulator.draw(&r);
-        windowManager.draw(&r);
-        CDEBUG_LOW(debugger.draw(&r));
+        c.draw(&r);
+        simulator.draw(&c, &r);
+        windowManager.draw(&c, &r);
+        CDEBUG_LOW(debugger.draw(&c, &r));
         r.flip();
 
         int sleepTime = (int)(33333.3f - timer.elapsed() * 1000000.0f);
