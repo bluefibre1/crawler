@@ -13,3 +13,5 @@ const Tile& Tiles::WALL() { static Tile t(Colors::GREY(), Colors::WHITE(), CHAR_
 const Tile& Tiles::GROUND() { static Tile t(Colors::WHITE(), Colors::BLACK(), CHAR_T('.'), 0); return t; }
 const Tile& Tiles::TABLE() { static Tile t(Colors::BROWN(), Colors::BLACK(), CHAR_T('-'), 2); return t; }
 const Tile& Tiles::DOOR() { static Tile t(Colors::BROWN(), Colors::BLACK(), CHAR_T('|'), 0); return t; }
+const Tile& Tiles::STAIR_LOW() { static Tile t(Colors::BROWN(), Colors::BLACK(), CHAR_T('_'), 1); return t; }
+const Tile& Tiles::STAIR_HIGH() { static Tile t(Colors::BROWN(), Colors::BLACK(), CHAR_T('='), 2); return t; }
