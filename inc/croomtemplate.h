@@ -38,3 +38,4 @@ private:
 };
 
 typedef std::shared_ptr<RoomTemplate> RoomTemplateSharedPtr;
+typedef std::vector<RoomTemplateSharedPtr> RoomTemplateSharedPtrs;

@@ -209,6 +209,8 @@ RoomSharedPtr RoomFactory::create(const RoomTemplateSharedPtr& t)
         tiles['.'] = &Tiles::GROUND();
         tiles['-'] = &Tiles::TABLE();
         tiles['|'] = &Tiles::DOOR();
+        tiles['_'] = &Tiles::STAIR_LOW();
+        tiles['='] = &Tiles::STAIR_HIGH();
     }
 
     size_t height = 0;

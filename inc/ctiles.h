@@ -19,5 +19,7 @@ public:
     static const Tile& GROUND();
     static const Tile& TABLE();
     static const Tile& DOOR();
+    static const Tile& STAIR_LOW();
+    static const Tile& STAIR_HIGH();
 
 };
