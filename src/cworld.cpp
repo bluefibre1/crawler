@@ -6,46 +6,37 @@
 
 #include <assert.h>
 
-World::World()
+World::World(int size)
     : m_rooms()
     , m_cells()
-    , m_width(0)
-    , m_height(0)
+    , m_width(size)
+    , m_height(size)
 {
+    int n = m_width * m_height;
+    assert(n > 0);
+    m_cells.resize(n);
 }
 
 void World::addOnTop(int x, int y, const RoomSharedPtr& room)
 {
     m_rooms.push_back(room);
-    if (m_cells.empty())
-    {
-        m_width = room->getWidth();
-        m_height = room->getHeight();
-        int n = m_width * m_height;
-        assert(n > 0);
-        m_cells.resize(n);
-        for (int i = 0; i < n; ++i)
-        {
-            m_cells[i] = &room->getCells()[i];
-        }
-    }
-    else
-    {
-        assert(x + room->getWidth() < m_width);
-        assert(y + room->getHeight() < m_height);
+    assert(x + room->getWidth() <= m_width);
+    assert(y + room->getHeight() <= m_height);
 
-        for (int oy = 0; oy < room->getHeight(); ++oy)
+    for (int oy = 0; oy < room->getHeight(); ++oy)
+    {
+        for (int ox = 0; ox < room->getWidth(); ++ox)
         {
-            for (int ox = 0; ox < room->getWidth(); ++ox)
+            int ri = ox + oy * room->getWidth();
+            int wi = x + ox + (y + oy) * m_width;
+            assert(wi < (int)m_cells.size());
+
+            auto bottom = &room->getCells()[ri];
+            auto top = bottom->getTop();
+
+            auto ground = m_cells[wi];
+            if (ground)
             {
-                int ri = ox + oy * room->getWidth();
-                int wi = x + ox + (y + oy) * m_width;
-                assert(wi < (int)m_cells.size());
-
-                auto bottom = &room->getCells()[ri];
-                auto top = bottom->getTop();
-
-                auto ground = m_cells[wi];
                 bottom->setUnder(ground);
                 m_cells[wi] = top;
                 int z = ground->getZ() + ground->getSmook();
@@ -57,6 +48,10 @@ void World::addOnTop(int x, int y, const RoomSharedPtr& room)
                     i = i->getOver();
                 }
                 while (i);
+            }
+            else
+            {
+                m_cells[wi] = top;
             }
         }
     }
@@ -113,6 +108,11 @@ void World::draw(Camera* c, Renderer* r)
             }
             int idx = x + y * getWidth();
             const WorldCell* c = m_cells[idx];
+            if (!c)
+            {
+                continue;
+            }
+
             while (!c->getTile())
             {
                 c = c->getUnder();

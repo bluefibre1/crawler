@@ -14,7 +14,7 @@ WorldCreateParams::WorldCreateParams(const String& name, unsigned int size)
 
 WorldSharedPtr WorldFactory::create(const WorldCreateParams& params)
 {
-    WorldSharedPtr world(new World());
+    WorldSharedPtr world(new World(params.getSize()));
 
     auto landscape = RoomFactory::createLandscape(params.getName(), params.getSize());
     world->addOnTop(0, 0, landscape);

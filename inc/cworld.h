@@ -10,7 +10,7 @@
 class World : public Object
 {
 public:
-    World();
+    World(int size);
 
     void addOnTop(int x, int y, const RoomSharedPtr& room);
 

@@ -12,12 +12,12 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
         CharacterTemplateSharedPtrs randomCharacters;
         randomCharacters.push_back(CharacterTemplates::VILLAGER());
 
-        RoomLayerTemplate rc;
-        rc.push_back(CHAR_T("##########"));
-        rc.push_back(CHAR_T("#........#"));
-        rc.push_back(CHAR_T("#...--...#"));
-        rc.push_back(CHAR_T("#........#"));
-        rc.push_back(CHAR_T("####||####"));
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("##########"));
+        floor.push_back(CHAR_T("#........#"));
+        floor.push_back(CHAR_T("#...--...#"));
+        floor.push_back(CHAR_T("#........#"));
+        floor.push_back(CHAR_T("####||####"));
 
         RoomLayerTemplate roof;
         roof.push_back(CHAR_T("##########"));
@@ -27,7 +27,7 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
         roof.push_back(CHAR_T("####  ####"));
 
         RoomLayerTemplates layers;
-        layers.push_back(rc);
+        layers.push_back(floor);
         layers.push_back(roof);
 
         r = RoomTemplateSharedPtr(new RoomTemplate(
@@ -38,6 +38,354 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
             randomCharacters,
             1,
             4));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_ROOM_LEFT()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("  #####   "));
+        floor.push_back(CHAR_T("###...### "));
+        floor.push_back(CHAR_T("#.......# "));
+        floor.push_back(CHAR_T("#........x"));
+        floor.push_back(CHAR_T("#.......# "));
+        floor.push_back(CHAR_T("###...### "));
+        floor.push_back(CHAR_T("  #####   "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_ROOM_RIGHT()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("   #####  "));
+        floor.push_back(CHAR_T(" ###...###"));
+        floor.push_back(CHAR_T(" #.......#"));
+        floor.push_back(CHAR_T("x........#"));
+        floor.push_back(CHAR_T(" #.......#"));
+        floor.push_back(CHAR_T(" ###...###"));
+        floor.push_back(CHAR_T("   #####  "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_ROOM_UP()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("    x    "));
+        floor.push_back(CHAR_T("  ## ##  "));
+        floor.push_back(CHAR_T("###...###"));
+        floor.push_back(CHAR_T("#.......#"));
+        floor.push_back(CHAR_T("#.......#"));
+        floor.push_back(CHAR_T("#.......#"));
+        floor.push_back(CHAR_T("###...###"));
+        floor.push_back(CHAR_T("  #####  "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_ROOM_DOWN()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("  #####  "));
+        floor.push_back(CHAR_T("###...###"));
+        floor.push_back(CHAR_T("#.......#"));
+        floor.push_back(CHAR_T("#.......#"));
+        floor.push_back(CHAR_T("#.......#"));
+        floor.push_back(CHAR_T("###...###"));
+        floor.push_back(CHAR_T("  ## ##  "));
+        floor.push_back(CHAR_T("    x    "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_CROSS()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("  x  "));
+        floor.push_back(CHAR_T(" #.# "));
+        floor.push_back(CHAR_T("x...x"));
+        floor.push_back(CHAR_T(" #.# "));
+        floor.push_back(CHAR_T("  x  "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_TEE_LEFT()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("  x "));
+        floor.push_back(CHAR_T(" #.#"));
+        floor.push_back(CHAR_T("x..#"));
+        floor.push_back(CHAR_T(" #.#"));
+        floor.push_back(CHAR_T("  x "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_TEE_RIGHT()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T(" x  "));
+        floor.push_back(CHAR_T("#.# "));
+        floor.push_back(CHAR_T("#..x"));
+        floor.push_back(CHAR_T("#.# "));
+        floor.push_back(CHAR_T(" x  "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_TEE_UP()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T("  x  "));
+        floor.push_back(CHAR_T(" #.# "));
+        floor.push_back(CHAR_T("x...x"));
+        floor.push_back(CHAR_T(" ### "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_TEE_DOWN()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T(" ### "));
+        floor.push_back(CHAR_T("x...x"));
+        floor.push_back(CHAR_T(" #.# "));
+        floor.push_back(CHAR_T("  x  "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_CORRIDOR_HORIZONTAL()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T(" ###### "));
+        floor.push_back(CHAR_T("x......x"));
+        floor.push_back(CHAR_T(" ###### "));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
+    }
+
+    return r;
+}
+
+const RoomTemplateSharedPtr& RoomTemplates::DUNGEON_CORRIDOR_VERTICAL()
+{
+    static RoomTemplateSharedPtr r;
+    if (!r)
+    {
+        CharacterTemplateSharedPtrs mandatoryCharacters;
+        CharacterTemplateSharedPtrs randomCharacters;
+
+        RoomLayerTemplate floor;
+        floor.push_back(CHAR_T(" x "));
+        floor.push_back(CHAR_T("#.#"));
+        floor.push_back(CHAR_T("#.#"));
+        floor.push_back(CHAR_T("#.#"));
+        floor.push_back(CHAR_T("#.#"));
+        floor.push_back(CHAR_T(" x"));
+
+        RoomLayerTemplates layers;
+        layers.push_back(floor);
+
+        r = RoomTemplateSharedPtr(new RoomTemplate(
+            100,
+            CHAR_T("room1"),
+            layers,
+            mandatoryCharacters,
+            randomCharacters,
+            0,
+            0));
     }
 
     return r;
