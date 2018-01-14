@@ -39,7 +39,7 @@ void World::addOnTop(int x, int y, const RoomSharedPtr& room)
             {
                 bottom->setUnder(ground);
                 m_cells[wi] = top;
-                int z = ground->getZ() + ground->getSmook();
+                int z = ground->getZ() + ground->getHeight();
 
                 auto i = bottom;
                 do
@@ -67,7 +67,16 @@ int World::getHeightAt(int x, int y, int z) const
     {
         c = c->getUnder();
     }
-    return c->getZ() + c->getSmook();
+
+    // find hole
+    int res = c->getZ() + c->getHeight();
+    while (c->getOver() && res == c->getOver()->getZ())
+    {
+        c = c->getOver();
+        res += c->getHeight();
+    }
+
+    return res;
 }
 
 Object* World::getRoom(int x, int y, int z) const
@@ -90,8 +99,15 @@ void World::draw(Camera* c, Renderer* r)
     int w = r->getWidth() + ox;
     int h = r->getHeight() + oy;
 
-    Object* subjectRoom = c->getSubject() ? c->getSubject()->getRoom() : nullptr;
+
+    ObjectSharedPtr s = c->getSubject();
+    Object* subjectRoom = nullptr;
     int subjectZ = 0;
+    if (s)
+    {
+        subjectRoom = s->getRoom();
+        subjectZ = s->getZ();
+    }
 
     for (int y = oy; y < h; y++)
     {

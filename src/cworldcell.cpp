@@ -41,7 +41,7 @@ WorldCell* WorldCell::getBottom()
     return c;
 }
 
-int WorldCell::getSmook() const
+int WorldCell::getHeight() const
 {
     return m_tile ? m_tile->getHeight() : 0;
 }

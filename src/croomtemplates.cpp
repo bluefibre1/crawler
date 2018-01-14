@@ -12,22 +12,31 @@ const RoomTemplateSharedPtr& RoomTemplates::INN()
         CharacterTemplateSharedPtrs randomCharacters;
         randomCharacters.push_back(CharacterTemplates::VILLAGER());
 
-        RoomLayerTemplate floor;
-        floor.push_back(CHAR_T("##########"));
-        floor.push_back(CHAR_T("#........#"));
-        floor.push_back(CHAR_T("#...--...#"));
-        floor.push_back(CHAR_T("#........#"));
-        floor.push_back(CHAR_T("####||####"));
+        RoomLayerTemplate floor1;
+        floor1.push_back(CHAR_T("##########"));
+        floor1.push_back(CHAR_T("#........#"));
+        floor1.push_back(CHAR_T("#...--...#"));
+        floor1.push_back(CHAR_T("#......_=#"));
+        floor1.push_back(CHAR_T("####..####"));
+        floor1.push_back(CHAR_T("   #||#   "));
+
+        RoomLayerTemplate floor2;
+        floor2.push_back(CHAR_T("##########"));
+        floor2.push_back(CHAR_T("#........#"));
+        floor2.push_back(CHAR_T("#.....##.#"));
+        floor2.push_back(CHAR_T("#.....#  #"));
+        floor2.push_back(CHAR_T("##########"));
 
         RoomLayerTemplate roof;
         roof.push_back(CHAR_T("##########"));
         roof.push_back(CHAR_T("##########"));
         roof.push_back(CHAR_T("##########"));
         roof.push_back(CHAR_T("##########"));
-        roof.push_back(CHAR_T("####  ####"));
+        roof.push_back(CHAR_T("##########"));
 
         RoomLayerTemplates layers;
-        layers.push_back(floor);
+        layers.push_back(floor1);
+        layers.push_back(floor2);
         layers.push_back(roof);
 
         r = RoomTemplateSharedPtr(new RoomTemplate(

@@ -275,8 +275,19 @@ RoomSharedPtr RoomFactory::create(const RoomTemplateSharedPtr& t)
                     WorldCell& over = cells[i];
                     if (over.getTile())
                     {
-                        WorldCell& under = cells[i - layerSize];
-                        over.setUnder(&under);
+                        WorldCell* under = nullptr;
+                        int iz = z;
+                        do
+                        {
+                            iz--;
+                            int ii = x + y * width + iz * layerSize;
+                            under = &cells[ii];
+                        }
+                        while (!under->getTile() && iz > 0);
+                        if (under->getTile())
+                        {
+                            over.setUnder(under);
+                        }
                     }
                 }
             }

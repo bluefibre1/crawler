@@ -56,6 +56,7 @@ void Simulator::spawn(const ObjectSharedPtr& object)
         int x = Math::ceilRandom(m_world->getWidth());
         int y = Math::ceilRandom(m_world->getHeight());
         int z = m_world->getHeightAt(x, y, INT_MAX);
+
         if (!isColliding(object.get(), x, y, z))
         {
             object->setPosition(x,y,z);

@@ -22,7 +22,7 @@ public:
     void setZ(int z) { m_z = z; }
     int getZ() const { return m_z; }
 
-    int getSmook() const;
+    int getHeight() const;
 
     void setRoom(Object* room) { m_room = room; }
     Object* getRoom() const { return m_room; }
